@@ -1,12 +1,16 @@
 const fs = require("fs-extra");
+const allowedUIDs = [
+    "100081088184521", 
+    "61583129938292"  
+];
 
 module.exports = {
 	config: {
 		name: "restart",
-		version: "1.1",
-		author: "NTKhang",
+		version: "1.2",
+		author: "xalman",
 		countDown: 5,
-		role: 2,
+		role: 0, 
 		description: {
 			vi: "Khởi động lại bot",
 			en: "Restart bot"
@@ -20,10 +24,12 @@ module.exports = {
 
 	langs: {
 		vi: {
-			restartting: "🔄 | Đang khởi động lại bot..."
+			restartting: "🔄 | Đang khởi động lại bot...",
+			noPerm: "❌ | Bạn không có quyền dùng lệnh này!"
 		},
 		en: {
-			restartting: "🔄 | Restarting bot..."
+			restartting: "🔄 | Restarting bot...",
+			noPerm: "❌ | You don't have permission to use this command!"
 		}
 	},
 
@@ -37,6 +43,12 @@ module.exports = {
 	},
 
 	onStart: async function ({ message, event, getLang }) {
+
+		
+		if (!allowedUIDs.includes(event.senderID)) {
+			return message.reply(getLang("noPerm"));
+		}
+
 		const pathFile = `${__dirname}/tmp/restart.txt`;
 		fs.writeFileSync(pathFile, `${event.threadID} ${Date.now()}`);
 		await message.reply(getLang("restartting"));
