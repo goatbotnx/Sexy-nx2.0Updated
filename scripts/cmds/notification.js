@@ -60,15 +60,15 @@ module.exports = {
     }
 
     
-    const owner = "negative xalman (nx) 100066867630344"; 
-    const fb = "https://www.facebook.com/nx210.2.0.is.back";
+    const owner = "negative xalman (nx)"; 
+    const fb = "https://m.me/nx210.2.0.is.back";
 
     
     const formSend = {
       body:
 `╭━━━〔 𝗡𝗢𝗧𝗜𝗙𝗜𝗖𝗔𝗧𝗜𝗢𝗡  〕━━━╮
-│ Owner: ${owner}
-│ 𝗙𝗯 𝗜𝗱: ${fb}
+│ OWNER: ${owner}
+│ MESSENGER: ${fb}
 ╰━━━━━━━━━━━━━━━━━━━━━━╯
 
 🕒 Time: ${timeString} - ${dateString}
