@@ -5,8 +5,8 @@ module.exports = {
   config: {
     name: "notification",
     aliases: ["notify", "noti"],
-    version: "2.1",
-    author: "T A N J I L (Styled by GPT-5)",
+    version: "2.3",
+    author: "xalmam",
     countDown: 5,
     role: 2,
     shortDescription: {
@@ -29,7 +29,7 @@ module.exports = {
     }
   },
 
-  onStart: async function ({ message, api, event, args, commandName, envCommands, threadsData, getLang, usersData }) {
+  onStart: async function ({ message, api, event, args, commandName, envCommands, threadsData, getLang, usersData, config }) {
     const { delayPerGroup } = envCommands[commandName];
     const senderID = event.senderID;
     const senderName = await usersData.getName(senderID) || "Unknown User";
@@ -38,20 +38,18 @@ module.exports = {
     const timeString = now.format("hh:mm A");
     const dateString = now.format("DD/MM/YYYY");
 
-    // ✅ Handle message text
+    // Handle message text
     const msgText = args.join(" ") || "";
 
-    // ✅ Collect attachments from message or reply
+    // Collect attachments from message or reply
     const attachments = [
       ...(event.attachments || []),
       ...(event.messageReply?.attachments || [])
     ].filter(item => ["photo", "animated_image", "video", "audio", "sticker"].includes(item.type));
 
-    // ✅ If no message and no attachments
     if (!msgText && attachments.length === 0)
       return message.reply(getLang("missingMessage"));
 
-    // ✅ Convert attachments safely
     let streamAttachments = [];
     if (attachments.length > 0) {
       try {
@@ -61,25 +59,25 @@ module.exports = {
       }
     }
 
-    // 🎀 Stylish notification body
+    
+    const owner = "negative xalman (nx) 100066867630344"; 
+    const fb = "https://www.facebook.com/nx210.2.0.is.back";
+
+    
     const formSend = {
       body:
-`🎀 ━━━━━━━ ✧ ━━━━━━━ 🎀
-       ⚜️  𝐁𝐎𝐓 𝐍𝐎𝐓𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍  ⚜️
-🎀 ━━━━━━━ ✧ ━━━━━━━ 🎀
-
-👤  From: ${senderName}
-🕒  Time: ${timeString} - ${dateString}
-
+`╭━━━〔 👑 Operator Panel 〕━━━╮
+│ Owner: ${owner}
+│ 𝗙𝗯 𝗜𝗱: ${fb}
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+🕒 Time: ${timeString} - ${dateString}
 ────────────────────────────
 ${msgText || "(media only)"}
-────────────────────────────
-
-💌  𝐍𝐄𝐆𝐀𝐓𝐈𝐕𝐄 𝐁𝐎𝐓 𝐁𝐘 𝐍𝐗 💫`,
+────────────────────────────`,
       attachment: streamAttachments
     };
 
-    // ✅ Get all active threads
+    // Get all active threads
     const allThreads = (await threadsData.getAll()).filter(
       t => t.isGroup && t.members.find(m => m.userID == api.getCurrentUserID())?.inGroup
     );
