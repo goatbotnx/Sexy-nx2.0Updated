@@ -66,14 +66,18 @@ module.exports = {
     
     const formSend = {
       body:
-`╭━━━〔 👑 Operator Panel 〕━━━╮
+`╭━━━〔 𝗡𝗢𝗧𝗜𝗙𝗜𝗖𝗔𝗧𝗜𝗢𝗡  〕━━━╮
 │ Owner: ${owner}
 │ 𝗙𝗯 𝗜𝗱: ${fb}
 ╰━━━━━━━━━━━━━━━━━━━━━━╯
+
 🕒 Time: ${timeString} - ${dateString}
-────────────────────────────
+
+─────────────────────────
+
 ${msgText || "(media only)"}
-────────────────────────────`,
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━╯`,
       attachment: streamAttachments
     };
 
