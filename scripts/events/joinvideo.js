@@ -1,31 +1,33 @@
 module.exports = {
   config: {
     name: "autoJoinVideo",
-    eventType: ["log:subscribe"],
+    version: "1.0",
+    author: "xalman",
+    category: "event",             // 🔥 MUST HAVE (Fixes your error)
+    eventType: ["log:subscribe"],  // Event listener
   },
 
   onStart: () => {},
 
   onEvent: async function({ event, message }) {
-    // Bot join detect
     try {
-      const added = event.logMessageData.addedParticipants;
+      const added = event.logMessageData?.addedParticipants;
       if (!added) return;
 
-      // Check bot join
+      // Bot join detect
       const isBotAdded = added.some(p => p.userFbId == global.GoatBot.botID);
       if (!isBotAdded) return;
 
-      // Video URL (public direct MP4 link)
+      // Video (MP4 link)
       const videoURL = "https://files.catbox.moe/8o4is6.mp4";
 
       await message.send({
         body: "",
         attachment: await global.utils.getStreamFromURL(videoURL)
       });
-    }
-    catch (e) {
-      console.error(e);
+
+    } catch (e) {
+      console.error("autoJoinVideo error:", e);
     }
   }
 };
