@@ -9,7 +9,7 @@ module.exports = {
     author: "T A N J I L",
     description: "Get current weather info with BD time, sunrise and sunset",
     usage: ".weather [city]",
-    commandCategory: "utility",
+    category: "utility",        // <-- category fixed
     cooldowns: 5
   },
 
@@ -54,12 +54,10 @@ module.exports = {
         `🕒 Data Updated: ${updateTime}\n` +
         `⏰ Current Time: ${currentTime} (BD Time)`;
 
-      // Download the image first
       const imageUrl = "https://res.cloudinary.com/mahiexe/image/upload/v1748113926/mahi/1748113926085-913546189.png";
       const imagePath = path.join(__dirname, "weather_image.png");
       const image = await axios.get(imageUrl, { responseType: 'stream' });
 
-      // Save image to local path temporarily
       const writer = fs.createWriteStream(imagePath);
       image.data.pipe(writer);
 
@@ -68,7 +66,6 @@ module.exports = {
           body: weatherText,
           attachment: fs.createReadStream(imagePath)
         }, event.threadID, () => {
-          // Delete image after sending
           fs.unlinkSync(imagePath);
         });
       });
