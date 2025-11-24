@@ -12,7 +12,7 @@ const baseApiUrl = async () => {
 module.exports = {
   config: {
     name: "video",
-    aliases: ["music", "searchsong"],
+    aliases: ["videosong", "searchsong"],
     version: "2.0.0",
     author: "Nazrul + Edited by ChatGPT",
     countDowns: 20,
