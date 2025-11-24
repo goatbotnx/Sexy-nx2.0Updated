@@ -3,12 +3,11 @@ module.exports = {
         name: "ping",
         aliases: ["pong"],
         version: "1.3",
-        author: "xalman ",
-        cetagory: "system",
+        author: "xalman",
+        category: "system",   
         countDown: 3,
         role: 0,
         shortDescription: "Bot er ping check korar command",
-        
     },
 
     onStart: async function ({ message }) {
@@ -16,6 +15,6 @@ module.exports = {
         const sentMessage = await message.reply("🏓 pong ...");
         const end = Date.now();
         const latency = end - start;
-        await message.reply(`🏓your  ping : ${latency}ms`);
+        await message.reply(`🏓 Your ping: ${latency}ms`);
     }
 };
