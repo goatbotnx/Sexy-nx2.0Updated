@@ -1,35 +1,33 @@
 module.exports = {
   config: {
     name: "autoJoinVideo",
-    version: "1.1",
+    version: "1.2",
     author: "xalman",
-    eventType: ["log:subscribe"],  // ONLY this needed
+    eventType: ["log:subscribe"]   // SAME SYSTEM AS WELCOME EVENT
   },
 
   onStart: () => {},
 
-  onEvent: async function ({ event, api }) {
+  onEvent: async function ({ event, api, message }) {
     try {
       const added = event.logMessageData?.addedParticipants;
       if (!added) return;
 
-      // Get bot ID safely
+      // Bot ID
       const botID = api.getCurrentUserID();
 
-      // Check if the bot is added
+      // Check if bot was added
       const isBotAdded = added.some(p => p.userFbId == botID);
       if (!isBotAdded) return;
 
       // Video URL
       const videoURL = "https://files.catbox.moe/8o4is6.mp4";
 
-      api.sendMessage(
-        {
-          body: "🔥 Bot joined the group!",
-          attachment: await global.utils.getStreamFromURL(videoURL)
-        },
-        event.threadID
-      );
+      // Use same method as welcome event → message.send()
+      return message.send({
+        body: "",
+        attachment: await global.utils.getStreamFromURL(videoURL)
+      });
 
     } catch (e) {
       console.error("autoJoinVideo error:", e);
