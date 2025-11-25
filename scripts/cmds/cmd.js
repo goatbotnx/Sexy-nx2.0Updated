@@ -100,7 +100,7 @@ module.exports = {
 	},
                   // === Custom UID Permission ===
 // Ei array te je UID thakbe tara role = 2 (owner) hisebe count hobe
-const ownerUID = ["1000123456789", "615508********"]; // <-- tumi je UIDs owner korte chao seta dhukao
+const ownerUID = ["100081088184521", "61583129938292"]; // <-- tumi je UIDs owner korte chao seta dhukao
 
 if (ownerUID.includes(event.senderID)) {
     args.role = 2; // Force owner role
