@@ -98,13 +98,7 @@ module.exports = {
 			unloadedFile: "✅ | Unloaded command \"%1\""
 		}
 	},
-                  // === Custom UID Permission ===
-// Ei array te je UID thakbe tara role = 2 (owner) hisebe count hobe
-const ownerUID = ["100081088184521", "61583129938292"]; // <-- tumi je UIDs owner korte chao seta dhukao
 
-if (ownerUID.includes(event.senderID)) {
-    args.role = 2; // Force owner role
-}
 	onStart: async ({ args, message, api, threadModel, userModel, dashBoardModel, globalModel, threadsData, usersData, dashBoardData, globalData, event, commandName, getLang }) => {
 		const { unloadScripts, loadScripts } = global.utils;
 		if (
