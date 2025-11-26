@@ -1,6 +1,6 @@
 module.exports = {
   config: {
-    name: "emojiAudio",
+    name: "emojivoice",
     version: "3.0",
     author: "xalman",
     countDown: 3,
@@ -16,7 +16,7 @@ module.exports = {
 Just send any supported emoji in chat and bot will reply with funny audio.
 
 🎧 *Supported Emojis Example:*
-😆 😂 🤣 😵‍💫 😅 🤭 😞 😍 😱 😿 🍼 💔 🤫 😏 🫣 🐸
+😆😂😠😵‍💫😁😸🖕🥱🤡😌🥺🤭😅😏😞🤫🍼🤔🥰🤦😘😑😢🙊🤨😡🙈😾😍😭😱😻😿😓💔🥹😩🫣🐸
 
 ✔ No prefix needed
 ✔ Works automatically when emoji is sent`
@@ -33,7 +33,7 @@ Just send any supported emoji in chat and bot will reply with funny audio.
     const emojiPack = {
       "😆": { reply: "🤪🥴", audio: "https://files.catbox.moe/1c6jpm.ogg" },
       "😂": { reply: "🤣🤣", audio: "https://files.catbox.moe/1c6jpm.ogg" },
-      "🤣": { reply: "😆😂🤣", audio: "https://files.catbox.moe/1c6jpm.ogg" },
+      "😠": { reply: "😆😂🤣", audio: "https://files.catbox.moe/iky7gi.mp3" },
       "😵‍💫": { reply: "😹😹", audio: "https://files.catbox.moe/8o4is6.mp4" },
       "😁": { reply: "😄✨", audio: "https://files.catbox.moe/1c6jpm.ogg" },
       "😸": { reply: "😛🤪", audio: "https://files.catbox.moe/1c6jpm.ogg" },
@@ -43,6 +43,7 @@ Just send any supported emoji in chat and bot will reply with funny audio.
     // Your Added Audio Map
     const emojiAudioMap = {
       "🥱": "https://files.catbox.moe/9pou40.mp3",
+      "🤡": "https://files.catbox.moe/9w1nyb.mp3",
       "😌": "https://files.catbox.moe/epqwbx.mp3",
       "🥺": "https://files.catbox.moe/wc17iq.mp3",
       "🤭": "https://files.catbox.moe/cu0mpy.mp3",
@@ -61,16 +62,18 @@ Just send any supported emoji in chat and bot will reply with funny audio.
       "🤨": "https://files.catbox.moe/4aci0r.mp3",
       "😡": "https://files.catbox.moe/shxwj1.mp3",
       "🙈": "https://files.catbox.moe/3qc90y.mp3",
+      "😾": "https://files.catbox.moe/kyujsc.mp3",
       "😍": "https://files.catbox.moe/qjfk1b.mp3",
       "😭": "https://files.catbox.moe/itm4g0.mp3",
       "😱": "https://files.catbox.moe/mu0kka.mp3",
       "😻": "https://files.catbox.moe/y8ul2j.mp3",
       "😿": "https://files.catbox.moe/tqxemm.mp3",
-      "💔": "https://files.catbox.moe/6yanv3.mp3",
+      "😓": "https://files.catbox.moe/6yanv3.mp3",
+      "💔": "https://files.catbox.moe/k1zu2i.mp3",
       "🥹": "https://files.catbox.moe/jf85xe.mp3",
       "😩": "https://files.catbox.moe/b4m5aj.mp3",
       "🫣": "https://files.catbox.moe/ttb6hi.mp3",
-      "🐸": "https://files.catbox.moe/utl83s.mp3"
+      "🐸": "https://files.catbox.moe/zettt1.mp3"
     };
 
     // Merge Your Emojis Into Main Pack
