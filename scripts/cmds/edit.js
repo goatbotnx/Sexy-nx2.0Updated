@@ -6,12 +6,12 @@ module.exports = {
   config: {
     name: "edit",
     version: "1.0",
-    author: "RI F AT | NeoKEX",
+    author: "Saimx69x | API Renz",
     countDown: 5,
     role: 0,
-    shortDescription: "Edit image using prompt",
-    longDescription: "Edit an uploaded image based on your prompt.",
-    category: "AI-IMAGE",
+    shortDescription: "Edit image using FluxKontext API",
+    longDescription: "Edit an uploaded image based on your prompt using FluxKontext API.",
+    category: "ai-image-edit",
     guide: "{p}edit [prompt] (reply to image)"
   },
 
@@ -19,35 +19,41 @@ module.exports = {
     const prompt = args.join(" ");
     const repliedImage = event.messageReply?.attachments?.[0];
 
-    if (!prompt || !repliedImage || repliedImage.type !== "photo") {
-      return message.reply("Please reply to a photo with your prompt to edit it.");
+    if (!repliedImage || repliedImage.type !== "photo") {
+      return message.reply(
+        "⚠️ Please reply to a photo **and** provide a prompt to edit it.\nExample: /edit Make it cartoon style"
+      );
     }
-    
-    api.setMessageReaction("🛠️", event.messageID, () => {}, true);
+
+    if (!prompt) {
+      return message.reply(
+        "⚠️ Please provide a prompt to edit the image.\nExample: /edit Make it cartoon style"
+      );
+    }
+
+    const processingMsg = await message.reply("⏳ Processing your image...");
 
     const imgPath = path.join(__dirname, "cache", `${Date.now()}_edit.jpg`);
 
     try {
       const imgURL = repliedImage.url;
-      const imageUrl = `https://edit-and-gen.onrender.com/gen?prompt=${encodeURIComponent(prompt)}&image=${encodeURIComponent(imgURL)}`;
-      const res = await axios.get(imageUrl, { responseType: "arraybuffer" });
+      const apiURL = `https://dev.oculux.xyz/api/fluxkontext?prompt=${encodeURIComponent(prompt)}&ref=${encodeURIComponent(imgURL)}`;
+      
+      const res = await axios.get(apiURL, { responseType: "arraybuffer" });
 
       await fs.ensureDir(path.dirname(imgPath));
       await fs.writeFile(imgPath, Buffer.from(res.data, "binary"));
 
+      await api.unsendMessage(processingMsg.messageID);
       message.reply({
         body: `✅ Edited image for: "${prompt}"`,
         attachment: fs.createReadStream(imgPath)
       });
-      
-      api.setMessageReaction("✅", event.messageID, () => {}, true);
 
     } catch (err) {
       console.error("EDIT Error:", err);
-      message.reply("Failed to edit image. Please try again later.");
-      
-      api.setMessageReaction("❌", event.messageID, () => {}, true);
-      
+      await api.unsendMessage(processingMsg.messageID);
+      message.reply("❌ Failed to edit image. Please try again later.");
     } finally {
       if (fs.existsSync(imgPath)) {
         await fs.remove(imgPath);
