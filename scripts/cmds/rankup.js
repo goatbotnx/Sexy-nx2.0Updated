@@ -1,4 +1,4 @@
- // rp_animated_rankup.js
+// rp_animated_rankup.js
 const deltaNext = global.GoatBot.configCommands.envCommands.rank.deltaNext;
 const expToLevel = exp => Math.floor((1 + Math.sqrt(1 + 8 * exp / deltaNext)) / 2);
 
@@ -13,7 +13,7 @@ module.exports = {
     name: "rankup",
     version: "4.0",
     author: "Xalman | GPT-5",
-    countDown: 5,
+    countDown: 3,
     role: 0,
     description: { en: "Animated neon GIF rankup card" },
     category: "rank",
@@ -64,7 +64,8 @@ module.exports = {
 
     // ---------- Load remote images safely ----------
     let avatarImage, bgImage;
-    const avatarURL = `https://graph.facebook.com/${event.senderID}/picture?width=512&height=512`;
+    // UPDATED: Use usersData.getAvatarUrl for more reliable avatar loading
+    const avatarURL = await usersData.getAvatarUrl(event.senderID); 
 
     try {
       const avatarRes = await axios.get(avatarURL, { responseType: "arraybuffer", timeout: 8000 });
@@ -244,6 +245,13 @@ module.exports = {
       const fctx = fallbackCanvas.getContext("2d");
       fctx.drawImage(bgImage, 0, 0, width, height);
       fctx.drawImage(avatarImage, 40, 120, 160, 160);
+      // Draw minimal text on fallback
+      fctx.fillStyle = "#ffffff";
+      fctx.font = "bold 36px Sans";
+      fctx.fillText(userData.name || "User", 240, 170);
+      fctx.font = "28px Sans";
+      fctx.fillText(`Level ${currentLevel}`, 240, 215);
+
       const fallbackPath = path.join(__dirname, `rankup_fallback_${Date.now()}.png`);
       fs.writeFileSync(fallbackPath, fallbackCanvas.toBuffer());
       await message.reply({ body: `🎉 ${userData.name}`, attachment: fs.createReadStream(fallbackPath) });
@@ -281,4 +289,4 @@ function roundRectFill(ctx, x, y, w, h, r) {
   ctx.quadraticCurveTo(x, y, x + r, y);
   ctx.closePath();
   ctx.fill();
-		  }
+	}
