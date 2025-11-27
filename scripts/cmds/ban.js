@@ -1,4 +1,4 @@
-const { addBan, isBanned } = require("../../../database/ban-check");
+const { addBan, isBanned } = require("database/ban-check");
 
 module.exports = {
   config: {
