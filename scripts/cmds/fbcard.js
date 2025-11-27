@@ -32,7 +32,7 @@ module.exports = {
  const request = require('request');
  const fs = require("fs-extra");
  const axios = require("axios");
- const Canvas = require("canvas");
+ const canvas = require("canvas");
  let pathImg = __dirname + `/cache/1.png`;
  let pathAvata = __dirname + `/cache/2.png`;
 
