@@ -3,7 +3,7 @@ module.exports = {
     name: "autoJoinVideo",
     version: "1.2",
     author: "xalman",
-    cetagory: "event",
+    cetagory: "events",
     eventType: ["log:subscribe"]   // SAME SYSTEM AS WELCOME EVENT
   },
 
