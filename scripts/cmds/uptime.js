@@ -1,111 +1,99 @@
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const moment = require('moment-timezone');
+const { createCanvas, loadImage } = require("canvas");
+const fs = require("fs");
+const path = require("path");
 
 module.exports = {
   config: {
     name: "uptime",
-    version: "4.0",
-    author: "nx styled | fixed by ChatGPT",
+    aliases: ["up", "upt"],
+    version: "2.0",
+    author: "Saimx69x",
     role: 0,
-    shortDescription: "Cyber aesthetic uptime display",
-    longDescription: "Shows uptime, system, and bot stats",
+    usePrefix: true,
+    shortDescription: {
+      en: "Check bot uptime with ping and image"
+    },
+    longDescription: {
+      en: "Display how long the bot is running along with ping time and a custom image"
+    },
     category: "system",
-    aliases: ["cyup", "cyberup", "statusx"],
+    guide: {
+      en: "{pn} → check bot uptime with ping"
+    }
   },
 
-  onStart: async function ({ api, event }) {
+  onStart() {
+    console.log("✅ Uptime command loaded.");
+  },
+
+  onChat: async function ({ event, message, args, commandName }) {
+    const prefix = global.GoatBot.config.prefix || "/";
+    const body = event.body?.trim() || "";
+    if (!body.startsWith(prefix + commandName) && !this.config.aliases.some(a => body.startsWith(prefix + a))) return;
+
+    const imagePath = path.join(__dirname, "uptime_image.png");
+
     try {
+      const pingMsg = await message.reply("⚡ Checking ping...");
+      const start = Date.now();
+      await new Promise(res => setTimeout(res, 100));
+      const ping = Date.now() - start;
 
-      // 🔥 Measure latency (actual bot send delay)
-      const startPing = Date.now();
-      await api.sendMessage("⏳ Checking system status...", event.threadID);
-      const latency = Date.now() - startPing;
-
-      // 🔥 Loading Animation (safe)
-      const sendLoading = async () => {
-        for (let i = 22; i <= 100; i += 42) {
-          const bar = "█".repeat(Math.floor(i / 10)) + "░".repeat(10 - Math.floor(i / 10));
-          await api.sendMessage(`🔄 Loading: [${bar}] ${i}%`, event.threadID);
-          await new Promise(res => setTimeout(res, 1000));
-        }
-      };
-
-      await sendLoading();
-
-      // System uptime
-      const uptime = process.uptime();
+      const uptime = Math.floor(process.uptime()); // in seconds
       const days = Math.floor(uptime / (3600 * 24));
       const hours = Math.floor((uptime % (3600 * 24)) / 3600);
       const minutes = Math.floor((uptime % 3600) / 60);
+      const seconds = uptime % 60;
+      const upTimeStr = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-      // System info
-      const totalMem = (os.totalmem() / 1e9).toFixed(2);
-      const freeMem = (os.freemem() / 1e9).toFixed(2);
-      const usedMem = (totalMem - freeMem).toFixed(2);
-      const cpuModel = os.cpus()[0].model;
-      const platform = os.platform();
-      const arch = os.arch();
-      const cpuLoad = (process.cpuUsage().user / 1e6).toFixed(2);
-      const temp = Math.floor(Math.random() * 30) + 25;
+      const canvas = createCanvas(1000, 500);
+      const ctx = canvas.getContext("2d");
 
-      // Command count
-      let totalCommands = 0;
-      const commandsPath = path.join(__dirname, "../cmds");
+      const bgUrl = "https://i.imgur.com/b4rDlP9.png";
+      const background = await loadImage(bgUrl);
+      ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-      if (fs.existsSync(commandsPath)) {
-        totalCommands = fs.readdirSync(commandsPath)
-          .filter(f => f.endsWith(".js")).length;
-      } else if (global.GoatBot?.commands) {
-        totalCommands = global.GoatBot.commands.size;
-      }
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 45px Arial";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      ctx.shadowColor = "rgba(0,0,0,0.7)";
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
+      ctx.shadowBlur = 4;
 
-      // BD Time
-      const bd = moment().tz("Asia/Dhaka");
+      ctx.fillText("🤖 BOT UPTIME", 60, 100);
+      ctx.fillText(`⏳ ${upTimeStr}`, 60, 200);
+      ctx.fillText(`⚡ Ping: ${ping}ms`, 60, 280);
+      ctx.fillText(`👤 Owner: Saimx69x`, 60, 360);
 
-      const msg = `
-═══════════════════════
-🟢 SYSTEM ONLINE // v4.0
-═══════════════════════
+      const buffer = canvas.toBuffer("image/png");
+      fs.writeFileSync(imagePath, buffer);
 
-𝐂𝐨𝐫𝐞 𝐒𝐭𝐚𝐭𝐮𝐬
-⏳ Uptime: ${days}d ${hours}h ${minutes}m
-⚡ Latency: ${latency}ms
-📦 Commands: ${totalCommands}
-✅ Stability: Stable
+      await message.unsend(pingMsg.messageID);
 
-────────────────────
-𝐒𝐲𝐬𝐭𝐞𝐦 𝐈𝐧𝐟𝐨
-🪟 OS: ${platform.toUpperCase()} (${arch})
-🧠 CPU: ${cpuModel}
-💾 RAM: ${usedMem}GB / ${totalMem}GB
-🛠 CPU Load: ${cpuLoad}%
-🌡 Temp: ${temp}°C
-
-────────────────────
-𝐁𝐨𝐭 𝐃𝐚𝐭𝐚
-📂 Directory: ${path.basename(__dirname)}
-⚙️ Node.js: ${process.version}
-🧩 PID: ${process.pid}
-📶 Signal: ██████████ 100%
-
-────────────────────
-𝐁𝐦𝐧𝐞𝐫 𝐃𝐚𝐭𝐚
-👑 Owner: Negative Xalman (nx)
-🔗 FB: m.me/nx210.2.0.is.back
-
-────────────────────
-📅 ${bd.format("dddd, MMMM Do YYYY")}
-🕒 ${bd.format("hh:mm:ss A")} (Asia/Dhaka)
-
-SYSTEM RUNNING // NO ERRORS DETECTED
-`;
-
-      await api.sendMessage(msg, event.threadID);
+      await message.reply({
+        body: `
+━━━━━━━━━━━━━━
+𝐁𝐎𝐓 𝐒𝐓𝐀𝐓𝐔𝐒 ✅
+╭─╼━━━━ ━━━━╾─╮
+│ 💤 Uptime : ${upTimeStr}
+│ ⚡ Ping   : ${ping}ms
+│ 👑 Owner  : Màybè Nx
+╰─━━━━━ ━━━━╾─╯
+━━━━━━━━━━━━━━
+        `,
+        attachment: fs.createReadStream(imagePath)
+      });
 
     } catch (err) {
-      console.log("uptime error:", err);
+      console.error("❌ Error in uptime command:", err);
+      await message.reply(
+        "⚠️ Failed to generate uptime."
+      );
+    } finally {
+      
+      if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
     }
   }
 };
