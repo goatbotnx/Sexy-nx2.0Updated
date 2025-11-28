@@ -49,7 +49,7 @@ module.exports = {
       const canvas = createCanvas(1000, 500);
       const ctx = canvas.getContext("2d");
 
-      const bgUrl = "https://i.imgur.com/b4rDlP9.png";
+      const bgUrl = "https://files.catbox.moe/604auo.mp4";
       const background = await loadImage(bgUrl);
       ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
@@ -65,7 +65,7 @@ module.exports = {
       ctx.fillText("🤖 BOT UPTIME", 60, 100);
       ctx.fillText(`⏳ ${upTimeStr}`, 60, 200);
       ctx.fillText(`⚡ Ping: ${ping}ms`, 60, 280);
-      ctx.fillText(`👤 Owner: Saimx69x`, 60, 360);
+      ctx.fillText(`👤 Owner: Màybè Nx`, 60, 360);
 
       const buffer = canvas.toBuffer("image/png");
       fs.writeFileSync(imagePath, buffer);
