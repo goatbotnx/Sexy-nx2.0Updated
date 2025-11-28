@@ -49,7 +49,7 @@ module.exports = {
       const canvas = createCanvas(1000, 500);
       const ctx = canvas.getContext("2d");
 
-      const bgUrl = "https://files.catbox.moe/604auo.mp4";
+      const bgUrl = "https://i.postimg.cc/ZRjqJF69/Screenshot-20251128-075006.png";
       const background = await loadImage(bgUrl);
       ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
@@ -79,7 +79,7 @@ module.exports = {
 ╭─╼━━━━ ━━━━╾─╮
 │ 💤 Uptime : ${upTimeStr}
 │ ⚡ Ping   : ${ping}ms
-│ 👑 Owner  : Màybè Nx
+│ 👑 Owner  :Màybè Mx
 ╰─━━━━━ ━━━━╾─╯
 ━━━━━━━━━━━━━━
         `,
