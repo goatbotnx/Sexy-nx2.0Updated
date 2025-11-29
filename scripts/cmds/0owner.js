@@ -3,7 +3,7 @@ const { getStreamFromURL } = global.utils;
 module.exports = {
   config: {
     name: "owner",
-    aliases: ["info", "admininfo", "ownerinfo"],
+    aliases: ["ownerinfo", "ownerinfo2"],
     version: "2.2",
     author: "Jani nh ke manger nati cng marche 🙂",
     longDescription: {
