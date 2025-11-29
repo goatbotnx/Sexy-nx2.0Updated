@@ -95,8 +95,8 @@ module.exports = {
       // 💬 টেক্সট তৈরি
       const text =
         senderID === mentionedID
-          ? "নিজেকেই প্রপোজ করলে? 😂❤️"
-          : `💍 ${nameSender} প্রপোজ করেছে ${nameMentioned}-কে 🥰❤️`;
+          ? "নিজেকে নিজেকে বিয়ে করবে ? 😂❤️"
+          : `💍 ${nameSender} এর বিয়ে${nameMentioned}- এর সাথে 🥰❤️`;
 
       // ✉️ পাঠানো
       await message.reply(
