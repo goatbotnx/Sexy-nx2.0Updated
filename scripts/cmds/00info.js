@@ -1,104 +1,70 @@
-const fs = require("fs-extra");
-const request = require("request");
-const os = require("os");
+!cmd install info.js const { getStreamFromURL } = global.utils;
 
 module.exports = {
   config: {
-    name: "info",
-    version: "1.3",
-    author: "✨ Eren Yeh ✨",
-    shortDescription: "Display bot and user information along with uptime and Imgur images/videos.",
-    longDescription: "Show detailed info about the bot and the user, with uptime and Imgur image/video features.",
-    category: "INFO",
-    guide: {
-      en: "[user]",
+    name: "owner",
+    aliases: ["info", "admininfo"],
+    version: "2.4",
+    author: "Shahariya Ahmed Siyam (Siyuu) 🌟",
+    longDescription: {
+      en: "Info about bot and its owner"
     },
+    category: "Special",
+    guide: {
+      en: "{p}owner or just type owner"
+    },
+    usePrefix: false
   },
 
-  onStart: async function ({ api, event, args }) {
-    // Replace with your info
-    const userInfo = {
-      name: " TBT NX210᯽",  // Replace with your name
-      age: "18±",           // Replace with your age
-      location: "Narsingdi",    // Replace with your location
-      bio: "THE BAD TRADER NEGATIVE XALMAN ", // Replace with your bio
-      botName: "𝐁𝐨𝐥𝐛𝐨 𝐧𝐚", // Replace with bot's name
-      botVersion: "1.0",    // Replace with bot's version
-    };
+  onStart: async function (context) {
+    await module.exports.sendOwnerInfo(context);
+  },
 
-    // Calculate bot uptime
-    const botUptime = process.uptime(); // in seconds
-    const botHours = Math.floor(botUptime / 3600);
-    const botMinutes = Math.floor((botUptime % 3600) / 60);
-    const botSeconds = Math.floor(botUptime % 60);
-    const formattedBotUptime = `${botHours} hours, ${botMinutes} minutes, ${botSeconds} seconds`;
+  onChat: async function ({ event, message, usersData }) {
+    const prefix = global.GoatBot.config.prefix;
+    const body = (event.body || "").toLowerCase().trim();
+    const triggers = ["owner", `${prefix}owner`];
+    if (!triggers.includes(body)) return;
+    await module.exports.sendOwnerInfo({ event, message, usersData });
+  },
 
-    // Calculate system uptime in days, hours, minutes, and seconds
-    const systemUptime = os.uptime(); // in seconds
-    const sysDays = Math.floor(systemUptime / (3600 * 24)); // Convert seconds to days
-    const sysHours = Math.floor((systemUptime % (3600 * 24)) / 3600); // Remaining hours
-    const sysMinutes = Math.floor((systemUptime % 3600) / 60); // Remaining minutes
-    const sysSeconds = Math.floor(systemUptime % 60); // Remaining seconds
-    const formattedSystemUptime = `${sysDays} days, ${sysHours} hours, ${sysMinutes} minutes, ${sysSeconds} seconds`;
+  sendOwnerInfo: async function ({ event, message, usersData }) {
+    const videoURL = "https://files.catbox.moe/4bemt8.mp4";
 
-    // Example Imgur video links
-    const imgurLinks = [
-      "",  // Replace with actual Imgur video links
-      "",
-    ];
-
-    // Download videos and send them as attachments
-    const downloadVideo = (url, filePath) => {
-      return new Promise((resolve, reject) => {
-        request(url)
-          .pipe(fs.createWriteStream(filePath))
-          .on("close", resolve)
-          .on("error", reject);
-      });
-    };
-
-    // Construct the body message with more space
-    const bodyMsg = `
-Information: 🥷
-
-- Name: ${userInfo.name}
-- Age: ${userInfo.age}
-- Location: ${userInfo.location}
-- Bio: ${userInfo.bio}
-
-Bot Details:
-
-- Bot Name: ${userInfo.botName}
-- Bot Version: ${userInfo.botVersion}
-- Bot Uptime: ${formattedBotUptime}
-
-System Uptime:
-
-- System Uptime: ${formattedSystemUptime}
-
-─────────────────────
-`;
-
-    // Prepare video attachments
-    const videoPaths = [];
-    for (let i = 0; i < imgurLinks.length; i++) {
-      const videoPath = __dirname + `/cache/video${i}.mp4`;
-      await downloadVideo(imgurLinks[i], videoPath);
-      videoPaths.push(videoPath);
+    let attachment = null;
+    try {
+      if (videoURL && videoURL.startsWith("http")) {
+        attachment = await getStreamFromURL(videoURL);
+      }
+    } catch (err) {
+      console.warn("⚠️ Video fetch failed, sending text only:", err.message);
     }
 
-    // Send message with info and video attachments
-    api.sendMessage(
-      { 
-        body: bodyMsg, 
-        attachment: videoPaths.map(path => fs.createReadStream(path))
-      },
-      event.threadID,
-      () => {
-        // Clean up downloaded video files
-        videoPaths.forEach(path => fs.unlinkSync(path));
-      },
-      event.messageID
-    );
-  },
+    const id = event.senderID;
+    const userData = await usersData.get(id);
+    const name = userData.name || "User";
+    const mentions = [{ id, tag: name }];
+
+    const info = `
+🌟✨ 𝗢𝘄𝗻𝗲𝗿 𝗜𝗻𝗳𝗼 ✨🌟
+💠 𝗡𝗮𝗺𝗲:       MD Salman Hossain  (nx)
+🤖 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲:   ♡your baby♡
+🎉 𝗔𝗴𝗲:        -18
+💖 𝗥𝗲𝗹𝗮𝘁𝗶𝗼𝗻:   Single
+♂️ 𝗚𝗲𝗻𝗱𝗲𝗿:     Male
+🏡 𝗙𝗿𝗼𝗺:       Narsingdi 
+💬 𝗠𝗲𝘀𝘀𝗲𝗻𝗴𝗲𝗿:  https://m.me/nx210.2.0.is.back 
+
+🎈 𝗧𝗵𝗮𝗻𝗸𝘀 𝗳𝗼𝗿 𝘂𝘀𝗶𝗻𝗴 𝗺𝘆 𝗯𝗼𝘁 ! Enjoy 🌈
+    `.trim();
+
+    const msgData = {
+      body: info,
+      mentions
+    };
+
+    if (attachment) msgData.attachment = attachment;
+
+    message.reply(msgData);
+  }
 };
