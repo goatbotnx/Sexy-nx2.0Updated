@@ -2,11 +2,11 @@ const { getStreamFromURL } = require("fb-watchman");
 
 module.exports = {
   config: {
-    name: "owne2r",
+    name: "owner",
     version: 2.0,
     author: "xalman",
     longDescription: "info about bot and owner",
-    category: "Special",
+    category: "owner",
     guide: {
       en: "{p}{n}",
     },
