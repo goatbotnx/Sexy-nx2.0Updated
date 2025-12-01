@@ -1,71 +1,51 @@
-const { getStreamFromURL } = global.utils;
+const { getStreamFromURL } = require("fb-watchman");
 
 module.exports = {
   config: {
-    name: "owner",
-    aliases: ["ownerinfo", "ownerinfo2"],
-    version: "2.2",
-    author: "Jani nh ke manger nati cng marche 🙂",
-    longDescription: {
-      en: "Info about bot and owner"
-    },
+    name: "owne2r",
+    version: 2.0,
+    author: "xalman",
+    longDescription: "info about bot and owner",
     category: "Special",
     guide: {
-      en: "{p}owner or just type owner"
+      en: "{p}{n}",
     },
-    usePrefix: false
   },
 
-  onStart: async function (context) {
-    await module.exports.sendOwnerInfo(context);
-  },
-
-  onChat: async function ({ event, message, usersData }) {
-    const prefix = global.GoatBot.config.prefix;
-    const body = (event.body || "").toLowerCase().trim();
-    const triggers = ["owner", `${prefix}owner`];
-    if (!triggers.includes(body)) return;
-    await module.exports.sendOwnerInfo({ event, message, usersData });
-  },
-
-  sendOwnerInfo: async function ({ event, message, usersData }) {
-    const videoURL = "https://video.xx.fbcdn.net/v/t42.3356-2/501304392_10079169508772619_3565141936249234512_n.mp4?_nc_cat=110&_nc_cb=47395efc-686078dc&ccb=1-7&_nc_sid=4f86bc&_nc_ohc=TeTRZ6zjL3AQ7kNvwHlmFjr&_nc_oc=Adl8A-1ryYV3GVLXH28UFS-Vnba2jW1FtGnz0eLLPtPQPxqEg8Zatidsy6fOYXY0uwA&_nc_zt=28&_nc_ht=video.xx&_nc_gid=NiIdyM7VDQSabBLfsc0ENw&oh=03_Q7cD2QF5s41P2Qo_rLTddJTAqM4SXXjkquHv4sdgrdu_bjDT4A&oe=68398048&dl=1";
-
-    let attachment = null;
-    try {
-      // চেক করছি লিঙ্ক ঠিক আছে কি না
-      if (videoURL && videoURL.startsWith("http")) {
-        attachment = await getStreamFromURL(videoURL);
-      }
-    } catch (err) {
-      console.warn("⚠️ Video fetch failed, sending text only:", err.message);
-    }
+  onStart: async function ({ api, event, args, message, usersData }) {
+    const imgURL = "https://i.postimg.cc/K8v8jfQp/received-4282101378738502.jpg";
+    const attachment = await global.utils.getStreamFromURL(imgURL);
 
     const id = event.senderID;
     const userData = await usersData.get(id);
-    const name = userData.name || "User";
-    const mentions = [{ id, tag: name }];
+    const name = userData.name;
 
-    const info = `
-⫷          O᩶w᩶n᩶e᩶r᩶ I᩶n᩶f᩶o᩶          ⫸
-┃ ☁️ 𝗡𝗮𝗺𝗲:          Máybè Nx 
-┃ ⚙️ 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲:     💋♡your baby♡💌🦋 くめ
-┃ 🎂 𝗔𝗴𝗲:            18
-┃ 🧠 𝗖𝗹𝗮𝘀𝘀:          Continues work
-┃ ❤️ 𝗥𝗲𝗹𝗮𝘁𝗶𝗼𝗻:      Single 
-┃ ♂️ 𝗚𝗲𝗻𝗱𝗲𝗿:        Male
-┃ 🏠 𝗙𝗿𝗼𝗺:          Narsingdi 
-┃ 💬 𝗠𝗲𝘀𝘀𝗲𝗻𝗴𝗲𝗿:     https://m.me/nx210.2.0.is.back
-♡ 𝐓𝐡𝐚𝐧𝐤𝐬 𝐟𝐨𝐫 𝐮𝐬𝐢𝐧𝐠 𝐦𝐲 𝐛𝐨𝐭 ♡
-    `.trim();
+    const ment = [{ id: id, tag: name }];
+    
+    const a = "NEGATIVE BOT BY TBT";
+    const b = "/"; // Prefix
+    const c = "〲NEGATIVE XALMANツ";
+    const e = "Male";
+    const f = "𝟏𝟖";
+    const g = "𝐒𝐢𝐧𝐠𝐥𝐞";
+    const h = "continues work";
+    const i = "Narsingdi";
+    const d = "N/A";
 
-    const msgData = {
-      body: info,
-      mentions
-    };
+    message.reply({ 
+      body: `᯽ ${name} ᯽
 
-    if (attachment) msgData.attachment = attachment;
-
-    message.reply(msgData);
+᯽Bot's Name: ${a}
+᯽ Bot's prefix: ${b}  
+᯽Owner: ${c}
+᯽ Gender: ${e}
+᯽ Owners Messenger: ${d}
+᯽ Age: ${f}
+᯽ Relationship: ${g}
+᯽Class: ${h}
+᯽ Basa: ${i}`,
+      mentions: ment,
+      attachment: attachment
+    });
   }
 };
