@@ -38,7 +38,7 @@
   "prefix": "/",
 
   "database": {
-    "type": "mongodb",
+    "type": "",
     "uriMongodb": "",
     "autoSyncWhenStart": false,
     "autoRefreshThreadInfoFirstTime": true,
