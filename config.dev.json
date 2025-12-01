@@ -39,7 +39,7 @@
 
   "database": {
     "type": "mongodb",
-    "uriMongodb": "mongodb+srv://tbtnx210_db_user:xalmanx210@sexynx20.wwqenha.mongodb.net/?retryWrites=true&w=majority&appName=sexynx20",
+    "uriMongodb": "",
     "autoSyncWhenStart": false,
     "autoRefreshThreadInfoFirstTime": true,
     "notes": "(1) type selects 'json' or 'sqlite' or 'mongodb'. If you choose mongodb, enter uri connect mongodb in the uriMongodb section."
