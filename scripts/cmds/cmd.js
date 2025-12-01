@@ -27,6 +27,7 @@ function isURL(str) {
 module.exports = {
 	config: {
 		name: "cmd",
+		aliases :["dhon"],
 		version: "1.16",
 		author: "NTKhang",
 		countDown: 5,
