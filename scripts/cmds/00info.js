@@ -1,70 +1,77 @@
-!cmd install info.js const { getStreamFromURL } = global.utils;
+const fs = require("fs");
+const moment = require("moment-timezone");
 
 module.exports = {
   config: {
-    name: "owner",
-    aliases: ["info", "admininfo"],
-    version: "2.4",
-    author: "Shahariya Ahmed Siyam (Siyuu) 🌟",
-    longDescription: {
-      en: "Info about bot and its owner"
-    },
-    category: "Special",
-    guide: {
-      en: "{p}owner or just type owner"
-    },
-    usePrefix: false
+    name: "info",
+    aliases: ["admininfo", "botinfo"],
+    version: "1.4",
+    author: "xalman",
+    countDown: 5,
+    role: 0,
+    shortDescription: { en: "Show bot & owner info" },
+    longDescription: { en: "Display detailed information about the bot and owner" },
+    category: "owner",
+    guide: { en: "{pn}" }
   },
 
-  onStart: async function (context) {
-    await module.exports.sendOwnerInfo(context);
+  onStart: async function ({ message }) {
+
+    // OWNER INFO
+    const authorName = "Negative Xalman";
+    const ownAge = "18";
+    const messenger = "https://m.me/nx210.2.0.is.back";
+    const authorFB = "https://www.facebook.com/nx210.2.0.is.back";
+    const authorNumber = "+8801876118312";
+    const Status = "Single";
+
+    // SAFE CATBOX VIDEO LINK
+    const videoLink = "https://files.catbox.moe/o58tzi.mp4";
+
+    // BANGLADESH TIME
+    const now = moment().tz("Asia/Dhaka");
+    const date = now.format("MMMM Do YYYY");
+    const time = now.format("h:mm:ss A");
+
+    // BOT UPTIME
+    const uptime = process.uptime();
+    const seconds = Math.floor(uptime % 60);
+    const minutes = Math.floor((uptime / 60) % 60);
+    const hours = Math.floor((uptime / 3600) % 24);
+    const days = Math.floor(uptime / 86400);
+
+    const uptimeString = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+    const text =
+`✨《 BOT & OWNER INFORMATION 》🎀
+
+🤖 Bot Name: ${global.GoatBot.config.nickNameBot}
+👾 Prefix: ${global.GoatBot.config.prefix}
+
+💙 Owner Name: ${authorName}
+📝 Age: ${ownAge}
+💕 Relationship: ${Status}
+
+📞 WhatsApp: ${authorNumber}
+🌍 Facebook: ${authorFB}
+
+🗓 Date: ${date}
+⏰ Time: ${time}
+
+🔰 Contact Owner: ${messenger}
+📛 Bot Uptime: ${uptimeString}
+
+==============================`;
+
+    return message.reply({
+      body: text,
+      attachment: await global.utils.getStreamFromURL(videoLink)
+    });
   },
 
-  onChat: async function ({ event, message, usersData }) {
-    const prefix = global.GoatBot.config.prefix;
-    const body = (event.body || "").toLowerCase().trim();
-    const triggers = ["owner", `${prefix}owner`];
-    if (!triggers.includes(body)) return;
-    await module.exports.sendOwnerInfo({ event, message, usersData });
-  },
-
-  sendOwnerInfo: async function ({ event, message, usersData }) {
-    const videoURL = "https://files.catbox.moe/4bemt8.mp4";
-
-    let attachment = null;
-    try {
-      if (videoURL && videoURL.startsWith("http")) {
-        attachment = await getStreamFromURL(videoURL);
-      }
-    } catch (err) {
-      console.warn("⚠️ Video fetch failed, sending text only:", err.message);
+  onChat: async function ({ event, message }) {
+    if (event.body?.toLowerCase() === "info") {
+      return this.onStart({ message });
     }
-
-    const id = event.senderID;
-    const userData = await usersData.get(id);
-    const name = userData.name || "User";
-    const mentions = [{ id, tag: name }];
-
-    const info = `
-🌟✨ 𝗢𝘄𝗻𝗲𝗿 𝗜𝗻𝗳𝗼 ✨🌟
-💠 𝗡𝗮𝗺𝗲:       MD Salman Hossain  (nx)
-🤖 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲:   ♡your baby♡
-🎉 𝗔𝗴𝗲:        -18
-💖 𝗥𝗲𝗹𝗮𝘁𝗶𝗼𝗻:   Single
-♂️ 𝗚𝗲𝗻𝗱𝗲𝗿:     Male
-🏡 𝗙𝗿𝗼𝗺:       Narsingdi 
-💬 𝗠𝗲𝘀𝘀𝗲𝗻𝗴𝗲𝗿:  https://m.me/nx210.2.0.is.back 
-
-🎈 𝗧𝗵𝗮𝗻𝗸𝘀 𝗳𝗼𝗿 𝘂𝘀𝗶𝗻𝗴 𝗺𝘆 𝗯𝗼𝘁 ! Enjoy 🌈
-    `.trim();
-
-    const msgData = {
-      body: info,
-      mentions
-    };
-
-    if (attachment) msgData.attachment = attachment;
-
-    message.reply(msgData);
   }
 };
