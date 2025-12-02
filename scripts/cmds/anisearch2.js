@@ -4,8 +4,8 @@ const path = require("path");
 
 module.exports = {
   config: {
-    name: "aniearch2",
-    aliases: ["anisar2", "animesearch2", "animeedit2"],
+    name: "anisearch",
+    aliases: ["anisar", "animesearch", "animeedit"],
     version: "1.0",
     author: "Saimx69x",
     description: "Search an anime edits video",
