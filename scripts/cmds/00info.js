@@ -21,7 +21,7 @@ module.exports = {
     const authorName = "Negative Xalman";
     const ownAge = "18";
     const messenger = "https://m.me/nx210.2.0.is.back";
-    const authorFB = "https://www.facebook.com/nx210.2.0.is.back";
+    const authorFB = "Màybè Nx";
     const authorNumber = "+8801876118312";
     const Status = "Single";
 
