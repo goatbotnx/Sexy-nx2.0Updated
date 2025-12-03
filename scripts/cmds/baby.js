@@ -34,7 +34,7 @@ module.exports = {
       async function getBotResponse(message) {
         try {
           const base = await baseApiUrl();
-          const response = await axios.get(`${base}/jan/font3/${encodeURIComponent(message)}`);
+          const response = await axios.get(`${base}/jan/font2/${encodeURIComponent(message)}`);
           return response.data?.message;
         } catch {
           return "error janu🥹";
