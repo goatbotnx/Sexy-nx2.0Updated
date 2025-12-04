@@ -1,6 +1,6 @@
 module.exports = {
         config: {
-                name: "fakechat",
+                name: "fakechat2",
                 aliases: ["q"],
                 author: "Tawsif~",//Modified by NeoKEX(for fca-neokex)
                 category: "fun",
