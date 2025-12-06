@@ -38,8 +38,8 @@
   "prefix": "/",
 
   "database": {
-    "type": "mongodb",
-    "uriMongodb": "mongodb+srv://tbtnx210_db_user:xalmanx210@sexynx20.wwqenha.mongodb.net/?retryWrites=true&w=majority&appName=sexynx20",
+    "type": "",
+    "uriMongodb": "",
     "autoSyncWhenStart": false,
     "autoRefreshThreadInfoFirstTime": true,
     "notes": "(1) type selects 'json' or 'sqlite' or 'mongodb'. If you choose mongodb, enter uri connect mongodb in the uriMongodb section."
@@ -78,7 +78,7 @@
   },
 
   "autoRestart": {
-    "time": 300000000,
+    "time": 350000000,
     "notes": "you can set time is interval with milisecond or cron time"
   },
 
