@@ -4,7 +4,7 @@ const { writeFileSync } = require("fs-extra");
 module.exports = {
 config: {
 name: "operator",
-version: "1.6",
+version: "2",
 author: "xalman",
 countDown: 5,
 role: 0, // everyone can use list
@@ -31,7 +31,7 @@ langs: {
 onStart: async function ({ message, args, usersData, event, getLang }) {  
 
 	const senderID = event.senderID;
-	const OWNER = "100081088184521"; // change if needed
+	const OWNER = "61583129938292"; // change if needed
 
 	switch (args[0]) {
 
