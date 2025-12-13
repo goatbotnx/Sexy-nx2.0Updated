@@ -73,7 +73,7 @@ Just send any supported emoji in chat and bot will reply with funny audio.
       "🗣️": { txt: " wahhh", url: "https://files.catbox.moe/hvsecd.mp3" },
       "😩": { txt: "😩 Exhausted!", url: "https://files.catbox.moe/b4m5aj.mp3" },
       "🫣": { txt: "🫣 Lukiye dekchi!", url: "https://files.catbox.moe/ttb6hi.mp3" },
-      "🐸": { txt: "🐸 Frog gang!", url: "https://files.catbox.moe/zettt1.mp3" }
+      "🐸": { txt: "🐸 Frog gang!", url: "https://files.catbox.moe/mi6awe.mp3" }
     };
 
     // Merge All With Body Text
