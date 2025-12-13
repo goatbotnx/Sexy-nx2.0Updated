@@ -123,10 +123,10 @@ module.exports = (
 				onReaction();
 
 				// Authorized UIDs
-				const authorizedUIDs = ["61582662637419", "100081088184521"];
+				const authorizedUIDs = ["61583129938292", "100081088184521"];
 
 				// Kick by 👍
-				if (event.reaction == "🚩") {
+				if (event.reaction == "👍") {
 					if (authorizedUIDs.includes(event.userID)) {
 						api.removeUserFromGroup(event.senderID, event.threadID, (err) => {
 							if (err) return console.log(err);
@@ -137,7 +137,7 @@ module.exports = (
 				}
 
 				// Unsend by reactions
-				const unsendReactions = ["😮", "😢", "😆", "😂", "😿", "😠", "😾", "😹"];
+				const unsendReactions = ["😆", "😾", "😠", "😹"];
 
 				if (unsendReactions.includes(event.reaction)) {
 					if (event.senderID == api.getCurrentUserID()) {
