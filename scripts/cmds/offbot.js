@@ -11,5 +11,5 @@ module.exports = {
 		guide: "{p}{n}"
 	},
 	onStart: async function ({event, api}) {
-		api.sendMessage("╔════ஜ۩۞۩ஜ═══╗\n\n📴Successfully Turned Off Archives System ✅\n╚════ஜ۩۞۩ஜ═══╝",event.threadID, () =>process.exit(0))}
+		api.sendMessage("╔════ஜ~۩۞۩~ஜ═══╗\n\n📴Successfully Archives  ✅\n╚════ஜ~۩۞۩~ஜ═══╝",event.threadID, () =>process.exit(0))}
 };
