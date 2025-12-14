@@ -46,7 +46,6 @@ const imageLinks = [
 
 const warningMessages = [
  "বন্ধু😭 ভালো হয়ে যা!😞",
- "বসে যা ভাই🥲 লজ্জা কর!🫣",
  "ভাই এটা কী বললি🙏",
  "তোকে কি এসব শেখায় কেউ?😠 দয়া করে থাম🙏",
  "ভালো কথা বল 🙃 নয়তো ব্লক করবো🌚",
@@ -54,7 +53,6 @@ const warningMessages = [
  "তোকে নিয়ে মায়া লাগে রে ভাই🥺 ভদ্র হ🥲",
  "দোস্ত, এসব বলা লাগে?😐 একটু ভদ্রতা শেখ🧠",
  "তুই কি রিয়েল লাইফেও এমন?😑",
- "বাহ! Vocabulary ১৮+ ছাড়া খালি?🤦",
  " একটু ভদ্র হও🙏"
 ];
 
@@ -65,7 +63,7 @@ module.exports = {
  config: {
   name: "anti18",
   version: "1.1",
-  author: "real author k jani na ",
+  author: "real author jni nh fixed by xalman",
   role: 1,
   description: {
    en: "Auto-detects 18+ words and sends a warning image (toggleable)"
@@ -103,20 +101,16 @@ module.exports = {
 
   const badWords = [
    "fuck", "fuk", "f*ck", "phuck", "phuk", "fawk",
-   "sex", "s3x", "s ex", "seggs", "sxx", "sx",
-   "cum", "cumm", "masturbate", "mastubate", "masterbate",
+   "sex", "s3x", "s ex", "seggs", "sxx",
    "mgi", "dick", "dik", "dyke", "d!ck", "d1ck",
-   "boobs", "boob", "cdi", "tormarecdi", "pussy", "pusy", "pussee", "puszi",
-   "vagina", "vajina", "vaginaa", "v@gin@", "vajenaa", "penis", "p3nis",
-   "pns", "pénis", "nipple", "nippl", "chod", "chud", "choda", "chudi",
-   "chodon", "gud", "gudmara", "gudmaar", "bokachoda", "gandu", "gando",
-   "bokachudi", "jewra", "joray", "dhan", "dhon", "vodai", "vodar", "bira",
-   "biral", "kutta", "baccha", "shuyor", "bal", "shawa", "heda", "lawra",
-   "putki", "pukki", "mara", "magi", "khanki", "bessha", "nunu", "tuntuni",
-   "bang", "loda", "lora", "boner", "horny",
-   "চোদ", "চুদ", "চুদা", "চুদি", "গুদের", "গুদ", "যোনি", "যৌন", "বাঁড়া",
-   "ভোদা", "ভোদ", "ফাক", "ধন", "স্তন", "মাস্টারবেট", "মাল", "ভোদার", "দুধ",
-   "কাম", "ঝার", "হস্তমৈথুন", "সেক্স", "চুষ"
+   "boobs", "boob", "cdi", "tormarecdi", "pussy", "pusy",
+   "chod", "chud", "choda", "chudi",
+   "chodon", "gud", "gudmara", "gudmaar", "bokachoda",
+   "bokachudi", "vodai", "vodar", "bal", "shawa", "heda",
+   "putki", "pukki", "mara", "magi", "khanki", "bessha",
+   "চোদ", "চুদ", "চুদা", "চুদি",
+   "ভোদা", "ভোদ", "ফাক", "ধন", "মাস্টারবেট", "মাল", "ভোদার",
+   "সেক্স", "চুষ"
   ];
 
   if (!event.body) return;
