@@ -62,7 +62,7 @@ let lastSent = null;
 module.exports = {
  config: {
   name: "anti18",
-  version: "1.1",
+  version: "2.0",
   author: "real author jni nh fixed by xalman",
   role: 1,
   description: {
