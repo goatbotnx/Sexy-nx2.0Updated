@@ -1,8 +1,8 @@
 const os = require("os");
 
 module.exports.config = {
-  name: "uptime9",
-  aliases: ["up9", "upt9", "bot9", "status9"],
+  name: "uptime",
+  aliases: ["up", "upt"],
   version: "3.0.0",
   author: "Mahin+ ChatGPT",
   role: 0,
