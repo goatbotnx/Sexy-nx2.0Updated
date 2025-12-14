@@ -10,7 +10,7 @@ module.exports = {
     shortDescription: "Beautiful system & bot status",
     longDescription: "Displays uptime, system info, groups & users stats",
     category: "system",
-    aliases: ["up5", "upt5"],
+    aliases: ["up3", "upt3"],
     guide: {
       en: "{p}uptime5"
     }
