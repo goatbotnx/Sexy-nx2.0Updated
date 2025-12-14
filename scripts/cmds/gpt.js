@@ -1,143 +1,154 @@
-const axios = require("axios");
+const axios = require('axios');
+const fs = require('fs-extra'); 
+const path = require('path');
+
+const API_ENDPOINT = "https://dev.oculux.xyz/api/gptimage"; 
+const SEED_FLAG = "--seed";
+const WIDTH_FLAG = "--width";
+const HEIGHT_FLAG = "--height";
 
 module.exports = {
   config: {
     name: "gpt",
-    aliases: ["chatgpt"],
-    version: "1.0",
-    author: "nexo_here",
-    countDown: 10, // Cooldown for API calls
+    aliases: ["gptimg", "aimage"],
+    version: "1.0", 
+    author: "NeoKEX",
+    countDown: 20,
     role: 0,
-    shortDescription: "Chat with GPT-4o AI",
-    longDescription: "Sends your question or an image to GPT-4o API for assistance. Supports conversational replies.",
-    category: "ai",
-    guide: "{pn}gpt <your question> or reply to an image.",
-  },
-
-  onStart: async function ({ api, event, args, message }) {
-    const apikey = "0d3e6e99ec273d2c12c007e607766bb6563626541e39a16f9dd7fedcbf7246ed"; // Your API key
-    let query;
-
-    // Check if replying to an image
-    const repliedMessage = event.messageReply;
-
-    if (
-      repliedMessage &&
-      repliedMessage.attachments &&
-      repliedMessage.attachments.length > 0 &&
-      repliedMessage.attachments[0].type === "photo"
-    ) {
-      query = repliedMessage.attachments[0].url;
-      console.log(`[GPT_DEBUG] onStart: Initial image query from reply: ${query}`);
-    } else if (args.length > 0) {
-      query = args.join(" ");
-      console.log(`[GPT_DEBUG] onStart: Initial text query from command: "${query}"`);
-    } else {
-      console.log("[GPT_DEBUG] onStart: No query provided in command or image reply.");
-      return message.reply("❌ Please provide a question or reply to an image.");
-    }
-
-    const url = `https://haji-mix-api.gleeze.com/api/gpt4o?ask=${encodeURIComponent(query)}&uid=&roleplay=&apikey=${apikey}`;
-    console.log(`[GPT_DEBUG] onStart: API URL: ${url}`);
-
-    try {
-      const res = await axios.get(url);
-      const responseText = res.data?.answer; // GPT API returns "answer" field
-      if (!responseText) {
-        console.error("[GPT_DEBUG] onStart: No 'answer' field in API data:", res.data);
-        return message.reply("⚠️ No response received from GPT-4o.");
-      }
-
-      // Send the initial response and set up onReply context
-      api.sendMessage({ body: responseText }, event.threadID, (err, info) => {
-        if (err) {
-          console.error("[GPT_DEBUG] onStart: Error sending message:", err);
-          return message.reply("❌ Failed to send response message.");
-        }
-        
-        // Set up the onReply context for this specific message
-        global.GoatBot.onReply.set(info.messageID, {
-          commandName: this.config.name, // The command name
-          messageID: info.messageID,     // The ID of the bot's sent message
-          author: event.senderID,       // The ID of the user who started the conversation
-        });
-        console.log(`[GPT_DEBUG] onStart: Response sent. Context set for messageID: ${info.messageID}`);
-      });
-      
-    } catch (err) {
-      console.error("GPT API Error (onStart):", err.message);
-      if (axios.isAxiosError(err) && err.response) {
-          console.error("GPT API Response Data (Error - onStart):", err.response.data);
-      }
-      return message.reply("❌ Failed to contact GPT-4o API.");
+    longDescription: "Generate or edit an image using the GPT Image model. Reply to an image to edit it.",
+    category: "ai-image",
+    guide: {
+      en: 
+        "{pn} <prompt> [--seed <true/false or number>] [--width <pixels>] [--height <pixels>]\n" +
+        "• To generate: {pn} a futuristic city\n" +
+        "• To edit: Reply to an image with {pn} remove the background\n" +
+        "• With options: {pn} a cat playing guitar --seed 12345 --width 1024 --height 768"
     }
   },
 
-  onReply: async function ({ api, event, message, Reply }) {
-    console.log(`[GPT_DEBUG] onReply: Function triggered.`);
-    console.log(`[GPT_DEBUG] onReply: Event body: "${event.body}"`);
-    console.log(`[GPT_DEBUG] onReply: Event senderID: ${event.senderID}`);
-    console.log(`[GPT_DEBUG] onReply: Reply context object:`, Reply);
+  onStart: async function({ message, args, event }) {
+    let rawPrompt = args.join(" ");
+    let prompt = rawPrompt;
+    let refUrl = null;
+    let seed = null;
+    let width = null;
+    let height = null;
 
-    // Check if this reply is for the correct command and original author
-    if (Reply.commandName !== this.config.name) {
-      console.log(`[GPT_DEBUG] onReply: Ignoring reply for different command: ${Reply.commandName}`);
-      return;
+    if (event.messageReply && event.messageReply.attachments && event.messageReply.attachments.length > 0) {
+      const imageAttachment = event.messageReply.attachments.find(att => att.type === 'photo' || att.type === 'image');
+      if (imageAttachment && imageAttachment.url) {
+        refUrl = imageAttachment.url;
+      }
     }
-    if (event.senderID !== Reply.author) { // Reply.author holds the original senderID
-      console.log(`[GPT_DEBUG] onReply: Reply from unauthorized user: ${event.senderID}`);
-      return message.reply("This conversation is only for the user who started it.");
+
+    const extractFlag = (flagName, regex) => {
+      const match = prompt.match(regex);
+      if (match && match[1]) {
+        prompt = prompt.replace(match[0], "").trim();
+        return match[1];
+      }
+      return null;
+    };
+
+    const seedValue = extractFlag(SEED_FLAG, new RegExp(`${SEED_FLAG}\\s+([^\\s]+)`, 'i'));
+    if (seedValue) {
+      if (seedValue.toLowerCase() === 'true') {
+        seed = true;
+      } else if (seedValue.toLowerCase() === 'false') {
+        seed = false;
+      } else if (!isNaN(parseInt(seedValue))) {
+        seed = parseInt(seedValue);
+      }
     }
 
-    let newQuery;
-    const repliedWithAttachment = event.attachments && event.attachments.length > 0 && event.attachments[0].type === "photo";
+    const widthValue = extractFlag(WIDTH_FLAG, new RegExp(`${WIDTH_FLAG}\\s+(\\d+)`, 'i'));
+    if (widthValue) width = parseInt(widthValue);
 
-    if (repliedWithAttachment) {
-        newQuery = event.attachments[0].url;
-        console.log(`[GPT_DEBUG] onReply: Follow-up image query: ${newQuery}`);
-    } else if (event.body) {
-        newQuery = event.body;
-        console.log(`[GPT_DEBUG] onReply: Follow-up text query: "${newQuery}"`);
-    } else {
-        console.log("[GPT_DEBUG] onReply: No valid query found in follow-up message.");
-        return message.reply("❌ Please provide a text question or reply with an image for follow-up.");
+    const heightValue = extractFlag(HEIGHT_FLAG, new RegExp(`${HEIGHT_FLAG}\\s+(\\d+)`, 'i'));
+    if (heightValue) height = parseInt(heightValue);
+
+    prompt = prompt.trim();
+
+    if (!prompt || !/^[\x00-\x7F]*$/.test(prompt)) {
+        return message.reply("❌ Please provide a valid English prompt for image generation or editing.");
     }
     
-    const apikey = "0d3e6e99ec273d2c12c007e607766bb6563626541e39a16f9dd7fedcbf7246ed"; // Your API key
-    const url = `https://haji-mix-api.gleeze.com/api/gpt4o?ask=${encodeURIComponent(newQuery)}&uid=&roleplay=&apikey=${apikey}`;
-    console.log(`[GPT_DEBUG] onReply: API URL: ${url}`);
+    message.reaction("⏳", event.messageID);
+    let tempFilePath; 
 
     try {
-      const res = await axios.get(url);
-      const responseText = res.data?.answer; // GPT API returns "answer" field
-
-      if (!responseText) {
-        console.error("[GPT_DEBUG] onReply: No 'answer' field in API data:", res.data);
-        return message.reply("⚠️ No response received from GPT-4o for your follow-up.");
+      let fullApiUrl = `${API_ENDPOINT}?prompt=${encodeURIComponent(prompt)}`;
+      
+      if (refUrl) {
+        fullApiUrl += `&ref=${encodeURIComponent(refUrl)}`;
       }
-
-      // Send the follow-up response
-      api.sendMessage({ body: responseText }, event.threadID, (err, info) => {
-        if (err) {
-          console.error("[GPT_DEBUG] onReply: Error sending follow-up message:", err);
-          return message.reply("❌ Failed to send follow-up response.");
-        }
-        // Delete the old context and set new context for the latest message
-        global.GoatBot.onReply.delete(Reply.messageID); // Delete old context
-        global.GoatBot.onReply.set(info.messageID, { // Set new context
-            commandName: this.config.name,
-            messageID: info.messageID,
-            author: event.senderID,
-        });
-        console.log(`[GPT_DEBUG] onReply: Follow-up response sent. Context updated for messageID: ${info.messageID}`);
+      if (seed !== null) {
+        fullApiUrl += `&seed=${seed}`;
+      }
+      if (width !== null) {
+        fullApiUrl += `&width=${width}`;
+      }
+      if (height !== null) {
+        fullApiUrl += `&height=${height}`;
+      }
+      
+      const imageDownloadResponse = await axios.get(fullApiUrl, {
+          responseType: 'stream',
+          timeout: 90000
       });
 
-    } catch (err) {
-      console.error("GPT API Error (onReply):", err.message);
-      if (axios.isAxiosError(err) && err.response) {
-          console.error("GPT API Response Data (Error - onReply):", err.response.data);
+      if (imageDownloadResponse.status !== 200) {
+           throw new Error(`API request failed with status code ${imageDownloadResponse.status}.`);
       }
-      return message.reply("❌ Failed to contact GPT-4o API for your follow-up.");
+      
+      const cacheDir = path.join(__dirname, 'cache');
+      if (!fs.existsSync(cacheDir)) {
+          await fs.mkdirp(cacheDir); 
+      }
+      
+      tempFilePath = path.join(cacheDir, `gpt_image_output_${Date.now()}.png`);
+      
+      const writer = fs.createWriteStream(tempFilePath);
+      imageDownloadResponse.data.pipe(writer);
+
+      await new Promise((resolve, reject) => {
+        writer.on("finish", resolve);
+        writer.on("error", (err) => {
+          writer.close();
+          reject(err);
+        });
+      });
+
+      message.reaction("✅", event.messageID);
+      await message.reply({
+        body: `GPT Image ${refUrl ? "edited" : "generated"} ✨`,
+        attachment: fs.createReadStream(tempFilePath)
+      });
+
+    } catch (error) {
+      message.reaction("❌", event.messageID);
+      
+      let errorMessage = "An error occurred during image generation/editing.";
+      if (error.response) {
+         if (error.response.status === 404) {
+             errorMessage = "API Endpoint not found (404).";
+         } else {
+             errorMessage = `HTTP Error: ${error.response.status}`;
+         }
+      } else if (error.code === 'ETIMEDOUT') {
+         errorMessage = `Operation timed out. Try a simpler prompt or check API status.`;
+      } else if (error.message) {
+         errorMessage = `${error.message}`;
+      } else {
+         errorMessage = `Unknown error.`;
+      }
+
+      console.error("GPT Image Command Error:", error);
+      message.reply(`❌ ${errorMessage}`);
+    } finally {
+      if (tempFilePath && fs.existsSync(tempFilePath)) {
+          await fs.unlink(tempFilePath); 
+      }
     }
   }
 };
