@@ -3,7 +3,7 @@ const path = __dirname + "/autoreact.json";
 
 module.exports = {
   config: {
-    name: "autoreact",
+    name: "at",
     version: "2.0",
     author: "ChatGPT",
     countDown: 0,
