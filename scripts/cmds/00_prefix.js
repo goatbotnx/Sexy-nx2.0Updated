@@ -3,8 +3,8 @@ const fs = require("fs-extra");
 const getStreamFromURL = global.utils.getStreamFromURL;
 
 const gifList = [
-	"https://i.postimg.cc/D0Tmyxtq/4.webp",
-	"https://i.postimg.cc/XvPQhCT7/3.webp",
+	"https://i.postimg.cc/mgMWtjRD/xalman.webp",
+	"https://i.postimg.cc/mgMWtjRD/xalman.webp",
 	"https://i.postimg.cc/mgMWtjRD/xalman.webp"
 ];
 
@@ -16,7 +16,7 @@ module.exports = {
 	config: {
 		name: "prefix",
 		version: "1.8",
-		author: "NTKhang + Modified & Fixed by xalman",
+		author: "xalman",
 		countDown: 5,
 		role: 0,
 		description: "Change bot prefix",
