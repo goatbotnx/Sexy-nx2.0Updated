@@ -1,9 +1,3 @@
-╭─────────────────╮
-│ 📄 𝗕𝗼𝘁 𝗦𝗼𝘂𝗿𝗰𝗲 𝗩𝗶𝗲𝘄𝗲𝗿
-╰─────────────────╯
-🔹 **File:** tiktok.js
-🔹 **Path:** /app/scripts/cmds/tiktok.js
-
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
@@ -18,7 +12,6 @@ module.exports = {
     shortDescription: "Random TikTok video",
     longDescription: "Send random TikTok video",
     category: "media",
-    usePrefix: "true",
   },
 
   onStart: async function ({ message, args }) {
