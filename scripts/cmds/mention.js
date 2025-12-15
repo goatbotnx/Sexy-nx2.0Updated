@@ -1,41 +1,31 @@
-const replies = [
-  "Amar boss Nx busy ase",
-  "Amar boss ke Dak dibi na",
-  "nx er permission chara tag bondho",
-  "Boss sleep ditese, disturb korish na",
-  "Boss er mood baje, tag diye ki korbi?",
-  "Tag dile boss rage jabe",
-  "Tag korar age chinta koros?"
-];
-
 module.exports = {
   config: {
-    name: "mentionnx",
+    name: "mention",
     version: "1.0",
-    author: "T A N J I L",
+    author: "xalman",
+    role: 0,
     shortDescription: {
-      en: "Replies when specific user is mentioned",
+      en: "Auto reply when boss is mentioned"
     },
     longDescription: {
-      en: "Automatically responds with random lines if a specific user is mentioned.",
+      en: "Bot replies when the boss is mentioned"
     },
-    category: "no prefix",
-    usages: "",
-    cooldowns: 3,
+    category: "owner"
   },
 
-  onStart: async function () {},
+  onStart: async function () { },
 
-  onChat: async ({ event, api }) => {
-    const mentionList = Object.entries(event.mentions || {});
-    const targetUIDs = "100081088184521" 
+  onChat: async function ({ api, event }) {
+    const bossUID = "61583129938292"; 
 
-    // Check if at least one mentioned user matches target UIDs
-    const mentionedIDs = mentionList.map(([id]) => id);
+    if (!event.mentions) return;
 
-    if (mentionedIDs.some(id => targetUIDs.includes(id))) {
-      const randomReply = replies[Math.floor(Math.random() * replies.length)];
-      return api.sendMessage(randomReply, event.threadID, event.messageID);
+    if (event.mentions[bossUID]) {
+      return api.sendMessage(
+        "😈 Boss ekhon busy ache 😌",
+        event.threadID,
+        event.messageID
+      );
     }
   }
 };
