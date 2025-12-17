@@ -47,7 +47,7 @@ async function handlePFP({ api, event, message, args }) {
     }
     else if (args[0] && args[0].startsWith("http")) {
       userId = await getUIDFromProfileLink(args[0]);
-      if (!userId) return message.reply("❌ Invalid profile link or private profile");
+      if (!userId) return message.reply("");
     }
     else if (args[0] && /^\d+$/.test(args[0])) {
       userId = args[0];
