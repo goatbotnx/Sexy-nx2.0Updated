@@ -1,87 +1,125 @@
 module.exports = {
   config: {
     name: "pending",
-    version: "1.0",
-    author: "T A N J I L",
+    version: "2.1",
+    author: "xalman",
     countDown: 5,
     role: 2,
-    shortDescription: {
-      vi: "",
-      en: ""
-    },
-    longDescription: {
-      vi: "",
-      en: ""
-    },
+    shortDescription: { en: "Manage pending group requests" },
+    longDescription: { en: "Approve or refuse groups waiting for bot permission" },
     category: "owner"
   },
 
-langs: {
+  langs: {
     en: {
-        invaildNumber: "%1 is not an invalid number",
-        cancelSuccess: "Refused %1 thread!",
-        approveSuccess: "Approved successfully %1 threads!",
-
-        cantGetPendingList: "Can't get the pending list!",
-        returnListPending: "»「PENDING」«❮ The whole number of threads to approve is: %1 thread ❯\n\n%2",
-        returnListClean: "「PENDING」There is no thread in the pending list"
+      invalid: "❌ Invalid selection: %1",
+      refused: "🚫 %1 group request refused",
+      approved: "✅ %1 group successfully approved",
+      fetchFail: "Unable to load pending groups",
+      list: "🔔 PENDING GROUPS (%1)\n\n%2",
+      empty: "✅ No pending groups found"
     }
   },
 
-onReply: async function({ api, event, Reply, getLang, commandName, prefix }) {
-    if (String(event.senderID) !== String(Reply.author)) return;
-    const { body, threadID, messageID } = event;
-    var count = 0;
+  onReply: async ({ api, event, Reply, getLang }) => {
+    if (event.senderID != Reply.author) return;
 
-    if (isNaN(body) && body.indexOf("c") == 0 || body.indexOf("cancel") == 0) {
-        const index = (body.slice(1, body.length)).split(/\s+/);
-        for (const ArYanIndex of index) {
-            console.log(ArYanIndex);
-            if (isNaN(ArYanIndex) || ArYanIndex <= 0 || ArYanIndex > Reply.pending.length) return api.sendMessage(getLang("invaildNumber", ArYanIndex), threadID, messageID);
-            api.removeUserFromGroup(api.getCurrentUserID(), Reply.pending[ArYanIndex - 1].threadID);
-            count+=1;
-        }
-        return api.sendMessage(getLang("cancelSuccess", count), threadID, messageID);
+    const input = event.body.trim();
+    const { threadID, messageID } = event;
+    const prefix = global.GoatBot?.config?.prefix || "/";
+    let done = 0;
+
+    const now = new Date();
+    const dateTime = now.toLocaleString("en-BD", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    });
+
+    if (/^(c|cancel)/i.test(input)) {
+      const nums = input.replace(/^(c|cancel)/i, "").trim().split(/\s+/);
+      for (const n of nums) {
+        if (!Number(n) || n < 1 || n > Reply.queue.length)
+          return api.sendMessage(getLang("invalid", n), threadID, messageID);
+
+        await api.removeUserFromGroup(
+          api.getCurrentUserID(),
+          Reply.queue[n - 1].threadID
+        );
+
+        api.sendMessage(
+`╭─🚫 CANCELLED 🚫─╮
+│ 🤖 Bot : Refused
+│ 🔗 Prefix : ${prefix}
+│ ⚡ Owner : xalman
+│ ⏰ Date/Time : ${dateTime}
+╰─❌ Access Denied─╯`,
+          Reply.queue[n - 1].threadID
+        );
+
+        done++;
+      }
+      return api.sendMessage(getLang("refused", done), threadID, messageID);
     }
-    else {
-        const index = body.split(/\s+/);
-        for (const ArYanIndex of index) {
-            if (isNaN(ArYanIndex) || ArYanIndex <= 0 || ArYanIndex > Reply.pending.length) return api.sendMessage(getLang("invaildNumber", ArYanIndex), threadID, messageID);
-            api.sendMessage(` 
-╭────֍
-│PREFIX : /
-╰──────────────֍
-╭────֍
-│Successful Connected by nx ✅
-╰─────────────֍`, Reply.pending[ArYanIndex - 1].threadID);
-            count+=1;
-        }
-        return api.sendMessage(getLang("approveSuccess", count), threadID, messageID);
+    
+    const nums = input.split(/\s+/);
+    for (const n of nums) {
+      if (!Number(n) || n < 1 || n > Reply.queue.length)
+        return api.sendMessage(getLang("invalid", n), threadID, messageID);
+
+      api.sendMessage(
+`╭─✨ SYSTEM GOAT ✨─╮
+│ 🤖 Bot : Activated
+│ 🔗 Prefix : ${prefix}
+│ ⚡ Owner : xalman
+│ ⏰ Date/Time : ${dateTime}
+╰─✅ Access Granted─╯`,
+        Reply.queue[n - 1].threadID
+      );
+      done++;
     }
-},
 
-onStart: async function({ api, event, getLang, commandName }) {
-  const { threadID, messageID } = event;
+    return api.sendMessage(getLang("approved", done), threadID, messageID);
+  },
 
-    var msg = "", index = 1;
+  onStart: async ({ api, event, getLang, commandName }) => {
+    const { threadID, messageID, senderID } = event;
+    let text = "";
+    let i = 1;
 
     try {
-    var spam = await api.getThreadList(100, null, ["OTHER"]) || [];
-    var pending = await api.getThreadList(100, null, ["PENDING"]) || [];
-  } catch (e) { return api.sendMessage(getLang("cantGetPendingList"), threadID, messageID) }
+      const other = await api.getThreadList(100, null, ["OTHER"]) || [];
+      const pending = await api.getThreadList(100, null, ["PENDING"]) || [];
 
-  const list = [...spam, ...pending].filter(group => group.isSubscribed && group.isGroup);
+      const groups = [...other, ...pending].filter(
+        t => t.isGroup && t.isSubscribed
+      );
 
-    for (const ArYan of list) msg += `${index++}/ ${ArYan.name}(${ArYan.threadID})\n`;
+      if (!groups.length)
+        return api.sendMessage(getLang("empty"), threadID, messageID);
 
-    if (list.length != 0) return api.sendMessage(getLang("returnListPending", list.length, msg), threadID, (err, info) => {
-    global.GoatBot.onReply.set(info.messageID, {
+      for (const g of groups)
+        text += `${i++}. ${g.name} → ${g.threadID}\n`;
+
+      api.sendMessage(
+        getLang("list", groups.length, text),
+        threadID,
+        (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
             commandName,
-            messageID: info.messageID,
-            author: event.senderID,
-            pending: list
-        })
-  }, messageID);
-    else return api.sendMessage(getLang("returnListClean"), threadID, messageID);
-}
+            author: senderID,
+            queue: groups
+          });
+        },
+        messageID
+      );
+
+    } catch (err) {
+      return api.sendMessage(getLang("fetchFail"), threadID, messageID);
+    }
+  }
 };
