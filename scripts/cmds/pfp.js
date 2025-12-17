@@ -6,41 +6,55 @@ module.exports = {
   config: {
     name: "pp",
     aliases: ["pfp"],
-    version: "2.2",
+    version: "2.0",
     author: "xalman",
-    countDown: 5,
-    useprefix: false,
     role: 0,
-    shortDescription: { en: "Show profile picture" },
-    description: { en: "Get your or mentioned user's profile picture" },
-    category: "image",
-    guide: { en: "{p}pp [mention or reply] to get profile picture" }
+    useprefix: false,
+    shortDescription: { en: "Show profile picture without prefix" },
+    category: "image"
   },
 
-  onStart: async function ({ event, message }) {
+  onChat: async function ({ event, message, args }) {
     try {
-      const { senderID, mentions, type, messageReply } = event;
+      const body = event.body?.toLowerCase();
+      if (!body || (!body.startsWith("pp") && !body.startsWith("pfp"))) return;
 
-      const userId = (mentions && Object.keys(mentions).length > 0)
-        ? Object.keys(mentions)[0]
-        : (type === "message_reply" && messageReply ? messageReply.senderID : senderID);
+      const { senderID, mentions, type, messageReply } = event;
+      let userId;
+
+
+      if (mentions && Object.keys(mentions).length > 0) {
+        userId = Object.keys(mentions)[0];
+      }
+
+      else if (type === "message_reply" && messageReply) {
+        userId = messageReply.senderID;
+      }
+
+      else if (args[1] && /^\d+$/.test(args[1])) {
+        userId = args[1];
+      }
+      
+      else {
+        userId = senderID;
+      }
 
       const fbURL = `https://graph.facebook.com/${userId}/picture?width=512&height=512&access_token=350685531728|62f8ce9f74b12f84c123cc23437a4a32`;
 
-      const response = await axios.get(fbURL, { responseType: "arraybuffer" });
+      const res = await axios.get(fbURL, { responseType: "arraybuffer" });
 
-      const imagePath = path.join(__dirname, `profile_${userId}.png`);
-      fs.writeFileSync(imagePath, response.data);
+      const imgPath = path.join(__dirname, `pfp_${userId}.png`);
+      fs.writeFileSync(imgPath, res.data);
 
       await message.reply({
         body: "✨ 𝑯𝑒𝑟𝑒'𝑠 𝑦𝑜𝑢𝑟 𝑝𝑓𝑝 𝑖𝑚𝑎𝑔𝑒!🌬️",
-        attachment: fs.createReadStream(imagePath)
+        attachment: fs.createReadStream(imgPath)
       });
 
-      fs.unlinkSync(imagePath);
+      fs.unlinkSync(imgPath);
 
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
       message.reply("❌ 𝑓𝑎𝑖𝑙𝑒𝑑 𝑡𝑜 𝑙𝑜𝑎𝑑 𝑖𝑚𝑎𝑔𝑒.");
     }
   }
