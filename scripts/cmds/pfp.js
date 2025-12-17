@@ -9,6 +9,7 @@ module.exports = {
     version: "2.2",
     author: "xalman",
     countDown: 5,
+    useprefix: false,
     role: 0,
     shortDescription: { en: "Show profile picture" },
     description: { en: "Get your or mentioned user's profile picture" },
