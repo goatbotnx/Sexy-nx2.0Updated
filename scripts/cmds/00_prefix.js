@@ -27,10 +27,10 @@ module.exports = {
 			usage: "❌ Usage: prefix <newPrefix> | prefix reset | prefix <newPrefix> -g",
 			reset: "✅ Prefix reset successful!\n🔰 System prefix: %1",
 			onlyAdmin: "⛔ Only bot admin can change global prefix.",
-			confirmGlobal: "⚙️ Global prefix change requested.\n👉 React with ANY emoji to confirm.",
-			confirmThisThread: "🛠️ Group prefix change requested.\n👉 React with ANY emoji to confirm.",
+			confirmGlobal: "⚙️ Global prefix change requested.\n👉 React with emoji to confirm.",
+			confirmThisThread: "🛠️ Group prefix change requested.\n👉 React with emoji to confirm.",
 			successGlobal: "✅ Global prefix changed!\n🆕 New prefix: %1",
-			successThisThread: "✅ Group prefix updated!\n🆕 New prefix: %1"
+			successThisThread: "✅ Group prefix changed!\n🆕 New prefix: %1"
 		}
 	},
 
