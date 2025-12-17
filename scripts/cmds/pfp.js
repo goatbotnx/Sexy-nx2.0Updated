@@ -1,42 +1,46 @@
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
+
 module.exports = {
   config: {
-    name: "profile",
+    name: "pp",
     aliases: ["pp"],
-    version: "1.1",
-    author: "NIB | No prefix by ArYan",
+    version: "2.2",
+    author: "xalman",
     countDown: 5,
     role: 0,
-    shortDescription: "PROFILE image",
-    longDescription: "PROFILE image",
+    shortDescription: { en: "Show profile picture" },
+    description: { en: "Get your or mentioned user's profile picture" },
     category: "image",
-    guide: {
-      en: "   {pn} @tag"
-    }
+    guide: { en: "{p}pp [mention or reply] to get profile picture" }
   },
 
-  langs: {
-    vi: {
-      noTag: "Bạn phải tag người bạn muốn tát"
-    },
-    en: {
-      noTag: "You must tag the person you want to get profile picture of"
+  onStart: async function ({ event, message }) {
+    try {
+      const { senderID, mentions, type, messageReply } = event;
+
+      const userId = (mentions && Object.keys(mentions).length > 0)
+        ? Object.keys(mentions)[0]
+        : (type === "message_reply" && messageReply ? messageReply.senderID : senderID);
+
+      const fbURL = `https://graph.facebook.com/${userId}/picture?width=512&height=512&access_token=350685531728|62f8ce9f74b12f84c123cc23437a4a32`;
+
+      const response = await axios.get(fbURL, { responseType: "arraybuffer" });
+
+      const imagePath = path.join(__dirname, `profile_${userId}.png`);
+      fs.writeFileSync(imagePath, response.data);
+
+      await message.reply({
+        body: "✨ 𝑯𝑒𝑟𝑒'𝑠 𝑦𝑜𝑢𝑟 𝑝𝑓𝑝 𝑖𝑚𝑎𝑔𝑒!🌬️",
+        attachment: fs.createReadStream(imagePath)
+      });
+
+      fs.unlinkSync(imagePath);
+
+    } catch (error) {
+      console.error(error);
+      message.reply("❌ 𝑓𝑎𝑖𝑙𝑒𝑑 𝑡𝑜 𝑙𝑜𝑎𝑑 𝑖𝑚𝑎𝑔𝑒.");
     }
-  },
-
-  onStart: async function ({ event, message, usersData, args, getLang }) {
-    let avt;
-    const uid1 = event.senderID;
-    const uid2 = Object.keys(event.mentions)[0];
-    if(event.type == "message_reply"){
-      avt = await usersData.getAvatarUrl(event.messageReply.senderID)
-    } else{
-      if (!uid2){avt =  await usersData.getAvatarUrl(uid1)
-              } else{avt = await usersData.getAvatarUrl(uid2)}}
-
-
-    message.reply({
-      body:"",
-      attachment: await global.utils.getStreamFromURL(avt)
-  })
   }
-}
+};
