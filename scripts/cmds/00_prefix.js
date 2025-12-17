@@ -14,11 +14,11 @@ const getRandomGif = () =>
 module.exports = {
 	config: {
 		name: "prefix",
-		version: "2.1",
-		author: "NTKhang + Premium Modified by Xalman (Fixed)",
+		version: "2.2",
+		author: "xalman",
 		countDown: 5,
 		role: 0,
-		description: "Change & show bot prefix (stylish)",
+		description: "Change & show bot prefix (any reaction confirm)",
 		category: "config"
 	},
 
@@ -27,28 +27,23 @@ module.exports = {
 			usage: "❌ Usage: prefix <newPrefix> | prefix reset | prefix <newPrefix> -g",
 			reset: "✅ Prefix reset successful!\n🔰 System prefix: %1",
 			onlyAdmin: "⛔ Only bot admin can change global prefix.",
-			confirmGlobal: "⚙️ Global prefix change requested.\n👍 React to confirm.",
-			confirmThisThread: "🛠️ Group prefix change requested.\n👍 React to confirm.",
+			confirmGlobal: "⚙️ Global prefix change requested.\n👉 React with ANY emoji to confirm.",
+			confirmThisThread: "🛠️ Group prefix change requested.\n👉 React with ANY emoji to confirm.",
 			successGlobal: "✅ Global prefix changed!\n🆕 New prefix: %1",
 			successThisThread: "✅ Group prefix updated!\n🆕 New prefix: %1"
 		}
 	},
 
-	// ===== CHANGE PREFIX =====
 	onStart: async function ({ message, role, args, commandName, event, threadsData, getLang }) {
 		if (!args[0])
 			return message.reply(getLang("usage"));
 
 		const gif = getRandomGif();
 
-		// RESET PREFIX
-		if (args[0].toLowerCase() === "reset") {
-			await threadsData.set(event.threadID, null, "data.prefix");
-			return message.reply({
-				body: getLang("reset", global.GoatBot.config.prefix),
-				attachment: await getStreamFromURL(gif)
-			});
-		}
+	if (args[0] == 'reset') {
+	await threadsData.set(event.threadID, null, "data.prefix");
+	return message.reply(getLang("reset", global.GoatBot.config.prefix));
+	}
 
 		const newPrefix = args[0];
 		const setGlobal = args[1] === "-g";
@@ -75,10 +70,9 @@ module.exports = {
 		});
 	},
 
-	// ===== CONFIRM BY REACTION =====
 	onReaction: async function ({ event, message, threadsData, Reaction, getLang }) {
+		
 		if (event.userID !== Reaction.author) return;
-		if (event.reaction !== "👍") return;
 
 		global.GoatBot.onReaction.delete(event.messageID);
 
@@ -98,12 +92,12 @@ module.exports = {
 			Reaction.newPrefix,
 			"data.prefix"
 		);
+
 		return message.reply(
 			getLang("successThisThread", Reaction.newPrefix)
 		);
 	},
 
-	// ===== AUTO SHOW PREFIX =====
 	onChat: async function ({ event, message, threadsData }) {
 		if (!event.body || event.body.toLowerCase() !== "prefix") return;
 
