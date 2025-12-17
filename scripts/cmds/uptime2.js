@@ -1,4 +1,4 @@
-onst os = require("os");
+const os = require("os");
 
 module.exports.config = {
   name: "uptime2",
