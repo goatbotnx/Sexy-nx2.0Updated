@@ -1,3 +1,5 @@
+const moment = require("moment-timezone");
+
 module.exports = {
   config: {
     name: "pending",
@@ -29,16 +31,7 @@ module.exports = {
     const prefix = global.GoatBot?.config?.prefix || "/";
     let done = 0;
 
-    const now = new Date();
-    const dateTime = now.toLocaleString("en-BD", {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    });
+    const dateTime = moment().tz("Asia/Dhaka").format("ddd, YYYY-MMM-DD, HH:mm:ss");
 
     if (/^(c|cancel)/i.test(input)) {
       const nums = input.replace(/^(c|cancel)/i, "").trim().split(/\s+/);
@@ -76,6 +69,53 @@ module.exports = {
 │ 🤖 Bot : Activated
 │ 🔗 Prefix : ${prefix}
 │ ⚡ Owner : xalman
+│ ⏰ Date/Time : ${dateTime}
+╰─✅ Access Granted─╯`,
+        Reply.queue[n - 1].threadID
+      );
+      done++;
+    }
+
+    return api.sendMessage(getLang("approved", done), threadID, messageID);
+  },
+
+  onStart: async ({ api, event, getLang, commandName }) => {
+    const { threadID, messageID, senderID } = event;
+    let text = "";
+    let i = 1;
+
+    try {
+      const other = await api.getThreadList(100, null, ["OTHER"]) || [];
+      const pending = await api.getThreadList(100, null, ["PENDING"]) || [];
+
+      const groups = [...other, ...pending].filter(
+        t => t.isGroup && t.isSubscribed
+      );
+
+      if (!groups.length)
+        return api.sendMessage(getLang("empty"), threadID, messageID);
+
+      for (const g of groups)
+        text += `${i++}. ${g.name} → ${g.threadID}\n`;
+
+      api.sendMessage(
+        getLang("list", groups.length, text),
+        threadID,
+        (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName,
+            author: senderID,
+            queue: groups
+          });
+        },
+        messageID
+      );
+
+    } catch (err) {
+      return api.sendMessage(getLang("fetchFail"), threadID, messageID);
+    }
+  }
+};│ ⚡ Owner : xalman
 │ ⏰ Date/Time : ${dateTime}
 ╰─✅ Access Granted─╯`,
         Reply.queue[n - 1].threadID
