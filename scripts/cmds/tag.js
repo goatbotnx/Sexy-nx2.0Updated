@@ -2,7 +2,7 @@ module.exports = {
   config: {
     name: "tag",
     aliases: ["all", "everyone"],
-    category: "𝗧𝗔𝗚",
+    category: "GROUP",
     role: 0,
     author: "xalman",
     countDown: 3,
@@ -19,14 +19,17 @@ module.exports = {
 
     try {
       const threadData = await threadsData.get(threadID);
-      const members = threadData.members.map(m => ({
-        name: m.name,
-        id: m.userID
-      }));
+
+      const members = threadData.members
+        .filter(m => m.inGroup === true)
+        .map(m => ({
+          name: m.name,
+          id: m.userID
+        }));
 
       let tagUsers = [];
       let text = "";
-
+      
       if (messageReply) {
         const uid = messageReply.senderID;
         const name = await usersData.getName(uid);
@@ -34,17 +37,18 @@ module.exports = {
         text = args.join(" ");
       }
 
-      else if (
-        args[0] &&
-        ["all", "cdi"].includes(args[0].toLowerCase())
-      ) {
+      else if (args[0] && ["all", "cdi"].includes(args[0].toLowerCase())) {
         tagUsers = members;
         text = args.slice(1).join(" ");
       }
 
       else {
         if (!args[0]) {
-          return api.sendMessage("⚠️ Name / reply / use tag all ", threadID, messageID);
+          return api.sendMessage(
+            "⚠️ Name / reply / tag all",
+            threadID,
+            messageID
+          );
         }
 
         const searchName = args[0].toLowerCase();
@@ -55,7 +59,7 @@ module.exports = {
         );
 
         if (tagUsers.length === 0) {
-          return api.sendMessage("❌ User not found", threadID, messageID);
+          return api.sendMessage("❌ User Not Found", threadID, messageID);
         }
       }
 
@@ -68,10 +72,7 @@ module.exports = {
       const body = text ? `${namesText}\n${text}` : namesText;
 
       api.sendMessage(
-        {
-          body,
-          mentions
-        },
+        { body, mentions },
         threadID,
         messageReply ? messageReply.messageID : messageID
       );
