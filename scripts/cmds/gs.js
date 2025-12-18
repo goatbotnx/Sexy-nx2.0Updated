@@ -5,8 +5,8 @@ const GoatStor = "https://goatstore.vercel.app";
 
 module.exports = {
   config: {
-    name: "goatstore",
-    aliases: ["gs", "market", "cmdstore"],
+    name: "goatstore2",
+    aliases: ["gs"],
     version: "0.0.1",
     role: 2,
     author: "ArYAN",
@@ -16,7 +16,7 @@ module.exports = {
     longDescription: {
       en: "📌 Browse, search, upload, and manage your commands in the GoatStore marketplace with easy sharing cmds."
     },
-    category: "𝗠𝗮𝗿𝗸𝗲𝘁",
+    category: "GOATBOT",
     cooldowns: 0,
   },
 
