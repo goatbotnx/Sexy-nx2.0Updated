@@ -73,7 +73,7 @@ module.exports = {
     role: 0,
     shortDescription: "Upload media to catbox.moe",
     longDescription: "Upload replied image or video to catbox.moe and get link",
-    category: "tools",
+    category: "Uploader",
     guide: {
       en: "{pn} (reply to image/video)"
     }
