@@ -28,7 +28,7 @@ module.exports = {
  role: 0,
  shortDescription: "Generate AI images",
  longDescription: "Generates 4 images from a prompt and combines them in a grid.",
- category: "𝗔𝗜 & 𝗚𝗣𝗧",
+ category: "AI-IMAGE",
  guide: "{p}fastx <prompt> [--ar <ratio>]"
  },
 
