@@ -30,7 +30,7 @@ module.exports = {
         countDown: 5,
         role: 0,
         description: "𝗚𝗲𝘁 𝗚𝗿𝗼𝘂𝗽 𝗜𝗺𝗮𝗴𝗲",
-        category: "𝗜𝗠𝗔𝗚𝗘",
+        category: "AI-IMAGE",
         guide: "{pn} --color [color] --bgcolor [color] --admincolor [color] --membercolor [color]",
     },
 
