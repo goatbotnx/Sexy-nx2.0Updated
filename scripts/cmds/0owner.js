@@ -13,7 +13,7 @@ module.exports = {
   },
 
   onStart: async function ({ api, event, args, message, usersData }) {
-    const imgURL = "https://i.postimg.cc/K8v8jfQp/received-4282101378738502.jpg";
+    const imgURL = "https://i.imgur.com/mrNzmki.png";
     const attachment = await global.utils.getStreamFromURL(imgURL);
 
     const id = event.senderID;
