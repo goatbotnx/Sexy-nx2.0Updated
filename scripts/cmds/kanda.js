@@ -4,7 +4,7 @@
 module.exports = {
   config: {
     name: "kda",
-    aliases: ["kanda2.0"],
+    aliases: ["kanda"],
     version: "2.0",
     author: "kshitiz",
     countDown: 30,
