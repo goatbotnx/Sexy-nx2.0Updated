@@ -6,7 +6,7 @@ module.exports = {
     guide: {
       en: "{pn} [name1] [name2]\nExample: love Tanjil Suayba"
     },
-    category: "❤️ Fun",
+    category: "Fun",
     countDown: 1,
     role: 0,
     author: "〲T A N J I L ツ"
