@@ -93,7 +93,7 @@ module.exports = {
 
   onChat: async function ({ event, message, api, commandName }) {
     const body = event.body?.toLowerCase();
-    const triggers = ["sing", "music", "play"];
+    const triggers = ["song", "music"];
 
     if (body && triggers.some(trigger => body.startsWith(trigger))) {
       const slicedArgs = body.split(" ").slice(1);
