@@ -8,7 +8,7 @@ module.exports = {
       en:
         `💫 {pn}Bank Commands 💫\n\n💖 Bank - Show bank features\n💙 Bank balance - Show your balance\n💛 Bank deposit [amount] - Deposit money\n💜 Bank withdraw [amount] - Withdraw money\n✨ Bank interest - Earn double after 6h\n🌷 Bank loan - Take a 20k loan\n😇 Bank repay [amount] - Repay your loan\n😍 Bank top - Top 10 richest users`
     },
-    category: "💰 Economy",
+    category: "Economy",
     countDown: 1,
     role: 0,
     author: "〲T A N J I L ツ"
