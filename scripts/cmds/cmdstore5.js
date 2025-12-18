@@ -13,7 +13,7 @@ module.exports.config = {
     en: "Commands Store of MahMUD",
   },
   countDown: 3,
-  category: "general",
+  category: "GOATBOT",
   guide: {
     en: "{pn} [command name | single character | page number]",
   },
