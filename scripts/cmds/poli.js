@@ -14,7 +14,7 @@ module.exports = {
     version: "1.7",
     cooldowns: 10,
     role: 0,
-    category: "Image gen",
+    category: "AI-IMAGE",
     guide: {
       en: "{p}poli <prompt>"
     }
