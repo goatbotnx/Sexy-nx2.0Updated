@@ -61,7 +61,7 @@ module.exports = {
 
     
     const owner = "negative xalman (nx)"; 
-    const fb = "https://m.me/nx210.2.0.is.back";
+    const fb = "Le Dung";
 
     
     const formSend = {
