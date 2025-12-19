@@ -12,7 +12,7 @@ module.exports = {
     shortDescription: "Cyber aesthetic uptime display",
     longDescription: "Shows uptime, system, and bot stats",
     category: "system",
-    aliases: ["cyup", "cyberup", "statusx"],
+    aliases: ["up", "upt", "up1"],
   },
 
   onStart: async function ({ api, event }) {
