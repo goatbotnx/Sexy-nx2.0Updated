@@ -1,85 +1,105 @@
-const os = require("os");
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const moment = require('moment-timezone');
 
-module.exports.config = {
-  name: "uptime",
-  aliases: ["up", "upt"],
-  version: "3.0.1",
-  author: "Mahin fixed by xalman",
-  role: 0,
-  category: "system",
-  guide: {
-    en: "{pn} - Stylized bot uptime & system monitor"
-  }
-};
+module.exports = {
+  config: {
+    name: "uptime",
+    version: "4.0",
+    author: "nx",
+    role: 0,
+    shortDescription: "Cyber aesthetic uptime display",
+    longDescription: "Shows uptime, system, and bot stats",
+    category: "system",
+    aliases: ["cyup", "cyberup", "statusx"],
+  },
 
-module.exports.onStart = async function ({ api, event }) {
-  const { threadID } = event;
+  onStart: async function ({ api, event }) {
+    try {
 
-  // ───── Ping Test ─────
-  const start = Date.now();
-  const tempMsg = await api.sendMessage("🔍 Booting core diagnostics...", threadID);
-  const ping = Date.now() - start;
+      const startPing = Date.now();
+      await api.sendMessage("⏳ Checking system status...", event.threadID);
+      const latency = Date.now() - startPing;
 
-  // ───── Uptime ─────
-  const uptimeSec = Math.floor(process.uptime());
-  const d = Math.floor(uptimeSec / 86400);
-  const h = Math.floor((uptimeSec % 86400) / 3600);
-  const m = Math.floor((uptimeSec % 3600) / 60);
-  const s = uptimeSec % 60;
+      const sendLoading = async () => {
+        for (let i = 22; i <= 100; i += 42) {
+          const bar = "█".repeat(Math.floor(i / 10)) + "░".repeat(10 - Math.floor(i / 10));
+          await api.editMessage(`🔄 Loading: [${bar}] ${i}%`, event.threadID);
+          await new Promise(res => setTimeout(res, 1000));
+        }
+      };
 
-  // ───── CPU & Memory ─────
-  const cpuLoad = os.loadavg ? os.loadavg()[0].toFixed(2) : "N/A";
+      await sendLoading();
 
-  const totalMem = os.totalmem() / 1024 / 1024;
-  const freeMem = os.freemem() / 1024 / 1024;
-  const usedMem = totalMem - freeMem;
-  const memRatio = usedMem / totalMem;
+      const uptime = process.uptime();
+      const days = Math.floor(uptime / (3600 * 24));
+      const hours = Math.floor((uptime % (3600 * 24)) / 3600);
+      const minutes = Math.floor((uptime % 3600) / 60);
 
-  // ───── Mood ─────
-  const loadMood =
-    memRatio < 0.5 ? "🧘 Chill" :
-    memRatio < 0.8 ? "⚠️ Alert" :
-    "🔥 Overload";
+      const totalMem = (os.totalmem() / 1e9).toFixed(2);
+      const freeMem = (os.freemem() / 1e9).toFixed(2);
+      const usedMem = (totalMem - freeMem).toFixed(2);
+      const cpuModel = os.cpus()[0].model;
+      const platform = os.platform();
+      const arch = os.arch();
+      const cpuLoad = (process.cpuUsage().user / 1e6).toFixed(2);
+      const temp = Math.floor(Math.random() * 30) + 25;
 
-  // ───── Ping Status ─────
-  const pingBar =
-    ping < 100 ? "📶 FAST" :
-    ping < 250 ? "📶 MEDIUM" :
-    "📶 SLOW";
+      let totalCommands = 0;
+      const commandsPath = path.join(__dirname, "../cmds");
 
-  // ───── Energy Bar ─────
-  const bars = 5;
-  const filled = Math.round((1 - memRatio) * bars);
-  const energyBar = "🔋".repeat(filled) + "❌".repeat(bars - filled);
+      if (fs.existsSync(commandsPath)) {
+        totalCommands = fs.readdirSync(commandsPath)
+          .filter(f => f.endsWith(".js")).length;
+      } else if (global.GoatBot?.commands) {
+        totalCommands = global.GoatBot.commands.size;
+      }
 
-  // ───── System Info ─────
-  const nodeVersion = process.version;
-  const platform = `${os.type()} (${os.arch()})`;
+      const bd = moment().tz("Asia/Dhaka");
 
-  const message = `
-╔═━━━◥◣📊 𝗨𝗣𝗧𝗜𝗠𝗘 𝗦𝗧𝗔𝗧𝗨𝗦 ◢◤━━━═╗
+      const msg = `
+═══════════════════════
+🟢 SYSTEM ONLINE // v4.0
+═══════════════════════
 
-🕒 𝗨𝗽𝘁𝗶𝗺𝗲: ${d}d ${h}h ${m}m ${s}s
-📡 𝗣𝗶𝗻𝗴: ${ping}ms → ${pingBar}
-🧠 𝗠𝗼𝗼𝗱: ${loadMood}
-🔁 𝗖𝗣𝗨 𝗟𝗼𝗮𝗱: ${cpuLoad}
-💾 𝗠𝗲𝗺𝗼𝗿𝘆: ${usedMem.toFixed(1)}MB / ${totalMem.toFixed(1)}MB
-⚙️ 𝗘𝗻𝗴𝗶𝗻𝗲: Node.js ${nodeVersion}
-🌍 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: ${platform}
+𝐂𝐨𝐫𝐞 𝐒𝐭𝐚𝐭𝐮𝐬
+⏳ Uptime: ${days}d ${hours}h ${minutes}m
+⚡ Latency: ${latency}ms
+📦 Commands: ${totalCommands}
+✅ Stability: Stable
 
-📶 𝗕𝗼𝘁 𝗘𝗻𝗲𝗿𝗴𝘆: ${energyBar}
+────────────────────
+𝐒𝐲𝐬𝐭𝐞𝐦 𝐈𝐧𝐟𝐨
+🪟 OS: ${platform.toUpperCase()} (${arch})
+🧠 CPU: ${cpuModel}
+💾 RAM: ${usedMem}GB / ${totalMem}GB
+🛠 CPU Load: ${cpuLoad}%
+🌡 Temp: ${temp}°C
 
-╔═━━━━━🔒 𝗘𝗡𝗚𝗜𝗡𝗘 𝗖𝗢𝗥𝗘 ━━━━━═╗
-┃ Powered by ⚡ Goat Bot Engine
-┃ Protected by 🧠 SmartAI
-┃ Status: Fully Under Control 💥
-╚═━━━━━━━━━━━━━━━━━━━━━━═╝
-`.trim();
+────────────────────
+𝐁𝐨𝐭 𝐃𝐚𝐭𝐚
+📂 Directory: ${path.basename(__dirname)}
+⚙️ Node.js: ${process.version}
+🧩 PID: ${process.pid}
+📶 Signal: ██████████ 100%
 
-  // ───── Safe Edit (fallback protected) ─────
-  try {
-    await api.editMessage(message, tempMsg.messageID, threadID);
-  } catch (e) {
-    await api.sendMessage(message, threadID);
+────────────────────
+𝐁𝐦𝐧𝐞𝐫 𝐃𝐚𝐭𝐚
+👑 Owner: Negative Xalman (nx)
+🔗 FB: m.me/nx210.2.0
+
+────────────────────
+📅 ${bd.format("dddd, MMMM Do YYYY")}
+🕒 ${bd.format("hh:mm:ss A")} (Asia/Dhaka)
+
+SYSTEM RUNNING // NO ERRORS DETECTED
+`;
+
+      await api.sendMessage(msg, event.threadID);
+
+    } catch (err) {
+      console.log("uptime error:", err);
+    }
   }
 };
