@@ -2,111 +2,114 @@ const fs = require("fs-extra");
 const Canvas = require("canvas");
 const path = require("path");
 
+const ACCESS_TOKEN =
+  "350685531728|62f8ce9f74b12f84c123cc23437a4a32";
+
+const backgrounds = [
+  "https://i.postimg.cc/90M4j2yZ/20251102-155328.png"
+];
+
 module.exports = {
   config: {
     name: "poke",
     aliases: ["chud"],
-    version: "2.9",
+    version: "5.0",
     author: "xalman",
-    countDown: 150,
     role: 0,
-    shortDescription: "Poke with custom image",
-    longDescription: "Generate a poke image with the mentioned user using a custom background.",
-    category: "18+",
-    guide: "{pn} @mention"
+    countDown: 150,
+    shortDescription: "poke image",
+    category: "fun"
   },
 
-  onStart: async function ({ message, event, usersData }) {
-    const mention = Object.keys(event.mentions);
-    if (mention.length === 0)
-      return message.reply("Please mention someone to poke.");
+  onStart: async function ({ api, event, message, usersData }) {
+
+    api.setMessageReaction("🕜", event.messageID, () => {}, true);
+
+    let targetID = null;
+
+    if (event.messageReply && event.messageReply.senderID) {
+      targetID = event.messageReply.senderID;
+    }
+
+    else if (event.mentions && Object.keys(event.mentions).length > 0) {
+      targetID = Object.keys(event.mentions)[0];
+    }
+
+    else {
+      const match = event.body?.match(/\b\d{8,20}\b/);
+      if (match) targetID = match[0];
+    }
+
+    if (!targetID) {
+      return message.reply(
+        "❌ Use any:\n• poke @mention\n• reply + poke\n• poke uid"
+      );
+    }
 
     const senderID = event.senderID;
-    const mentionedID = mention[0];
 
     try {
-      // Avatar URLs
-      const avatarSender =
-        (await usersData.getAvatarUrl(senderID)) ||
-        `https://graph.facebook.com/${senderID}/picture?width=512&height=512`;
-      const avatarMentioned =
-        (await usersData.getAvatarUrl(mentionedID)) ||
-        `https://graph.facebook.com/${mentionedID}/picture?width=512&height=512`;
 
-      // Load images
-      const [avatarImgSender, avatarImgMentioned, bg] = await Promise.all([
-        Canvas.loadImage(avatarSender),
-        Canvas.loadImage(avatarMentioned),
-        Canvas.loadImage(
-          "https://i.postimg.cc/90M4j2yZ/20251102-155328.png" // ✅ background
-        )
+      const senderName =
+        (await usersData.getName(senderID).catch(() => "You"));
+      const targetName =
+        (await usersData.getName(targetID).catch(() => "Friend"));
+
+      const senderAvatar = `https://graph.facebook.com/${senderID}/picture?width=512&height=512&access_token=${ACCESS_TOKEN}`;
+      const targetAvatar = `https://graph.facebook.com/${targetID}/picture?width=512&height=512&access_token=${ACCESS_TOKEN}`;
+
+      const bg =
+        backgrounds[Math.floor(Math.random() * backgrounds.length)];
+
+      const [sImg, tImg, bgImg] = await Promise.all([
+        Canvas.loadImage(senderAvatar),
+        Canvas.loadImage(targetAvatar),
+        Canvas.loadImage(bg)
       ]);
 
-      // Canvas setup (portrait)
-      const canvasWidth = 873;
-      const canvasHeight = 1280;
-      const canvas = Canvas.createCanvas(canvasWidth, canvasHeight);
+      const canvas = Canvas.createCanvas(873, 1280);
       const ctx = canvas.getContext("2d");
 
-      // Draw background
-      ctx.drawImage(bg, 0, 0, canvasWidth, canvasHeight);
+      ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
 
-      // Avatar size and position (top corners)
-      const avatarSize = Math.floor(canvasWidth * 0.28);
-      const avatarY = 80;
+      const size = Math.floor(canvas.width * 0.28);
+      const y = 80;
 
-      // 🟢 Left (now sender)
-      const leftX = 80;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(
-        leftX + avatarSize / 2,
-        avatarY + avatarSize / 2,
-        avatarSize / 2,
-        0,
-        Math.PI * 2
-      );
-      ctx.closePath();
-      ctx.clip();
-      ctx.drawImage(avatarImgSender, leftX, avatarY, avatarSize, avatarSize);
-      ctx.restore();
+      const drawAvatar = (img, x, color) => {
+        ctx.save();
+        ctx.shadowColor = color;
+        ctx.shadowBlur = 25;
+        ctx.beginPath();
+        ctx.arc(x + size / 2, y + size / 2, size / 2, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(img, x, y, size, size);
+        ctx.restore();
+      };
 
-      // 🔵 Right (now mentioned user)
-      const rightX = canvasWidth - avatarSize - 80;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(
-        rightX + avatarSize / 2,
-        avatarY + avatarSize / 2,
-        avatarSize / 2,
-        0,
-        Math.PI * 2
-      );
-      ctx.closePath();
-      ctx.clip();
-      ctx.drawImage(avatarImgMentioned, rightX, avatarY, avatarSize, avatarSize);
-      ctx.restore();
+      drawAvatar(sImg, 80, "#ff4d6d");
+      drawAvatar(tImg, canvas.width - size - 80, "#4d9cff");
 
-      // Save image
       const imgPath = path.join(
         __dirname,
         "tmp",
-        `${senderID}_${mentionedID}_poke.png`
+        `${senderID}_${targetID}.png`
       );
       await fs.ensureDir(path.dirname(imgPath));
-      fs.writeFileSync(imgPath, canvas.toBuffer("image/png"));
+      fs.writeFileSync(imgPath, canvas.toBuffer());
 
-      // Send message
       message.reply(
         {
-          body: "chudling pong 🫦",
+          body: `${senderName} poked ${targetName} 🫦`,
           attachment: fs.createReadStream(imgPath)
         },
-        () => fs.unlinkSync(imgPath)
+        () => {
+          fs.unlinkSync(imgPath);
+          api.setMessageReaction("✅", event.messageID, () => {}, true);
+        }
       );
     } catch (err) {
-      console.error("❌ Error in poke command:", err);
-      message.reply(`❌ Error creating poke image:\n${err.stack || err.message}`);
+      console.error(err);
+      message.reply("❌ Error occurred.");
     }
   }
 };
