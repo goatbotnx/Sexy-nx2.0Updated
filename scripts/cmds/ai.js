@@ -19,7 +19,7 @@ module.exports = {
 	langs: {
 		en: {
 			noInput: "⚠️ Please type something to ask.",
-			loading: "🧠 Thinking...",
+			loading: "",
 			error: "❌ Failed to get response from You AI."
 		}
 	},
