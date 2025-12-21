@@ -144,7 +144,7 @@ module.exports = (
 						if (authorizedUIDs.includes(event.userID)) {
 							message.unsend(event.messageID);
 						} else {
-							message.send(":)");
+							message.send("");
 						}
 					}
 				}
