@@ -9,14 +9,29 @@ async function getBaseAPI() {
   return res.data.api;
 }
 
+function cleanTitle(title, url) {
+  if (!title || title === "N/A") {
+    try {
+      const u = new URL(url);
+      return `Video from ${u.hostname.replace("www.", "")}`;
+    } catch {
+      return "Downloaded Video";
+    }
+  }
+
+  return title
+    .replace(/https?:\/\/\S+/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 async function downloadStream(url, savePath) {
   const res = await axios({
     url,
     method: "GET",
     responseType: "stream",
     headers: {
-      "User-Agent": "Mozilla/5.0",
-      "Accept": "*/*"
+      "User-Agent": "Mozilla/5.0"
     }
   });
 
@@ -32,10 +47,10 @@ module.exports = {
   config: {
     name: "autodown",
     aliases: ["autodl"],
-    version: "2.0.1",
+    version: "2.1.0",
     author: "Nazrul | modified by xalman",
     role: 0,
-    description: "Auto download media from supported platforms",
+    description: "Auto download media with real video title",
     category: "media",
     guide: { en: "Send any supported media link" }
   },
@@ -45,10 +60,10 @@ module.exports = {
   onChat: async ({ api, event }) => {
     if (!event.body) return;
 
-    const match = event.body.match(/https?:\/\/\S+/);
-    if (!match) return;
+    const linkMatch = event.body.match(/https?:\/\/\S+/);
+    if (!linkMatch) return;
 
-    const inputUrl = match[0];
+    const inputUrl = linkMatch[0];
 
     try {
       api.setMessageReaction("⏳", event.messageID, () => {}, true);
@@ -59,21 +74,26 @@ module.exports = {
       );
 
       const data = res.data;
-      if (!data || !data.url) throw new Error("Download link not found");
+      if (!data || !data.url) throw new Error("No media link");
 
-      const fileName = `auto_${Date.now()}.mp4`;
-      const filePath = path.join(__dirname, fileName);
+      const videoTitle = cleanTitle(data.t, inputUrl);
+      const platform = data.p || "Unknown";
+
+      const filePath = path.join(
+        __dirname,
+        `auto_${Date.now()}.mp4`
+      );
 
       await downloadStream(data.url, filePath);
 
       await api.sendMessage(
         {
           body:
-`💎✨  𝗠𝗲𝗱𝗶𝗮 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗿 ✨💎
+`✨💎𝗠𝗲𝗱𝗶𝗮 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗿💎✨
 
-📌 Title : ${data.t || "N/A"}
-🚀 Platform : ${data.p || "Unknown"}
-📥 Status : Download Completed
+🎬 Title : ${videoTitle}
+🌐 Platform : ${platform}
+📥 Status : Successfully Downloaded
 
 — Powered by xalman`,
           attachment: fs.createReadStream(filePath)
