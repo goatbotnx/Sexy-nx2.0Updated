@@ -16,7 +16,7 @@ module.exports = {
     version: "5.0",
     author: "xalman",
     role: 0,
-    countDown: 150,
+    countDown: 10,
     shortDescription: "poke image",
     category: "fun"
   },
