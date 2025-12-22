@@ -132,7 +132,7 @@ module.exports = (
 							if (err) return console.log(err);
 						});
 					} else {
-						message.send(":)");
+						message.send("");
 					}
 				}
 
