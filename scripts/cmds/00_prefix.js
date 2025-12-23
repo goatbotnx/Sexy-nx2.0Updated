@@ -5,7 +5,8 @@ const getStreamFromURL = global.utils.getStreamFromURL;
 
 const gifList = [
 	"https://i.postimg.cc/mgMWtjRD/xalman.webp",
-	"https://i.postimg.cc/mgMWtjRD/xalman.webp"
+   "https://i.postimg.cc/pdr1yx3D/nx210.gif",
+	"https://i.postimg.cc/q7DXF3bq/nx210.gif"
 ];
 
 const getRandomGif = () =>
@@ -18,7 +19,7 @@ module.exports = {
 		author: "xalman",
 		countDown: 5,
 		role: 0,
-		description: "Change & show bot prefix (any reaction confirm)",
+		description: "Change & show bot prefix ",
 		category: "config"
 	},
 
