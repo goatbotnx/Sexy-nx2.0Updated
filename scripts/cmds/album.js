@@ -21,8 +21,8 @@ module.exports = {
   onStart: async function ({ message, event, args }) {
     const senderID = event.senderID;
 
-    const page1 = ["funny video", "sad video", "attitude video", "anime video ", "lofi video ", "islamic video", "love video"];
-    const page2 = ["aesthetic", "cartoon video", "flower video", "football video", "cricket video", "18plus video"];
+    const page1 = ["funny", "sad", "attitude", "anime", "lofi", "islamic", "love"];
+    const page2 = ["aesthetic", "cartoon", "flower", "football", "cricket", "18plus"];
 
     const fancy = (t) =>
       t.replace(/[a-z]/g, c =>
