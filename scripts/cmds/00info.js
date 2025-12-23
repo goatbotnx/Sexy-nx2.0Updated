@@ -4,7 +4,7 @@ const moment = require("moment-timezone");
 module.exports = {
   config: {
     name: "info",
-    aliases: ["admininfo", "botinfo"],
+    aliases: ["admininfo", "botinfo", "owner", "ownerinfo"],
     version: "1.4",
     author: "xalman",
     countDown: 5,
@@ -20,7 +20,7 @@ module.exports = {
     // OWNER INFO
     const authorName = "Negative Xalman";
     const ownAge = "18";
-    const messenger = "https://m.me/nx210.2.0.is.back";
+    const messenger = "https://m.me/nx210.2.0";
     const authorFB = "Màybè Nx";
     const authorNumber = "+8801876118312";
     const Status = "Single";
