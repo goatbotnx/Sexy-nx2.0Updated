@@ -93,7 +93,7 @@ ${buildMenu(page1, 1)}
       return message.reply("🔐 Private album • Access denied");
 
     try {
-      message.reply("");
+      message.reply("please wait ✨");
 
       const res = await axios.get(
         `${BASE_API}/album?type=${category}`
