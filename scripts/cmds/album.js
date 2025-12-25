@@ -10,7 +10,7 @@ module.exports = {
     name: "album",
     aliases: ["gallery", "alb"],
     version: "3.0",
-    author: "xalman",
+    author: "xalman",  //don't cng 
     role: 0,
     category: "media",
     shortDescription: "🌸 Exclusive Album",
@@ -21,8 +21,8 @@ module.exports = {
   onStart: async function ({ message, event, args }) {
     const senderID = event.senderID;
 
-    const page1 = ["funny", "sad", "attitude", "anime", "lofi", "islamic", "love"];
-    const page2 = ["aesthetic", "cartoon", "flower", "football", "cricket", "18plus"];
+    const page1 = ["funny", "sad", "attitude", "anime", "romantic", "islamic", "love"];
+    const page2 = ["aesthetic", "cartoon", "flower",  "freefire", "football", "cricket", "18plus"];
 
     const fancy = (t) =>
       t.replace(/[a-z]/g, c =>
@@ -45,7 +45,7 @@ module.exports = {
     if (args[0] === "2") {
       const text =
 `╔═══════ ✦ 𝐀𝐋𝐁𝐔𝐌 ✦ ═══════╗
-${buildMenu(page2, 6)}
+${buildMenu(page2, 1)}
 ╚══════════════════════════╝
 📖 Page 2 / 2
 ↩ Type: album`;
