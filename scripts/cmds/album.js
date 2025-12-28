@@ -21,8 +21,8 @@ module.exports = {
   onStart: async function ({ message, event, args }) {
     const senderID = event.senderID;
 
-    const page1 = ["funny", "sad", "attitude", "anime", "romantic", "islamic", "love"];
-    const page2 = ["aesthetic", "cartoon", "flower",  "freefire", "football", "cricket", "18plus"];
+    const page1 = ["funny", "sad", "attitude", "bike_car",  "anime", "romantic",  "kissing", "islamic", "love"];
+    const page2 = ["aesthetic", "cartoon", "flower",  "freefire", "football", "cricket", "hot"];
 
     const fancy = (t) =>
       t.replace(/[a-z]/g, c =>
@@ -81,7 +81,7 @@ ${buildMenu(page1, 1)}
 
     const pick = parseInt(event.body);
     if (isNaN(pick))
-      return message.reply("🔢 Reply with a number only");
+      return message.reply("🔢 Reply with number only");
 
     const list = Reply.categories;
     if (pick < 1 || pick > list.length)
@@ -90,7 +90,7 @@ ${buildMenu(page1, 1)}
     const category = list[pick - 1];
 
     if (category === "18plus" && event.senderID !== ADMIN_UID)
-      return message.reply("🔐 Private album • Access denied");
+      return message.reply("তোরা কি ভালো হইবি না নাকি 👽");
 
     try {
       message.reply("please wait ✨");
@@ -121,7 +121,7 @@ ${buildMenu(page1, 1)}
             {
               body:
 `✦ 𝐀𝐋𝐁𝐔𝐌 𝐃𝐄𝐋𝐈𝐕𝐄𝐑𝐄𝐃 ✦
-📂 Category : ${category}
+💖 Category : ${category}
 👑 Owner : XALMAN`,
               attachment: fs.createReadStream(filePath)
             },
@@ -131,7 +131,7 @@ ${buildMenu(page1, 1)}
 
     } catch (err) {
       console.log(err);
-      message.reply("⚠️ Album system error");
+      message.reply("⚠️ Album api error");
     }
   }
 };
