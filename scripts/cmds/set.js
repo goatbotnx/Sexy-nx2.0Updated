@@ -1,72 +1,98 @@
 module.exports = {
   config: {
     name: "set",
-    aliases: ['ap'],
-    version: "1.0",
-    author: "Loid Butter",
+    aliases: ["ap"],
+    version: "3.0",
+    author: "Loid Butter | modified by xalman",
     role: 0,
     shortDescription: {
-      en: "Set coins and experience points for a user"
+      en: "Set money or exp for a user"
     },
     longDescription: {
-      en: "Set coins and experience points for a user as desired"
+      en: "Set money or exp using UID, reply, or mention"
     },
     category: "economy",
     guide: {
-      en: "{pn}set [money|exp] [amount]"
+      en: "{pn}set [money|exp] [amount] [uid(optional)]"
     }
   },
 
   onStart: async function ({ args, event, api, usersData }) {
-    const permission = ["61583129938292", "61582662637419"];
-  if (!permission.includes(event.senderID)) {
-    api.sendMessage("You don't have enough permission to use this command. Only My Lord Can Use It.", event.threadID, event.messageID);
-    return;
-  }
-    const query = args[0];
-    const amount = parseInt(args[1]);
 
-    if (!query || !amount) {
-      return api.sendMessage("Invalid command arguments. Usage: set [query] [amount]", event.threadID);
+    const ADMIN = ["61583129938292", "61582662637419"];
+    if (!ADMIN.includes(event.senderID)) {
+      return api.sendMessage(
+        "age owner level e asho broo 🌬️",
+        event.threadID,
+        event.messageID
+      );
     }
 
-    const { messageID, senderID, threadID } = event;
+    const type = args[0]?.toLowerCase();
+    const amount = parseInt(args[1]);
 
-    if (senderID === api.getCurrentUserID()) return;
+    if (!type || isNaN(amount)) {
+      return api.sendMessage(
+        "❌ Usage: set [money|exp] [amount] [uid(optional)]",
+        event.threadID
+      );
+    }
 
     let targetUser;
-    if (event.type === "message_reply") {
+
+    if (args[2] && /^\d+$/.test(args[2])) {
+      targetUser = args[2];
+
+    } else if (event.type === "message_reply") {
       targetUser = event.messageReply.senderID;
+
+    } else if (Object.keys(event.mentions).length > 0) {
+      targetUser = Object.keys(event.mentions)[0];
+
     } else {
-      const mention = Object.keys(event.mentions);
-      targetUser = mention[0] || senderID;
+      targetUser = event.senderID;
+    }
+
+    if (targetUser === api.getCurrentUserID()) {
+      return api.sendMessage("🤖 You cannot modify bot data.", event.threadID);
     }
 
     const userData = await usersData.get(targetUser);
     if (!userData) {
-      return api.sendMessage("User not found.", threadID);
+      return api.sendMessage("❌ User not found.", event.threadID);
     }
 
     const name = await usersData.getName(targetUser);
 
-    if (query.toLowerCase() === 'exp') {
-      await usersData.set(targetUser, {
-        money: userData.money,
-        exp: amount,
-        data: userData.data
-      });
-
-      return api.sendMessage(`Set experience points to ${amount} for ${name}.`, threadID);
-    } else if (query.toLowerCase() === 'money') {
+    if (type === "money") {
       await usersData.set(targetUser, {
         money: amount,
-        exp: userData.exp,
-        data: userData.data
+        exp: userData.exp || 0,
+        data: userData.data || {}
       });
 
-      return api.sendMessage(`Set coins to ${amount} for ${name}.`, threadID);
-    } else {
-      return api.sendMessage("Invalid query. Use 'exp' to set experience points or 'money' to set coins.", threadID);
+      return api.sendMessage(
+        `✅ Money set to ${amount}\n👤 User: ${name}`,
+        event.threadID
+      );
     }
+
+    if (type === "exp") {
+      await usersData.set(targetUser, {
+        money: userData.money || 0,
+        exp: amount,
+        data: userData.data || {}
+      });
+
+      return api.sendMessage(
+        `✅ EXP set to ${amount}\n👤 User: ${name}`,
+        event.threadID
+      );
+    }
+
+    return api.sendMessage(
+      "❌ Invalid type. Use money or exp only.",
+      event.threadID
+    );
   }
 };
