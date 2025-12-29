@@ -2,7 +2,8 @@ const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 
-const BASE_API = "https://nx-album-api.onrender.com";
+const apiJsonUrl = "https://raw.githubusercontent.com/goatbotnx/Sexy-nx2.0Updated/refs/heads/main/nx-apis.json"; // GitHub raw link
+
 const ADMIN_UID = "61583129938292";
 
 module.exports = {
@@ -19,6 +20,17 @@ module.exports = {
   },
 
   onStart: async function ({ message, event, args }) {
+    let BASE_API;
+
+    try {
+      const apiListResponse = await axios.get(apiJsonUrl);
+      const apiList = apiListResponse.data;
+      BASE_API = apiList.album;
+    } catch (err) {
+      console.log(err);
+      return message.reply("⚠️ Error fetching album API from GitHub");
+    }
+
     const senderID = event.senderID;
 
     const page1 = ["funny", "sad", "attitude", "bike_car",  "anime", "romantic",  "kissing", "islamic", "love"];
@@ -91,6 +103,16 @@ ${buildMenu(page1, 1)}
 
     if (category === "18plus" && event.senderID !== ADMIN_UID)
       return message.reply("তোরা কি ভালো হইবি না নাকি 👽");
+
+    let BASE_API;
+    try {
+      const apiListResponse = await axios.get(apiJsonUrl);
+      const apiList = apiListResponse.data;
+      BASE_API = apiList.album;
+    } catch (err) {
+      console.log(err);
+      return message.reply("⚠️ Error fetching album API from GitHub");
+    }
 
     try {
       message.reply("please wait ✨");
