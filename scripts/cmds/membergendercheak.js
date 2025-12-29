@@ -6,7 +6,7 @@
 module.exports = {
   config: {
     name: "membergendercheak",
-    alias: ["mgc"],
+    aliases: ["mgc"],
     version: "3.0",
     author: "xalman",
     role: 0,
