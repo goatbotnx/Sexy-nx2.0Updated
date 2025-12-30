@@ -1,64 +1,61 @@
 const axios = require("axios");
 
-const mahmud = async () => {
-  const base = await axios.get("https://raw.githubusercontent.com/mahmudx7/exe/main/baseApiUrl.json");
-  return base.data.mahmud;
-};
-
 module.exports = {
   config: {
     name: "coupledp",
-    aliases : ["cdp"],
-    version: "1.7",
-    author: "MahMUD",
-    countDown: 5,
-    role: 0,
+    aliases: ["cdp"],
+    version: "3.0",
+    author: "xalman",
+    description: " just type {p}cdp to get boy and girl pair profile picture🌬️",
     category: "love",
-    guide: "{pn} Get a random Couple DP\n{pn} list  Show total number of Couple DPs"
+    cooldown: 5
   },
 
-  onStart: async function ({ message, args, event, api }) {
-    const obfuscatedAuthor = String.fromCharCode(77, 97, 104, 77, 85, 68); 
-    if (module.exports.config.author !== obfuscatedAuthor) {
-      return api.sendMessage("You are not authorized to change the author name.", event.threadID, event.messageID);
-    }
-
+  onStart: async function ({ api, event }) {
     try {
-      const baseURL = await mahmud();
+      api.setMessageReaction("🕜", event.messageID, () => {}, true);
 
-      if (args[0] === "list") {
-        const res = await axios.get(`${baseURL}/api/cdp/list`);
-        const { total } = res.data;
-        return message.reply(`🎀 𝐓𝐨𝐭𝐚𝐥 𝐂𝐨𝐮𝐩𝐥𝐞 𝐃𝐏: ${total}`);
+      api.sendTypingIndicator(event.threadID, true);
+      await new Promise(r => setTimeout(r, 1000));
+
+      const baseRes = await axios.get(
+        "https://raw.githubusercontent.com/goatbotnx/Sexy-nx2.0Updated/refs/heads/main/nx-apis.json"
+      );
+
+      const cdpBase = baseRes.data.cdp;
+      if (!cdpBase) {
+        api.sendTypingIndicator(event.threadID, false);
+        return api.setMessageReaction("❌", event.messageID, () => {}, true);
       }
 
-      const res = await axios.get(`${baseURL}/api/cdp`);
-      const { boy, girl } = res.data;
-      if (!boy || !girl) return message.reply("⚠ No Couple DP found.");
+      const res = await axios.get(`${cdpBase}/cdp`);
+      const pair = res.data.pair;
 
-      const getStream = async (url) => {
-        const response = await axios({
-          method: "GET",
-          url,
-          responseType: "stream",
-          headers: { 'User-Agent': 'Mozilla/5.0' }
-        });
-        return response.data;
-      };
+      if (!pair || !pair.boy || !pair.girl) {
+        api.sendTypingIndicator(event.threadID, false);
+        return api.setMessageReaction("❌", event.messageID, () => {}, true);
+      }
 
-      const attachments = [
-        await getStream(boy),
-        await getStream(girl)
-      ];
+      const boyStream = await global.utils.getStreamFromURL(pair.boy);
+      const girlStream = await global.utils.getStreamFromURL(pair.girl);
 
-      message.reply({
-        body: "🎀 | 𝐇𝐞𝐫𝐞'𝐬 𝐲𝐨𝐮𝐫 𝐜𝐝𝐩 𝐛𝐚𝐛𝐲",
-        attachment: attachments
-      });
+      api.sendTypingIndicator(event.threadID, false);
 
-    } catch (error) {
-      console.error("CDP command error:", error.message || error);
-      message.reply("🥹error, contact MahMUD.");
+      api.sendMessage(
+        {
+          body: "🎀Here's your coupledp bbz🌬️",
+          attachment: [boyStream, girlStream]
+        },
+        event.threadID,
+        () => {
+          api.setMessageReaction("✅", event.messageID, () => {}, true);
+        }
+      );
+
+    } catch (err) {
+      console.error("CDP Error:", err);
+      api.sendTypingIndicator(event.threadID, false);
+      api.setMessageReaction("❌", event.messageID, () => {}, true);
     }
   }
 };
