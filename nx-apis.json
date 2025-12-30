@@ -1,3 +1,4 @@
 { "album": "https://nx-album-api.onrender.com",
-  "font": "https://nxfontapi.onrender.com"
+  "font": "https://nxfontapi.onrender.com",
+  "cdp": "https://nx-cdp-apis.onrender.com"
 }
