@@ -1,47 +1,56 @@
 const axios = require("axios");
 
-const mahmud = async () => {
-  const base = await axios.get("https://raw.githubusercontent.com/mahmudx7/exe/main/baseApiUrl.json");
-  return base.data.mahmud;
-};
-
 module.exports = {
   config: {
     name: "meme",
-    aliases: ["memes"],
-    version: "1.7",
-    author: "MahMUD",
-    countDown: 10,
+    version: "1.5.0",
+    author: "xalman",
+    countDown: 5,
     role: 0,
+    shortDescription: "Get random meme ",
+    longDescription: "Get a random meme and total meme Number",
     category: "fun",
-    guide: "{pn}"
+    guide: "{pn} [list (optional)]"
   },
 
-  onStart: async function ({ message, event, api }) {
+  onStart: async function ({ api, message, args }) {
+    const { messageID } = message;
+    const githubRawUrl = "https://raw.githubusercontent.com/goatbotnx/Sexy-nx2.0Updated/refs/heads/main/nx-apis.json";
+
     try {
-      const apiUrl = await mahmud();
-      const res = await axios.get(`${apiUrl}/api/meme`);
-      const imageUrl = res.data?.imageUrl;
-
-      if (!imageUrl) {
-        return message.reply("Could not fetch meme. Please try again later.");
+      const fetchApis = await axios.get(githubRawUrl);
+      const memeApiBase = fetchApis.data.meme;
+      
+      if (args[0] === "list") {
+        const listRes = await axios.get(`${memeApiBase}/meme/list`);
+        const total = listRes.data.total_memes;
+        
+        api.setMessageReaction("🐸", messageID, () => {}, true);
+        return message.reply(`📊 total memes ${total} `);
       }
+      
+      const res = await axios.get(`${memeApiBase}/meme`);
+      const memeUrl = res.data.meme;
 
-      const stream = await axios({
-        method: "GET",
-        url: imageUrl,
+      const imageStream = await axios.get(memeUrl, {
         responseType: "stream",
-        headers: { 'User-Agent': 'Mozilla/5.0' }
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
+          'Referer': 'https://imgur.com/'
+        }
       });
 
-      await api.sendMessage({
-        body: "🐸 | 𝐇𝐞𝐫𝐞'𝐬 𝐲𝐨𝐮𝐫 𝐫𝐚𝐧𝐝𝐨𝐦 𝐦𝐞𝐦𝐞",
-        attachment: stream.data
-      }, event.threadID, event.messageID);
+      api.setMessageReaction("🐸", messageID, () => {}, true);
 
-      return;
-    } catch (error) {
-      return message.reply("An error occurred while fetching meme.");
+      return message.reply({
+        body: "🐸Here is your random meme🌬️!",
+        attachment: imageStream.data
+      });
+
+    } catch (err) {
+      console.error(err);
+      api.setMessageReaction("❌", messageID, () => {}, true);
+      return message.reply("❌ api error");
     }
   }
 };
