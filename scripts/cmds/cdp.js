@@ -4,19 +4,17 @@ module.exports = {
   config: {
     name: "coupledp",
     aliases: ["cdp"],
-    version: "3.0",
+    version: "3.1",
     author: "xalman",
-    description: " just type {p}cdp to get boy and girl pair profile picture🌬️",
+    description: "Just type {p}cdp to get boy and girl pair profile picture🌬️",
     category: "love",
     cooldown: 5
   },
 
-  onStart: async function ({ api, event }) {
+  onStart: async function ({ api, event, args }) {
     try {
       api.setMessageReaction("🕜", event.messageID, () => {}, true);
-
       api.sendTypingIndicator(event.threadID, true);
-      await new Promise(r => setTimeout(r, 1000));
 
       const baseRes = await axios.get(
         "https://raw.githubusercontent.com/goatbotnx/Sexy-nx2.0Updated/refs/heads/main/nx-apis.json"
@@ -28,6 +26,13 @@ module.exports = {
         return api.setMessageReaction("❌", event.messageID, () => {}, true);
       }
 
+      if (args[0] && args[0].toLowerCase() === "list") {
+        const res = await axios.get(`${cdpBase}/status`);
+        const { total } = res.data;
+        api.sendTypingIndicator(event.threadID, false);
+        return api.sendMessage(`🎀 𝐓𝐨𝐭𝐚𝐥 𝐂𝐨𝐮𝐩𝐥𝐞 𝐃𝐏: ${total}`, event.threadID);
+      }
+
       const res = await axios.get(`${cdpBase}/cdp`);
       const pair = res.data.pair;
 
@@ -36,14 +41,24 @@ module.exports = {
         return api.setMessageReaction("❌", event.messageID, () => {}, true);
       }
 
-      const boyStream = await global.utils.getStreamFromURL(pair.boy);
-      const girlStream = await global.utils.getStreamFromURL(pair.girl);
+      const getImgStream = async (url) => {
+        return (await axios.get(url, {
+          responseType: "stream",
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+            'Referer': 'https://imgur.com/'
+          }
+        })).data;
+      };
+
+      const boyStream = await getImgStream(pair.boy);
+      const girlStream = await getImgStream(pair.girl);
 
       api.sendTypingIndicator(event.threadID, false);
 
       api.sendMessage(
         {
-          body: "🎀Here's your coupledp bbz🌬️",
+          body: "🎀 Here's your couple dp bbz 🌬️",
           attachment: [boyStream, girlStream]
         },
         event.threadID,
