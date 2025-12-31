@@ -26,7 +26,7 @@ module.exports = {
         const total = listRes.data.total_memes;
         
         api.setMessageReaction("🐸", messageID, () => {}, true);
-        return message.reply(`📊 total memes ${total} `);
+        return message.reply(`d⃝j⃝j⃝s⃝j⃝d⃝j⃝d⃝j⃝d⃝j⃝j⃝d⃝j⃝d⃝j⃝j⃝d⃝\n📊 total memes ${total} `);
       }
       
       const res = await axios.get(`${memeApiBase}/meme`);
