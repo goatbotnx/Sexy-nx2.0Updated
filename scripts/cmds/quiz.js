@@ -4,45 +4,38 @@ module.exports = {
   config: {
     name: "quiz",
     aliases: ["qz"],
-    version: "3.0",
+    version: "4.6",
     author: "xalman",
     countDown: 5,
     role: 0,
-    description: "Getting and answering questions",
+    description: "Play a random quiz from an external API",
     category: "games",
-    guide: "Type /quiz to get question then answer the question (a,b,c,d) Or type /quiz list to get total question"
+    guide: "Type {pn} to start or {pn} list to see total questions"
   },
 
-  onStart: async function ({ event, message, args, api }) {
+  onStart: async function ({ event, message, args }) {
     const { senderID } = event;
-    const GITHUB_RAW_URL = "https://raw.githubusercontent.com/goatbotnx/Sexy-nx2.0Updated/refs/heads/main/nx-apis.json";
+    const RAW_LINK = "https://raw.githubusercontent.com/goatbotnx/Sexy-nx2.0Updated/refs/heads/main/nx-apis.json";
 
     try {
+      const rawRes = await axios.get(RAW_LINK);
+      const API_URL = rawRes.data.quiz;
       
-      const configRes = await axios.get(GITHUB_RAW_URL);
-      const API_URL = configRes.data.quiz;
+      const res = await axios.get(`${API_URL}/mcq`);
+      const questions = res.data;
 
       if (args[0] === "list") {
-        const res = await axios.get(`${API_URL}/mcq/list`);
-        const { total, categories } = res.data;
-
-        let msg = `📊 *MCQ LIST*\n━━━━━━━━━━━━━━━\n🔹 total question: ${total}\n`;
-        for (const cat in categories) {
-          msg += `• ${cat.charAt(0).toUpperCase() + cat.slice(1)}: ${categories[cat]}টি\n`;
-        }
-        msg += `━━━━━━━━━━━━━━━\n💡 কুইজ খেলতে শুধু /quiz লিখুন।`;
-        return message.reply(msg);
+        return message.reply(`📊 *QUIZ STATISTICS*\n━━━━━━━━━━━━━━━\n🔹 Total Questions: ${questions.length}\n━━━━━━━━━━━━━━━\n💡 Type /quiz to play.`);
       }
 
-      const res = await axios.get(`${API_URL}/mcq`);
-      const { question, options, time, category } = res.data;
+      const quiz = questions[Math.floor(Math.random() * questions.length)];
 
-      const msgText = `📝 *প্রশ্ন:* ${question}\n\n` +
-                  `🅰️ ${options.A}\n` +
-                  `🅱️ ${options.B}\n` +
-                  `©️ ${options.C}\n` +
-                  `Ⓓ ${options.D}\n\n` +
-                  `⏳ time: ${time} second\n`;
+      const msgText = `📝 *Question:* ${quiz.question}\n\n` +
+                  `🅰️ ${quiz.options.A}\n` +
+                  `🅱️ ${quiz.options.B}\n` +
+                  `©️ ${quiz.options.C}\n` +
+                  `Ⓓ ${quiz.options.D}\n\n` +
+                  `⏳ Reply to this message with the correct option.`;
 
       return message.reply(msgText, (err, info) => {
         if (err) return;
@@ -50,18 +43,14 @@ module.exports = {
           commandName: this.config.name,
           messageID: info.messageID,
           author: senderID,
-          questionText: question,
-          category: category,
+          quizID: quiz.id,
           apiUrl: API_URL
         });
-
-        setTimeout(() => {
-          api.unsendMessage(info.messageID).catch(() => {});
-        }, 60000); 
       });
 
-    } catch (e) { 
-      message.reply("❌ api error "); 
+    } catch (e) {
+      console.error(e);
+      return message.reply("❌ Failed to fetch data from the server.");
     }
   },
 
@@ -69,17 +58,18 @@ module.exports = {
     const { senderID, body } = event;
 
     if (senderID !== Reply.author) {
-      return message.reply("⚠️ ιѕ ησт уσυя qυιz вву 🐸🌬️");
+      return message.reply("⚠️ This is not your quiz! Type /quiz to start your own.");
     }
 
     const userAnswer = body.trim().toUpperCase();
-    if (!["A", "B", "C", "D"].includes(userAnswer)) return;
+    const validOptions = ["A", "B", "C", "D"];
+
+    if (!validOptions.includes(userAnswer)) return;
 
     try {
-      const res = await axios.post(`${Reply.apiUrl}/mcq/check`, {
+      const res = await axios.post(`${Reply.apiUrl}/submit`, {
         userID: senderID,
-        category: Reply.category,
-        question: Reply.questionText,
+        id: Reply.quizID,
         option: userAnswer
       });
 
@@ -87,18 +77,21 @@ module.exports = {
       global.GoatBot.onReply.delete(Reply.messageID);
 
       if (res.data.correct) {
-
-        const userData = await usersData.get(senderID);
         const reward = 500;
-        const newMoney = (parseInt(userData.money || "0") + reward).toString();
-        await usersData.set(senderID, { money: newMoney });
+        const userData = await usersData.get(senderID);
+        const currentMoney = parseInt(userData.money || "0");
+        const newMoney = currentMoney + reward;
+        
+        await usersData.set(senderID, { money: newMoney.toString() });
 
-        return message.reply(`✅ r̷i̷g̷h̷t̷ A̷n̷s̷w̷e̷r̷!\n💰y̷o̷u̷ g̷o̷t̷ i̷t̷. : ${reward}$\n🏦 c̷u̷r̷r̷e̷n̷t̷ b̷A̷l̷A̷n̷c̷e̷: ${newMoney}$`);
+        return message.reply(`✅ Correct Answer!\n💰 You received: $${reward}\n🏦 Current Balance: $${newMoney}`);
       } else {
-        return message.reply(`❌w̷r̷o̷n̷g̷ A̷n̷s̷w̷e̷r̷ !\n📖 t̷h̷e̷ c̷o̷r̷r̷e̷c̷t̷ A̷n̷s̷w̷e̷r̷ w̷A̷s̷: ${res.data.correctOption}`);
+        return message.reply(`❌ Wrong Answer!\n📖 The correct answer was: ${res.data.correctOption}`);
       }
-    } catch (e) { 
-      message.reply("❌ q̷u̷i̷z̷ s̷e̷r̷v̷e̷r̷ e̷r̷r̷o̷r̷"); 
+
+    } catch (e) {
+      console.error(e);
+      return message.reply("❌ Error submitting your answer. Please try again.");
     }
   }
 };
