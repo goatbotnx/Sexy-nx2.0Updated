@@ -1,195 +1,127 @@
 const { config } = global.GoatBot;
+const { createCanvas, loadImage, registerFont } = require('canvas');
+const fs = require('fs-extra');
+const path = require('path');
+const axios = require('axios');
 
 module.exports = {
     config: {
         name: "balance",
         aliases: ["bal", "money"],
-        version: "1.6.9",
-        author: "Nazrul",
-        countDown: 1,
+        version: "3.0.0",
+        author: "xalman",
+        countDown: 5,
         role: 0,
-        description: "View, transfer, request, or add/delete money",
+        description: "View your balance on a premium Visa card with custom styling",
         category: "economy",
-        guide: { en: `
-            {pn}: help to view cmds guide
-            {pn}: view your balance
-            {pn} <@tag>: view the balance of the tagged person
-            {pn} transfer <@tag>/<UID>/<reply> <amount>: transfer money
-            {pn} request <amount>: request money from the admin
-            {pn} add <@tag>/<UID>/<reply> <amount>: admin adds money
-            {pn} delete <@tag>/<UID>/<reply> <amount>: admin deletes money` }
+        guide: { en: "{pn} | {pn} @tag" }
     },
 
-    onStart: async function ({ message, usersData, event, args, api }) {
+    onStart: async function ({ message, usersData, event, args }) {
         const senderID = event.senderID;
-        const allowedUIDs = [config.adminBot, ...config.adminBot];
-
-        const formatMoney = (num) => {
-            const units = ["", "K", "M", "B", "T", "Q", "Qi", "Sx", "Sp", "Oc", "N", "D"];
-            let unit = 0;
-            let number = Number(num);
-
-            while (number >= 1000 && unit < units.length - 1) {
-                number /= 1000;
-                unit++;
-            }
-
-            return `${number.toFixed(2)}${units[unit]}`;
-        };
-
-        const isValidAmount = (value) => {
-            const num = Number(value);
-            return !isNaN(num) && num > 0;
-        };
+        const cardImageURL = "https://i.postimg.cc/N0VqRMFB/Screenshot-20260105-004415.png"; 
 
         const getTargetUID = () => {
             if (event.messageReply) return event.messageReply.senderID;
             if (Object.keys(event.mentions).length > 0) return Object.keys(event.mentions)[0];
-            if (!isNaN(args[1])) return args[1];
+            if (args[0] && !isNaN(args[0])) return args[0];
             return null;
         };
 
-        const getAmount = () => args[args.length - 1];
+        const createVisaCard = async (name, balance, uid) => {
+            const canvas = createCanvas(800, 500);
+            const ctx = canvas.getContext('2d');
 
-        if (args[0] === "help") {
-            return message.reply(`1.${config.prefix} balance: View your balance.
-2. ${config.prefix} balance <@tag>: View another user's balance.
-3. ${config.prefix} balance transfer <UID> <amount>: Transfer money.
-4. ${config.prefix} balance request <amount>: Request money from admin.
-5. ${config.prefix} balance add <UID> <amount>: Admin adds money.
-6. ${config.prefix} balance delete <UID> <amount>: Admin deletes money.`);
-        }
+            try {
+                const baseImage = await loadImage(cardImageURL);
+                ctx.drawImage(baseImage, 0, 0, 800, 500);
+                try {
+                    const avatarURL = `https://graph.facebook.com/${uid}/picture?width=512&height=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
+                    const response = await axios.get(avatarURL, { responseType: 'arraybuffer' });
+                    const avatarImg = await loadImage(Buffer.from(response.data));
 
-        if (args[0] === "add") {
-            if (!allowedUIDs.includes(senderID)) {
-                return message.reply("❌ You don't have permission to use this command.");
+                    ctx.save();
+                    ctx.shadowColor = 'rgba(255, 255, 255, 0.4)';
+                    ctx.shadowBlur = 15;
+                    ctx.beginPath();
+                    ctx.arc(650, 130, 75, 0, Math.PI * 2, true);
+                    ctx.closePath();
+                    ctx.clip();
+                    ctx.drawImage(avatarImg, 575, 55, 150, 150);
+                    ctx.restore();
+
+                    ctx.strokeStyle = "rgba(255, 255, 255, 0.7)";
+                    ctx.lineWidth = 4;
+                    ctx.stroke();
+                } catch (err) {
+                    console.log("Avatar load failed");
+                }
+
+                ctx.save();
+                ctx.shadowColor = "rgba(0,0,0,0.8)";
+                ctx.shadowBlur = 8;
+                ctx.fillStyle = "#FFFFFF";
+                ctx.font = "20px Arial";
+                ctx.globalAlpha = 0.7;
+                ctx.fillText("AVAILABLE BALANCE", 80, 280);
+                ctx.globalAlpha = 1.0;
+                ctx.font = "bold 75px sans-serif"; 
+                ctx.fillText(`$${Number(balance).toLocaleString()}`, 80, 350);
+                ctx.font = "32px monospace";
+                ctx.letterSpacing = "4px"; 
+                const formattedUID = uid.toString().padEnd(16, '0').match(/.{1,4}/g).join("  ");
+                ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+                ctx.fillText(formattedUID, 80, 410);
+                ctx.font = "bold 30px Arial";
+                ctx.shadowBlur = 3;
+                ctx.fillText(name.toUpperCase(), 80, 460);
+                ctx.font = "14px Arial";
+                ctx.fillText("VALID THRU: 12/29", 350, 460);
+                ctx.restore();
+
+                const cachePath = path.join(__dirname, "cache");
+                if (!fs.existsSync(cachePath)) fs.mkdirSync(cachePath);
+                
+                const cardPath = path.join(cachePath, `visa_${uid}.png`);
+                fs.writeFileSync(cardPath, canvas.toBuffer());
+                return cardPath;
+            } catch (e) {
+                console.error(e);
+                return null;
             }
+        };
 
-            const targetUID = getTargetUID();
-            const amount = getAmount();
+        if (!args[0] || (args[0] && !["add", "delete", "transfer"].includes(args[0]))) {
+            const targetID = getTargetUID() || senderID;
+            const userData = await usersData.get(targetID);
+            if (!userData) return message.reply("User not found!");
 
-            if (!targetUID) {
-                return message.reply("❌ Could not identify the user. Make sure to tag, reply, or provide a valid UID.");
-            }
-            if (!isValidAmount(amount)) {
-                return message.reply("❌ Please provide a valid positive amount.");
-            }
+            message.reply("Loading please wait ✨");
+            const cardImage = await createVisaCard(userData.name || "Global User", userData.money || 0, targetID);
+            
+            if (!cardImage) return message.reply("❌ Failed to create card.");
 
-            const userData = await usersData.get(targetUID) || { money: "0" };
-            const userName = userData.name || "Unknown User";
-            const newBalance = (Number(userData.money) + Number(amount)).toString();
-
-            await usersData.set(targetUID, { money: newBalance });
-
-            return message.reply(`✅ Successfully added ${formatMoney(amount)}$ to the balance of ${userName} (UID: ${targetUID}).`);
-        }
-
-        if (args[0] === "delete") {
-            if (!allowedUIDs.includes(senderID)) {
-                return message.reply("❌ You don't have permission to use this command.");
-            }
-
-            const targetUID = getTargetUID();
-            const amount = getAmount();
-
-            if (!targetUID) {
-                return message.reply("❌ Could not identify the user. Make sure to tag, reply, or provide a valid UID.");
-            }
-            if (!isValidAmount(amount)) {
-                return message.reply("❌ Please provide a valid positive amount.");
-            }
-
-            const userData = await usersData.get(targetUID) || { money: "0" };
-            const userName = userData.name || "Unknown User";
-            const currentBalance = Number(userData.money);
-
-            if (currentBalance < Number(amount)) {
-                return message.reply("❌ The target does not have enough money to delete.");
-            }
-
-            const newBalance = (currentBalance - Number(amount)).toString();
-
-            await usersData.set(targetUID, { money: newBalance });
-
-            return message.reply(`✅ Successfully deleted ${formatMoney(amount)}$ from the balance of ${userName} (UID: ${targetUID}).`);
+            return message.reply({
+                body: `✨ Premium Visa Card: ${userData.name}`,
+                attachment: fs.createReadStream(cardImage)
+            }, () => {
+                if(fs.existsSync(cardImage)) fs.unlinkSync(cardImage);
+            });
         }
 
         if (args[0] === "transfer") {
             const targetUID = getTargetUID();
-            const amount = getAmount();
+            const amount = parseInt(args[args.length - 1]);
+            if (!targetUID || isNaN(amount) || amount <= 0) return message.reply("❌ Usage: balance transfer @tag 100");
 
-            if (!targetUID) {
-                return message.reply("❌ Could not identify the user. Make sure to tag, reply, or provide a valid UID.");
-            }
-            if (targetUID === senderID) {
-                return message.reply("❌ You cannot transfer money to yourself.");
-            }
-            if (!isValidAmount(amount)) {
-                return message.reply("❌ Please provide a valid positive amount.");
-            }
+            const senderData = await usersData.get(senderID);
+            if (Number(senderData.money) < amount) return message.reply("❌ Insufficient balance!");
 
-            const senderData = await usersData.get(senderID) || { money: "0" };
-            const recipientData = await usersData.get(targetUID) || { money: "0" };
-            const recipientName = recipientData.name || "Unknown User";
+            const receiverData = await usersData.get(targetUID);
+            await usersData.set(senderID, { money: (Number(senderData.money) - amount).toString() });
+            await usersData.set(targetUID, { money: (Number(receiverData.money || 0) + amount).toString() });
 
-            const senderBalance = Number(senderData.money);
-            const recipientBalance = Number(recipientData.money);
-
-            if (senderBalance < Number(amount)) {
-                return message.reply("❌ You don't have enough money to transfer.");
-            }
-
-            const updatedSenderBalance = (senderBalance - Number(amount)).toString();
-            const updatedRecipientBalance = (recipientBalance + Number(amount)).toString();
-
-            await usersData.set(senderID, { money: updatedSenderBalance });
-            await usersData.set(targetUID, { money: updatedRecipientBalance });
-
-            return message.reply(`✅ Successfully transferred ${formatMoney(amount)}$ to ${recipientName} (UID: ${targetUID}).`);
+            return message.reply(`✅ Transferred $${amount} to ${receiverData.name}`);
         }
-
-        if (args[0] === "request") {
-            const amount = args[1];
-
-            if (!isValidAmount(amount)) {
-                return message.reply("❌ Please enter a valid positive amount.");
-            }
-
-            const data = await usersData.get(senderID);
-            const name = data.name || "Darling";
-
-            const adminIDs = ["100049220893428"];
-            const threadIDs = ["9191391594224159", "7272501799469344"];
-
-            const requestMessage = `📢 User ${name} (${senderID}) has requested ${formatMoney(amount)}$.`;
-
-            for (const adminID of adminIDs) {
-                api.sendMessage(requestMessage, adminID);
-            }
-            for (const threadID of threadIDs) {
-                api.sendMessage(requestMessage, threadID);
-            }
-
-            return message.reply(`✅ Your request for ${formatMoney(amount)}$ has been sent to the admins.`);
-        }
-
-        if (Object.keys(event.mentions).length > 0 || event.messageReply || !isNaN(args[0])) {
-            const targetUID = getTargetUID();
-
-            if (!targetUID) {
-                return message.reply("❌ Could not identify the user. Use UID instead.");
-            }
-
-            const userData = await usersData.get(targetUID) || { money: "0", name: "Unknown User" };
-            const userName = userData.name || "Unknown User";
-            const userMoney = userData.money || "0";
-
-            return message.reply(`💰 ${userName} (UID: ${targetUID}) has ${formatMoney(userMoney)}$ (${userMoney}$).`);
-        }
-
-        const userData = await usersData.get(senderID) || { money: "0", name: "Unknown User" };
-        const userName = userData.name || "Unknown User";
-
-        return message.reply(`💸 ${userName}, you have ${formatMoney(userData.money)}$ (${userData.money}$).`);
     }
 };
