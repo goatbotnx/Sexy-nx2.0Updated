@@ -1,112 +1,78 @@
-const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
-
-async function getBaseAPI() {
-  const res = await axios.get(
-    "https://raw.githubusercontent.com/nazrul4x/Noobs/main/Apis.json"
-  );
-  return res.data.api;
-}
-
-function cleanTitle(title, url) {
-  if (!title || title === "N/A") {
-    try {
-      const u = new URL(url);
-      return `Video from ${u.hostname.replace("www.", "")}`;
-    } catch {
-      return "Downloaded Video";
-    }
-  }
-
-  return title
-    .replace(/https?:\/\/\S+/gi, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-async function downloadStream(url, savePath) {
-  const res = await axios({
-    url,
-    method: "GET",
-    responseType: "stream",
-    headers: {
-      "User-Agent": "Mozilla/5.0"
-    }
-  });
-
-  return new Promise((resolve, reject) => {
-    const writer = fs.createWriteStream(savePath);
-    res.data.pipe(writer);
-    writer.on("finish", resolve);
-    writer.on("error", reject);
-  });
-}
+const axios = require('axios');
 
 module.exports = {
   config: {
-    name: "autodown",
-    aliases: ["autodl"],
-    version: "2.1.0",
-    author: "Nazrul | modified by xalman",
+    name: "alldl",
+    version: "7.5.0",
+    author: "xalman",
+    countDown: 3,
     role: 0,
-    description: "Auto download media with real video title",
+    shortDescription: "Ultra Fast Auto Video Downloader",
+    longDescription: "Download videos using dynamic GitHub API link.",
     category: "media",
-    guide: { en: "Send any supported media link" }
+    guide: "{pn} <link> or just send the link"
   },
 
-  onStart: async () => {},
+  onStart: async function ({ api, event, args, message }) {
+    const url = args[0];
+    if (!url) return message.reply("⚠️ দয়া করে একটি ভিডিও লিঙ্ক দিন!");
+    return await this.handleDownload(url, api, event, message);
+  },
 
-  onChat: async ({ api, event }) => {
-    if (!event.body) return;
+  onChat: async function ({ api, event, message }) {
+    const { body, senderID } = event;
+    if (!body || senderID === api.getCurrentUserID()) return;
 
-    const linkMatch = event.body.match(/https?:\/\/\S+/);
-    if (!linkMatch) return;
+    const linkRegEx = /(https?:\/\/[^\s]+)/g;
+    const match = body.match(linkRegEx);
 
-    const inputUrl = linkMatch[0];
+    if (match) {
+      const url = match[0];
+      const sites = ["tiktok.com", "facebook.com", "fb.watch", "instagram.com", "reels", "youtube.com", "youtu.be", "pinterest.com", "pin.it", "twitter.com", "x.com", "capcut.com"];
+      
+      if (sites.some(s => url.includes(s))) {
+        return await this.handleDownload(url, api, event, message);
+      }
+    }
+  },
+
+  handleDownload: async function (url, api, event, message) {
+    const { messageID } = event;
+    const start = Date.now();
 
     try {
-      api.setMessageReaction("⏳", event.messageID, () => {}, true);
+      if (api.setMessageReaction) api.setMessageReaction("⌛", messageID, () => {}, true);
 
-      const baseApi = await getBaseAPI();
-      const res = await axios.get(
-        `${baseApi}/nazrul/alldlxx?url=${encodeURIComponent(inputUrl)}`
-      );
+      const configRes = await axios.get("https://raw.githubusercontent.com/goatbotnx/Sexy-nx2.0Updated/refs/heads/main/nx-apis.json");
+      const apiUrl = configRes.data.autodl;
+      const res = await axios.get(`${apiUrl}/download?url=${encodeURIComponent(url)}`);
 
-      const data = res.data;
-      if (!data || !data.url) throw new Error("No media link");
+      if (res.data && res.data.success && res.data.data.video_url) {
+        const { video_url, title, source, quality } = res.data.data;
 
-      const videoTitle = cleanTitle(data.t, inputUrl);
-      const platform = data.p || "Unknown";
+        const stream = await axios.get(video_url, { responseType: 'stream' });
+        const time = ((Date.now() - start) / 1000).toFixed(2);
 
-      const filePath = path.join(
-        __dirname,
-        `auto_${Date.now()}.mp4`
-      );
+        const xalmanBody = 
+          `『 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗𝗘𝗥 』\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📝 𝗧𝗶𝘁𝗹𝗲: ${title || "No Title"}\n` +
+          `🌐 𝗣𝗹𝗮𝘁𝗳𝗼𝗿𝗺: ${source.toUpperCase()}\n` +
+          `🎬 𝗤𝘂𝗮𝗹𝗶𝘁𝘆: higher resolution\n` +
+          `⏱️ 𝗧𝗶𝗺𝗲: ${time}s\n` +
+          `👤 𝗔𝘂𝘁𝗵𝗼𝗿: xalman\n` +
+          `━━━━━━━━━━━━━━━━━━`;
 
-      await downloadStream(data.url, filePath);
+        await message.reply({
+          body: xalmanBody,
+          attachment: stream.data
+        });
 
-      await api.sendMessage(
-        {
-          body:
-`✨💎𝗠𝗲𝗱𝗶𝗮 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱𝗲𝗿💎✨
-
-🎬 Title : ${videoTitle}
-🌐 Platform : ${platform}
-📥 Status : Successfully Downloaded
-
-— Powered by xalman`,
-          attachment: fs.createReadStream(filePath)
-        },
-        event.threadID
-      );
-
-      fs.unlinkSync(filePath);
-      api.setMessageReaction("✅", event.messageID, () => {}, true);
-
-    } catch (err) {
-      api.setMessageReaction("❌", event.messageID, () => {}, true);
-      console.error("[AUTODOWN ERROR]", err.message);
+        if (api.setMessageReaction) api.setMessageReaction("✅", messageID, () => {}, true);
+      }
+    } catch (e) {
+      console.error("Ultra DL Error:", e.message);
+      if (api.setMessageReaction) api.setMessageReaction("❌", messageID, () => {}, true);
     }
   }
 };
