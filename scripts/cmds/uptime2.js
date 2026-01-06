@@ -3,10 +3,10 @@ const { bold } = require("fontstyles");
 
 module.exports = {
   config: {
-    name: 'uptime4',
+    name: 'uptime2',
     aliases: ['upt2', 'up2'],
     version: '1.6',
-    author: 'xalman', // create by siyuu full fixed and modified by xalman
+    author: 'xalman', /*create by siyuu full fixed and modified by xalman*/
     countDown: 15,
     role: 0,
     shortDescription: 'Display bot uptime',
@@ -49,19 +49,14 @@ module.exports = {
       const barLength = 10;
       const filledBar = Math.round((memPercentage / 100) * barLength);
       const ramBar = "█".repeat(filledBar) + "▒".repeat(barLength - filledBar);
-
       const usedMemoryGB = (usedMemory / 1024 / 1024 / 1024).toFixed(2);
       const totalMemoryGB = (totalMemory / 1024 / 1024 / 1024).toFixed(2);
-
-      // CPU & System
       const cpuUsage = os.loadavg();
       const cpuModel = os.cpus()[0].model.split('@')[0].trim();
       const nodeVersion = process.version;
-      const botPing = Date.now() - startTime;
-      
+      const botPing = Date.now() - startTime;   
       const mediaBan = await threadsData.get(event.threadID, 'mediaBan') || false;
       const mediaStatus = mediaBan ? '🚫 Restricted' : '✅ Active';
-
       const editSegments = [
         `╭─❒ ${bold("SYSTEM UPTIME")}\n│ 🕒 ${days}d ${hours}h ${minutes}m ${seconds}s\n╰───────────────❒`,
         `╭─❒ ${bold("RESOURCE USAGE")}\n│ 📟 RAM: [${ramBar}] ${memPercentage}%\n│ 📥 ${usedMemoryGB}GB / ${totalMemoryGB}GB\n│ 🛡️ CPU: ${cpuModel}\n│ ⚡ Load: ${cpuUsage[0].toFixed(2)}%\n╰───────────────❒`,
