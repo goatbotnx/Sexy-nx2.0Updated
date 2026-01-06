@@ -1,8 +1,8 @@
 const os = require("os");
 
 module.exports.config = {
-  name: "uptime2",
-  aliases: ["up2", "upt2"],
+  name: "uptime4",
+  aliases: ["up4", "upt4"],
   version: "2.5.1",
   author: "Jan+fixed by xalman",
   role: 0,
@@ -14,31 +14,23 @@ module.exports.config = {
 
 module.exports.onStart = async function ({ api, event }) {
   const { threadID } = event;
-
-  // ───── Ping ─────
   const start = Date.now();
   const tempMsg = await api.sendMessage("🔄 Fetching enhanced stats...", threadID);
   const ping = Date.now() - start;
-
-  // ───── Uptime ─────
+  
   const uptimeSec = Math.floor(process.uptime());
   const days = Math.floor(uptimeSec / 86400);
   const hours = Math.floor((uptimeSec % 86400) / 3600);
   const minutes = Math.floor((uptimeSec % 3600) / 60);
   const seconds = uptimeSec % 60;
   const uptime = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-  // ───── Memory ─────
   const totalMem = os.totalmem() / 1024 / 1024;
   const freeMem = os.freemem() / 1024 / 1024;
   const usedMem = totalMem - freeMem;
-
-  // ───── CPU (safe) ─────
   const cpuLoad = os.loadavg
     ? os.loadavg()[0].toFixed(2)
     : "N/A";
 
-  // ───── Platform ─────
   const platform = `${os.type()} (${os.arch()})`;
   const nodeVersion = process.version;
 
@@ -63,7 +55,6 @@ module.exports.onStart = async function ({ api, event }) {
 ══════════════════════════════════════════
 `.trim();
 
-  // ───── Safe Edit (No Crash) ─────
   try {
     await api.editMessage(message, tempMsg.messageID, threadID);
   } catch (err) {
