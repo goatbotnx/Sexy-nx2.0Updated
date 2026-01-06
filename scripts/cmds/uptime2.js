@@ -4,7 +4,7 @@ const { bold } = require("fontstyles");
 module.exports = {
   config: {
     name: 'uptime4',
-    aliases: ['uptt', 'statu'],
+    aliases: ['upt2', 'up2'],
     version: '1.6',
     author: 'xalman', // siyuuu
     countDown: 15,
