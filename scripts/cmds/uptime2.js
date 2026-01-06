@@ -1,4 +1,4 @@
-/cmd install uptime4.js const os = require('os');
+const os = require('os');
 const { bold } = require("fontstyles");
 
 module.exports = {
@@ -6,7 +6,7 @@ module.exports = {
     name: 'uptime4',
     aliases: ['upt2', 'up2'],
     version: '1.6',
-    author: 'xalman', // siyuuu
+    author: 'xalman', // create by siyuu full fixed and modified by xalman
     countDown: 15,
     role: 0,
     shortDescription: 'Display bot uptime',
