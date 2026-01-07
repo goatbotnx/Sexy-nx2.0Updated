@@ -4,5 +4,6 @@
   "cdp": "https://nx-cdpapis.onrender.com",
   "quiz": "https://nx-quizapis.onrender.com",
   "meme": "https://nx-memeapi.onrender.com",
-  "autodl": "https://nx-autodl.onrender.com"
+  "autodl": "https://nx-autodl.onrender.com",
+  "lyrics": "https://nx-lyricsapi.onrender.com"
 }
