@@ -3,12 +3,12 @@ const { writeFileSync } = require("fs-extra");
 
 module.exports = {
 config: {
-name: "operator",
-alias: ["o"],
+name: "admin",
+alias: ["operator"],
 version: "2",
 author: "xalman",
 countDown: 5,
-role: 0, // everyone can use list
+role: 0,
 shortDescription: { en: "Operator system" },
 longDescription: { en: "Add/remove operator (only owner), list operator (everyone)" },
 category: "box chat",
@@ -32,13 +32,10 @@ langs: {
 onStart: async function ({ message, args, usersData, event, getLang }) {  
 
 	const senderID = event.senderID;
-	const OWNER = "61583129938292"; // change if needed
+	const OWNER = "61583129938292";
 
 	switch (args[0]) {
 
-		// ======================================
-		//               ADD OPERATOR
-		// ======================================
 		case "add":
 		case "-a": {
 
@@ -89,9 +86,6 @@ onStart: async function ({ message, args, usersData, event, getLang }) {
 			);
 		}
 
-		// ======================================
-		//             REMOVE OPERATOR
-		// ======================================
 		case "remove":
 		case "-r": {
 
@@ -143,9 +137,6 @@ onStart: async function ({ message, args, usersData, event, getLang }) {
 			);
 		}
 
-		// ======================================
-		//               LIST OPERATORS
-		// ======================================
 		case "list":
 		case "-l": {
 
