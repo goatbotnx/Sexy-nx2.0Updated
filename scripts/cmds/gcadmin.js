@@ -1,7 +1,6 @@
 module.exports = {
   config: {
-    name: "admin",
-    aliases: ["gcadmin"],
+    name: "gcadmin",
     version: "1.1",
     author: "〲T A N J I L ツ | Edited by ChatGPT",
     role: 1,
