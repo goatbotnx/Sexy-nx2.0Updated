@@ -6,5 +6,6 @@
   "meme": "https://nx-memeapi.onrender.com",
   "autodl": "https://nx-autodl.onrender.com",
   "lyrics": "https://nx-lyricsapi.onrender.com",
-  "flux": "https://nx-fluxapi.onrender.com"
+  "flux": "https://nx-fluxapi.onrender.com",
+  "rbg": "https://huggingface.co/spaces/nx210/nx-rbg"
 }
