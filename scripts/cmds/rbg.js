@@ -1,104 +1,51 @@
 const axios = require('axios');
-const fs = require('fs-extra'); 
-const path = require('path');
-const stream = require('stream');
-const { promisify } = require('util');
-
-const pipeline = promisify(stream.pipeline);
-const API_ENDPOINT = "https://free-goat-api.onrender.com/rbg"; 
-const CACHE_DIR = path.join(__dirname, 'cache');
-
-function extractImageUrl(args, event) {
-    let imageUrl = args.find(arg => arg.startsWith('http'));
-
-    if (!imageUrl && event.messageReply && event.messageReply.attachments && event.messageReply.attachments.length > 0) {
-        const imageAttachment = event.messageReply.attachments.find(att => att.type === 'photo' || att.type === 'image');
-        if (imageAttachment && imageAttachment.url) {
-            imageUrl = imageAttachment.url;
-        }
-    }
-    return imageUrl;
-}
 
 module.exports = {
   config: {
     name: "rbg",
-    aliases: ["removebg", "nobg", "bgremove"],
-    version: "2.0",
-    author: "NeoKEX",
-    countDown: 10,
+    aliases: ["removebg"],
+    version: "2.6.0",
+    author: "xalman",
+    countDown: 5,
     role: 0,
-    longDescription: "Removes the background from an image using AI.",
-    category: "image",
-    guide: {
-      en: 
-        "{pn} <image_url> OR reply to an image.\n\n" +
-        "• Example: {pn} https://example.com/image.jpg"
-    }
+    description: "Remove background from any image",
+    category: "tools",
+    guide: { en: "{p}rbg [reply to a photo]" }
   },
 
-  onStart: async function ({ args, message, event }) {
-    
-    const imageUrl = extractImageUrl(args, event);
-
-    if (!imageUrl) {
-      return message.reply("❌ Please provide an image URL or reply to an image to remove its background.");
-    }
-
-    if (!fs.existsSync(CACHE_DIR)) {
-        fs.mkdirSync(CACHE_DIR, { recursive: true });
-    }
-
-    message.reaction("⏳", event.messageID);
-    let tempFilePath; 
-
+  onStart: async function ({ api, event, args, message }) {
     try {
-      const fullApiUrl = `${API_ENDPOINT}?url=${encodeURIComponent(imageUrl)}`;
-      
-      const imageDownloadResponse = await axios.get(fullApiUrl, {
-          responseType: 'stream',
-          timeout: 60000,
-      });
-
-      if (imageDownloadResponse.status !== 200) {
-           throw new Error(`API request failed with status code ${imageDownloadResponse.status}.`);
+      let imageUrl;
+      if (event.type === "message_reply") {
+        if (event.messageReply.attachments[0]?.type === "photo") {
+          imageUrl = event.messageReply.attachments[0].url;
+        }
+      } else if (args[0]?.match(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)/g)) {
+        imageUrl = args[0];
       }
-      
-      const fileHash = Date.now() + Math.random().toString(36).substring(2, 8);
-      tempFilePath = path.join(CACHE_DIR, `rbg_${fileHash}.png`);
-      
-      await pipeline(imageDownloadResponse.data, fs.createWriteStream(tempFilePath));
 
-      message.reaction("✅", event.messageID);
+      if (!imageUrl) return message.reply("⚠️ | Please reply to an image to remove background.");
+
+      api.setMessageReaction("⏳", event.messageID, (err) => {}, true);
+
+      const configUrl = "https://raw.githubusercontent.com/goatbotnx/Sexy-nx2.0Updated/refs/heads/main/nx-apis.json";
+      const apiList = await axios.get(configUrl);
+      const baseUrl = apiList.data["rbg"]; 
       
-      await message.reply({
-        body: `🖼️ Background removed successfully!`,
-        attachment: fs.createReadStream(tempFilePath)
+      const rbgUrl = `${baseUrl}/rbg?url=${encodeURIComponent(imageUrl)}`;
+      
+      const response = await axios.get(rbgUrl, { responseType: 'stream' });
+
+      api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+
+      return message.reply({
+        body: "✂️ 𝗕𝗮𝗰𝗸𝗴𝗿𝗼𝘂𝗻𝗱 𝗥𝗲𝗺𝗼𝘃𝗲𝗱 ✂️\n\n📁 Format: PNG (Transparent)\n👤 Author: xalman\n✅ Quality: Original",
+        attachment: response.data
       });
 
     } catch (error) {
-      message.reaction("❌", event.messageID);
-      
-      let errorMessage = "❌ Failed to remove background. An error occurred.";
-      if (error.response) {
-         if (error.response.status === 400) {
-             errorMessage = `❌ Error 400: The provided URL might be invalid or the image is too small/large.`;
-         } else {
-             errorMessage = `❌ HTTP Error ${error.response.status}. The API may be unavailable.`;
-         }
-      } else if (error.message.includes('timeout')) {
-         errorMessage = `❌ Request timed out (API response too slow).`;
-      } else if (error.message) {
-         errorMessage = `❌ ${error.message}`;
-      }
-
-      console.error("RBG Command Error:", error);
-      message.reply(errorMessage);
-
-    } finally {
-      if (tempFilePath && fs.existsSync(tempFilePath)) {
-          fs.unlinkSync(tempFilePath);
-      }
+      api.setMessageReaction("❌", event.messageID, (err) => {}, true);
+      return message.reply("❌ | Failed to remove background. Server is busy.");
     }
   }
 };
