@@ -1,89 +1,80 @@
 module.exports.config = {
     name: "chudi",
-    version: "1.0",
+    version: "1.6",
     role: 2,
-    author: "Mesbah Bb'e",
-    description: "5 বারের জন্য ক্রমাগত বন্ধুর ট্যাগ ট্যাগ করুন\nসেই ব্যক্তিকে আত্মা কলিং বলা যেতে পারে",
+    author: "Mesbah Bb'e+ xalman",
+    description: "Fast tag Banglish list (1-2 seconds gap)",
     category: "nsfw",
-    guide: " please @mention",
+    guide: "{pn} @mention ba message-e reply din",
     coolDown: 10
-}
-module.exports.onStart = async function({ api, args, Users, event}) {
-    var mention = Object.keys(event.mentions)[0];
-    if(!mention) return api.sendMessage("বস খানকিরপুলারে একটা মেনশন দেন-!!🫂", event.threadID);
- let name =  event.mentions[mention];
-    var arraytag = [];
-        arraytag.push({id: mention, tag: name});
-    var a = function (a) { api.sendMessage(a, event.threadID); }
-a("তোরে চুদলো ");
-setTimeout(() => {a({body: "ভোদাই জানে চোদার মজা তোর মাকে জিজ্ঞেস কর কেমন দিছিলাম চোদা ।" + " নিশি রাতে তোর মাকে চুদে পেয়েছিলাম অনেক আনন্দ। " + name, mentions: arraytag})}, 3000);
-setTimeout(() => {a({body: "খাংকির পোলা তর কচি বোন রে চুদি .." + " " + name, mentions: arraytag})}, 5000);
-setTimeout(() => {a({body: "মাদারচোদ তর আম্মু পম পম খাংকির পো " + " " + name, mentions: arraytag})}, 7000);
-setTimeout(() => {a({body: "খাংকির পোলা তর কচি ভুদায় ভুদায় কামর দিমু  !" + " তুর মারে আটলান্টিক মহাসাগরের মাঝামাঝি গলা টিপে ধরে চুদতে চুদতে ভুদার মাসিক চেন্জ করমো  " + name, mentions: arraytag})}, 9000);
-setTimeout(() => {a({body: "খাংকি মাগির পোলা কথা ক কম কম তর আম্মু রে চুদে বানামু আইটেম বোম " + " " + name, mentions: arraytag})}, 12000);
-setTimeout(() => {a({body: "depression থেকেও তর মাইরে চু*** দি  " + " " + name, mentions: arraytag})}, 15000);
-setTimeout(() => {a({body: "তর আম্মু রে আচার এর লোভ দেখিয়ে আমি চুদি মাগির পোলা" + " " + name, mentions: arraytag})}, 17000);
-setTimeout(() => {a({body: "বান্দির পোলা তর কচি বোনের ভুদা ফাক কর থুতু দিয়ে ভুদায় দন ডুকামু " + " " + name, mentions: arraytag})}, 20000);
-setTimeout(() => {a({body: "বান্দি মাগির পোলা তর আম্মু রে চুদি তর দুলা ভাই এর কান্দে ফেলে  " + " " + name, mentions: arraytag})},23000);
-setTimeout(() => {a({body: "উফফফ খাদ্দামা মাগির পোলা তর আম্মুর কালা ভুদায় আমার মাল আউট তর কচি বোন রে উপ্তা করে এবার চুদবো  ।" + "খানকি মাগির পোলা তুর মারে চাইনা রেস্তোরাঁ নিয়ে জাইয়া রেসিপি লোভ দেখিয়ে চুদি তুই কি রাগ করবি " + name, mentions: arraytag})}, 25000);
-setTimeout(() => {a({body: "অনলাইনে গালি বাজ হয়ে গেছত মাগির পোলা এমন চুদা দিমু লাইফ টাইম মনে রাখভি ʀᴜᴘᴏᴋ তর বাপ মাগির ছেলে ।" + " " + name, mentions: arraytag})}, 28500);
-setTimeout(() => {a({body: "বাতিজা শুন তর আম্মু রে চুদলে রাগ করবি না তো আচ্ছা জা রাগ করিস না তর আম্মুর কালা ভুদায় আর চুদলাম না তো বোন এর জামা টা খুলে দে  " + " খানকি মাগির পোলা তুর মারে চাইনা রেস্তোরাঁ নিয়ে জাইয়া রেসিপি লোভ দেখিয়ে চুদি তুই কি রাগ করবি  " + name, mentions: arraytag})},31000);
-setTimeout(() => {a({body: " হাই মাদারচোদ তর তর ব্যাশা জাতের আম্মু টা রে আদর করে করে চুদি " + " " + name, mentions: arraytag})}, 36000);
-setTimeout(() => {a("~ চুদা কি আরো খাবি মাগির পোল " + "ভাগলে তুর মারে তুর বাপ কাকায় সবাই এক লগে চুদে ")} , 39000);
-setTimeout(() => {a({body: "খাংকির পোলা ।" + " " + name, mentions: arraytag})}, 42000);
-setTimeout(() => {a({body: "মাদারচোদ.." + "__ এত কথা বাদ চল ২ জন মিলে তর মারে ধষন করি কালা মাগীর পুত ︵❛❛༎ -!! " + name, mentions: arraytag})}, 48000);
-setTimeout(() => {a({body: "ব্যাস্যার পোলা " + " " + name, mentions: arraytag})}, 51000);
-setTimeout(() => {a({body: "ব্যাশ্যা মাগির পোলা  !" + "__তর মার কচি ভুদায় ৭০ মণ বাগুন চাষ করমু নডির পুত পাগল ছাগল  " + name, mentions: arraytag})}, 54000);
-setTimeout(() => {a({body: "পতিতা মাগির পোলা " + " ____ তোর মারে শেখ হাসিনা এর জামাই নরেন্দ্র মোদি কে দিয়ে পুটকি মারি" + name, mentions: arraytag})}, 57000);
-setTimeout(() => {a({body: "depression থেকেও তর মাইরে চু*** দি " + " ছিরা জুতায় গুহ লাগায় তোর মার বুইড়া ভোদা ডুকায় তোর মাই এর কোলে বসায় রাখমু " + name, mentions: arraytag})}, 59400);
-setTimeout(() => {a({body: "তর মারে চুদি" + " আপনার মারে ভুতের গল্প সুনিয়ে আসতে আসতে শির শির ভাবে চুদতে জায় " + name, mentions: arraytag})}, 63000);
-setTimeout(() => {a({body: "নাট বল্টু মাগির পোলা" + "__তোর মারে পাকিস্তান রাজধানী লাহোর এ নিয়ে উচ্চ শিহ্মায় শিহ্মিত করে চুদবো-))!! " + name, mentions: arraytag})}, 66000);
-setTimeout(() => {a({body: "তর বোন রে পায়জামা খুলে চুদি " + " " + name, mentions: arraytag})},69000);
-setTimeout(() => {a({body: "উম্মম্মা তর বোন এরকচি ভুদায়।" + " " + name, mentions: arraytag})}, 72000);
-setTimeout(() => {a({body: "DNA টেষ্ট করা দেখবি আমার চুদা তেই তর জন্ম।" + " " + name, mentions: arraytag})}, 75000);
-setTimeout(() => {a({body: "কামলা মাগির পোলা  " + " " + name, mentions: arraytag})},81000);
-setTimeout(() => {a({body: " বাস্ট্রাড এর বাচ্ছা বস্তির পোলা " + " ____তোর মাকে গ্রীন লাইন গাড়ির ছাদের উপর ফালিয়ে ভোদার উপর পাড়া দিয়া চুদবো-))!!" + name, mentions: arraytag})}, 87000);
-setTimeout(() => {a("~ আমার জারজ শন্তান")} , 93000);
-setTimeout(() => {a({body: "Welcome মাগির পোলা ।" + " ভোদা জানে চোদার মজা তোর মাকে এখন চুদা হবে" + name, mentions: arraytag})}, 99000);
-setTimeout(() => {a({body: "তর কচি বোন এর পম পম.." + " - তোর মারে সালমার বিচ্ছেদি গান শুনে মিয়া খলিফার স্টাইলে চুদবো))-!!" + name, mentions: arraytag})}, 105000);
-setTimeout(() => {a({body: "ব্যাস্যার পোলা কথা শুন তর আম্মু রে চুদি গামছা পেচিয়ে" + " " + name, mentions: arraytag})}, 111000);
-setTimeout(() => {a({body: "ʜɪ জারজ মাগির পোলা  !" + " •যৌবনের চেয়ে গরমের জ্বালা বেশি তাই ভক্তের মারে চুদতে এসে ভোদা দিয়ে পারি পরেহহহ্___!!" + name, mentions: arraytag})}, 114000);
-setTimeout(() => {a({body: "২০ টাকা এ পতিতা মাগির পোলা " + " তোর মাকে ৩৬৫ দিন পদ্মা সেতুন নিচে নিয়ে চুদি  " + name, mentions: arraytag})}, 120000);
-setTimeout(() => {a({body: "depression থেকেও তর মাইরে চু*** দি " + " " + name, mentions: arraytag})}, 126000);
-setTimeout(() => {a({body: "বস্তির ছেলে অনলাইনের কিং" + "তোর মার ভোদায় উম্মাহ " + name, mentions: arraytag})}, 132000);
-setTimeout(() => {a({body: "টুকাই মাগির পোলা" + " কিরে খানকির ছেলে " + name, mentions: arraytag})}, 138000);
-setTimeout(() => {a({body: "তর আম্মু রে পায়জামা খুলে চুদি " + " " + name, mentions: arraytag})},144000);
-setTimeout(() => {a({body: "উম্মম্মা তর বোন এরকচি ভুদায়।" + " আহ আহ তোর মাকে দিচ্ছি ঠাপ " + name, mentions: arraytag})}, 150000);
-setTimeout(() => {a({body: "DNA টেষ্ট করা দেখবি আমার চুদা তেই তর জন্ম।" + " " + name, mentions: arraytag})}, 156000);
-setTimeout(() => {a({body: "হিজলা মাগির পোলা  " + " " + name, mentions: arraytag})},162000);
-setTimeout(() => {a({body: " বস্তিরন্দালাল এর বাচ্ছা বস্তির পোলা " + " " + name, mentions: arraytag})}, 168000);
-setTimeout(() => {a("~ আমার জারজ শন্তান জা ভাগ" +" ___ কিছু কিছু খানকির পোলা রে এডিট চুদে জন্ম দিছে-!! ")} , 171000);
-setTimeout(() => {a({body: "Welcome শুয়োরের বাচ্চা " + " " + name, mentions: arraytag})}, 174000);
-setTimeout(() => {a({body: "কুত্তার বাচ্ছা তর কচি বোন এর পম পম.." + " " + name, mentions: arraytag})}, 177000);
-setTimeout(() => {a({body: "খাঙ্কিরপোলা পোলা কথা শুন তর আম্মু রে চুদি গামছা পেচিয়ে🐰" + " " + name, mentions: arraytag})}, 180000);
-setTimeout(() => {a({body: "Hi জারজ পোলা মাগির পোলা  !" + " " + name, mentions: arraytag})}, 9000);
-setTimeout(() => {a({body: "খান্কি মাগির পোলা " + "ᴛᴏʀ" + name, mentions: arraytag})}, 12000);
-setTimeout(() => {a({body: "তোর বাপে তোর নানা।  " + " " + name, mentions: arraytag})}, 15000);
-setTimeout(() => {a({body: "বস্তির ছেলে তোর বইনরে মুসলমানি দিমু।" + " " + name, mentions: arraytag})}, 17000);
-setTimeout(() => {a({body: "টুকাই মাগির পোলা মোবাইল ভাইব্রেশন কইরা তুর কচি বোন এর পুকটিতে ভরবো।" + " " + name, mentions: arraytag})}, 20000);
-setTimeout(() => {a({body: "তোর মুখে হাইগ্যা দিমু। " + " " + name, mentions: arraytag})},23000);
-setTimeout(() => {a({body: "কুত্তার পুকটি চাটামু💉।" + " " + name, mentions: arraytag})}, 25000);
-setTimeout(() => {a({body: "তর আম্মুর হোগা দিয়া ট্রেন ভইরা দিমু।।" + " " + name, mentions: arraytag})}, 28500);
-setTimeout(() => {a({body: "হিজলা মাগির পোলা হাতির ল্যাওড়া দিয়া তর মায়েরে চুদুম।  " + " " + name, mentions: arraytag})},31000);
-setTimeout(() => {a({body: "তর বোন ভোদা ছিল্লা লবণ লাগায় দিমু। " + " " + name, mentions: arraytag})}, 36000);
-setTimeout(() => {a("~ ফাটা কন্ডমের ফসল। জা ভাগ")} , 39000);
-setTimeout(() => {a({body: "Welcome শুয়োরের বাচ্চা ।" + " " + name, mentions: arraytag})}, 3000);
-setTimeout(() => {a({body: "কুত্তার বাচ্ছা তর বৌন ভোদায় মাগুর মাছ চাষ করুম।.." + " " + name, mentions: arraytag})}, 5000);
-setTimeout(() => {a({body: "খাঙ্কিরপোলা পোলা তর বোনের  হোগায় ইনপুট, তর মায়ের ভোদায় আউটপুট।🐰" + " " + name, mentions: arraytag})}, 7000);
-setTimeout(() => {a({body: "তর মায়ের ভোদা বোম্বাই মরিচ দিয়া চুদামু।!" + " " + name, mentions: arraytag})}, 9000);
-setTimeout(() => {a({body: "খান্কি মাগির পোলা তর মায়ের ভোদা শিরিষ কাগজ দিয়া ঘইষা দিমু। " + " " + name, mentions: arraytag})}, 12000);
-setTimeout(() => {a({body: "জং ধরা লোহা দিয়া পাকিস্তানের মানচিত্র বানাই্য়া তোদের পিছন দিয়া ঢুকামু। " + " " + name, mentions: arraytag})}, 15000);
-setTimeout(() => {a({body: "বস্তির ছেলে তর মায়ের ভুদাতে পোকা।" + " " + name, mentions: arraytag})}, 17000);
-setTimeout(() => {a({body: "টুকাই মাগির পোলা তর মার ভোদায় পাব্লিক টয়লেট।" + " " + name, mentions: arraytag})}, 20000);
-setTimeout(() => {a({body: "তোর মুখে হাইগ্যা দিমু। ভুস্কি মাগির পোলা " + " আমি rupok তোর আব্বু " + name, mentions: arraytag})},23000);
-setTimeout(() => {a({body: "কান্দে ফালাইয়া তর মায়েরে চুদি💉।" + "খালে নিয়ে চুদি" + name, mentions: arraytag})}, 25000);
-setTimeout(() => {a({body: "তর আম্মুর উপ্তা কইরা চুদা দিমু।।" + "খালে থাকে না সাপ আমি তোর বাপ " + name, mentions: arraytag})}, 28500);
-setTimeout(() => {a({body: "হিজলা মাগির পোলা বালি দিয়া চুদমু তরে খাঙ্কি মাগী!তর মাকে।  " + " " + name, mentions: arraytag})},31000);
-setTimeout(() => {a({body: "তর বোন ভোদা ছিল্লা লবণ লাগায় দিমু। " + " তোর বোনের ভোদায় উম্মাহ " + name, mentions: arraytag})}, 36000);
-setTimeout(() => {a("~ আমার জারজ পুত যা ভাগ")} , 39000);
- }
+};
+
+module.exports.onStart = async function({ api, event, args }) {
+    const { threadID, messageID, mentions, type, messageReply } = event;
+
+    let targetID, name;
+
+    if (type === "message_reply") {
+        targetID = messageReply.senderID;
+    } 
+    else if (Object.keys(mentions).length > 0) {
+        targetID = Object.keys(mentions)[0];
+    }
+
+    if (!targetID) {
+        return api.sendMessage("Bos, jake gali diben take mention din ba tar message-e reply din! 🫂", threadID, messageID);
+    }
+
+    const userInfo = await api.getUserInfo(targetID);
+    name = userInfo[targetID].name;
+
+    const arraytag = [{ id: targetID, tag: name }];
+    const a = (msg) => api.sendMessage(msg, threadID);
+
+    a("Fast chuda shuru hoilo... tui thak ebar!");
+
+    // Fast Banglish List (1-2 seconds interval)
+    setTimeout(() => { a({ body: "Vodai jane chodar moja tor make jigges kor kemon dichilam choda. " + name, mentions: arraytag }) }, 1000);
+    setTimeout(() => { a({ body: "Khankir pola tor kochi bon re chudi.. " + name, mentions: arraytag }) }, 2200);
+    setTimeout(() => { a({ body: "Madarchod tor ammu pom pom khankir po " + name, mentions: arraytag }) }, 3500);
+    setTimeout(() => { a({ body: "Tor ammur kochi vuday kamor dimu maderchod! " + name, mentions: arraytag }) }, 4800);
+    setTimeout(() => { a({ body: "Khanki magir pola kotha ko kom kom tor ammu re banamu item bomb. " + name, mentions: arraytag }) }, 6000);
+    setTimeout(() => { a({ body: "Depression thekeo tor maire chudaye di magir pola. " + name, mentions: arraytag }) }, 7200);
+    setTimeout(() => { a({ body: "Tor ammu re acharer lov dekhiye ami chudi nishirate. " + name, mentions: arraytag }) }, 8500);
+    setTimeout(() => { a({ body: "Bandir pola tor kochi boner vuda fak kor thutu diye don dukamu. " + name, mentions: arraytag }) }, 9800);
+    setTimeout(() => { a({ body: "Bandi magir pola tor ammu re chudi tor dula bhai er kande fele. " + name, mentions: arraytag }) }, 11000);
+    setTimeout(() => { a({ body: "Tor ammur kala vuday amar mal out ebar tor kochi boner pala. " + name, mentions: arraytag }) }, 12500);
+    setTimeout(() => { a({ body: "Online e gali baj hoye gechos magir pola emon chuda dimu mone rakhbi. " + name, mentions: arraytag }) }, 14000);
+    setTimeout(() => { a({ body: "Batiza shun tor ammu re chudle rag koris na tor boner jama khule de. " + name, mentions: arraytag }) }, 15500);
+    setTimeout(() => { a({ body: "Hi madarchod tor besha jater ammu ta re ador kore chudi. " + name, mentions: arraytag }) }, 17000);
+    setTimeout(() => { a({ body: "Bostir chele tor bon re musolmani dimu ami tor bap. " + name, mentions: arraytag }) }, 18500);
+    setTimeout(() => { a({ body: "Tor mukhe haigga dimu vuski magir pola chup thak. " + name, mentions: arraytag }) }, 20000);
+    setTimeout(() => { a({ body: "Tor ammur hoga diya train vora dimu magir pola. " + name, mentions: arraytag }) }, 21500);
+    setTimeout(() => { a({ body: "DNA test kora dekhbi amar chuda tei tor jonmo hoyeche. " + name, mentions: arraytag }) }, 23000);
+    setTimeout(() => { a({ body: "Kuntar baccha tor boner vuday magur mach chash korum. " + name, mentions: arraytag }) }, 24500);
+    setTimeout(() => { a({ body: "Tor mayer vuda bombay morich diya chudamu jhal lagbe khub! " + name, mentions: arraytag }) }, 26000);
+    setTimeout(() => { a({ body: "Nodi te niye chudi tor maire tui ki rag korbi? " + name, mentions: arraytag }) }, 27500);
+    setTimeout(() => { a({ body: "Tor ammur vuday petrol dhele agun dhoraya dimu khankir pola. " + name, mentions: arraytag }) }, 29000);
+    setTimeout(() => { a({ body: "Bazarer poisa churi kore tor maire hotel e pathash magir pola. " + name, mentions: arraytag }) }, 30500);
+    setTimeout(() => { a({ body: "Tor boner vuda kete kukur ke diye khawamu shayar pola. " + name, mentions: arraytag }) }, 32000);
+    setTimeout(() => { a({ body: "Chira kathi diye tor mar voday khuciye khire banamu. " + name, mentions: arraytag }) }, 33500);
+    setTimeout(() => { a({ body: "Tor mare Green Line bus er upor shuyaya chudmu nodi par korar shomoy. " + name, mentions: arraytag }) }, 35000);
+    setTimeout(() => { a({ body: "Khankir pola kire tor bap ki ekhon o bazar e naki tor mar voday? " + name, mentions: arraytag }) }, 36500);
+    setTimeout(() => { a({ body: "Tor maire launch er cabin e niye chudche amar bondhura. " + name, mentions: arraytag }) }, 38000);
+    setTimeout(() => { a({ body: "Besha magir pola kotha kom bol tor mar voday amar nam lekha. " + name, mentions: arraytag }) }, 39500);
+    setTimeout(() => { a({ body: "Tor ammu re gorur gari te tule chudmu gramer moddhe. " + name, mentions: arraytag }) }, 41000);
+    setTimeout(() => { a({ body: "Maderchod tor bon ke mela te niye chude aslam janos na? " + name, mentions: arraytag }) }, 42500);
+    setTimeout(() => { a({ body: "Tor mar buira voday ekhon o ros ache magir pola. " + name, mentions: arraytag }) }, 44000);
+    setTimeout(() => { a({ body: "Tokai magir pola tor maire chude ammer achar banamu. " + name, mentions: arraytag }) }, 45500);
+    setTimeout(() => { a({ body: "Tor boner vuday lathi diye chudmu kuttar baccha. " + name, mentions: arraytag }) }, 47000);
+    setTimeout(() => { a({ body: "Magir chele tor maire chudte chudte pichon diya mal ber korbo. " + name, mentions: arraytag }) }, 48500);
+    setTimeout(() => { a({ body: "Tor mare dhaka sohorer rasta te shuyaya chudbo shobai mile. " + name, mentions: arraytag }) }, 50000);
+    setTimeout(() => { a({ body: "Kire jaroj tor ammu re ki ekhon o vut e chude naki? " + name, mentions: arraytag }) }, 51500);
+    setTimeout(() => { a({ body: "Tor ammur kochi voday gorom tel dhele chudamu. " + name, mentions: arraytag }) }, 53000);
+    setTimeout(() => { a({ body: "Tor boner pichone boma mariye fatiye dimu magir pola. " + name, mentions: arraytag }) }, 54500);
+    setTimeout(() => { a({ body: "Tor maire chudte chudte paharer upor niye jamu. " + name, mentions: arraytag }) }, 56000);
+    setTimeout(() => { a({ body: "Gadha magir pola tor mar voday ekhon o dhon dukhle tui rag korish. " + name, mentions: arraytag }) }, 57500);
+    
+    setTimeout(() => { a("~ Shala amar jaroj shontan ja ebar bhag! Mission complete.") }, 60000);
+};
+               
