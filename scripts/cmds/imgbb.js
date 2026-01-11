@@ -5,11 +5,11 @@ module.exports = {
     config: {
         name: "imgbb",
         aliases: ["i", "ibb"],
-        version: "1.1.0",
+        version: "3.0",
         hasPermssion: 0,
         credits: "xalman",
         description: "Upload image in imagebb reply any photo",
-        commandCategory: "utility",
+        commandCategory: "image",
         usages: "[reply to an image]",
         cooldowns: 5,
     },
