@@ -1,56 +1,62 @@
-const axios = require("axios");
-const FormData = require("form-data");
+const axios = require('axios');
+const FormData = require('form-data');
 
 module.exports = {
-  config: {
-    name: "imgbb",
-    aliases: ["i"],
-    version: "1.0",
-    author: "xnil6x",
-    countDown: 5,
-    role: 0,
-    description: {
-      en: "Upload image(s) to imgbb"
+    config: {
+        name: "imgbb",
+        aliases: ["i", "ibb"],
+        version: "1.1.0",
+        hasPermssion: 0,
+        credits: "xalman",
+        description: "Upload image in imagebb reply any photo",
+        commandCategory: "utility",
+        usages: "[reply to an image]",
+        cooldowns: 5,
     },
-    category: "uploader",
-    guide: {
-      en: "{pn} (reply to one or more images)"
-    }
-  },
 
-  onStart: async function ({ api, event }) {
-    const imgbbApiKey = "1b4d99fa0c3195efe42ceb62670f2a25";
-    const attachments = event.messageReply?.attachments?.filter(att =>
-      ["photo", "sticker", "animated_image"].includes(att.type)
-    );
+    onStart: async function ({ api, event }) {
+        if (event.type !== "message_reply" || !event.messageReply.attachments[0] || event.messageReply.attachments[0].type !== "photo") {
+            return api.sendMessage("❌ please reply any image", event.threadID, event.messageID);
+        }
 
-    if (!attachments || attachments.length === 0) {
-      return api.sendMessage("Please reply to one or more image attachments.", event.threadID, event.messageID);
-    }
+        const imageUrl = event.messageReply.attachments[0].url;
 
-    try {
-      const uploadedLinks = await Promise.all(
-        attachments.map(async (attachment, index) => {
-          const response = await axios.get(attachment.url, { responseType: "arraybuffer" });
-          const formData = new FormData();
-          formData.append("image", Buffer.from(response.data, "binary"), { filename: `image${index}.jpg` });
+        try {
+            api.setMessageReaction("🕑", event.messageID, (err) => {}, true);
 
-          const res = await axios.post("https://api.imgbb.com/1/upload", formData, {
-            headers: formData.getHeaders(),
-            params: {
-              key: imgbbApiKey
+            const githubLink = "https://raw.githubusercontent.com/goatbotnx/Sexy-nx2.0Updated/refs/heads/main/nx-apis.json";
+            const configRes = await axios.get(githubLink);
+            const apiBaseUrl = configRes.data.imgbb; 
+            if (!apiBaseUrl) throw new Error("API URL not found in JSON");
+
+            const finalEndpoint = `${apiBaseUrl.replace(/\/$/, "")}/upload`;
+
+            const imageRes = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+            const buffer = Buffer.from(imageRes.data);
+
+            const form = new FormData();
+            form.append('image', buffer, { filename: 'image.jpg' });
+
+            const response = await axios.post(finalEndpoint, form, {
+                headers: form.getHeaders()
+            });
+
+            if (response.data.success) {
+                api.setMessageReaction("✅", event.messageID, (err) => {}, true);
+                api.sendMessage(`✅ Upload Success!\n\n🔗 Link: ${response.data.url}`, event.threadID, event.messageID);
+            } else {
+                throw new Error("ImgBB upload failed");
             }
-          });
 
-          return res.data.data.url;
-        })
-      );
-
-      return api.sendMessage(uploadedLinks.join("\n"), event.threadID, event.messageID);
-
-    } catch (err) {
-      console.error("Upload error:", err);
-      return api.sendMessage("Failed to upload one or more images to imgbb.", event.threadID, event.messageID);
+        } catch (error) {
+            console.error(error);
+            api.setMessageReaction("❌", event.messageID, (err) => {}, true);
+            
+            let msg = error.message;
+            if (error.response && error.response.status === 404) {
+                msg = "Server endpoint not found (404). Check if Render app is sleeping.";
+            }
+            api.sendMessage(`⚠️ Error: ${msg}`, event.threadID, event.messageID);
+        }
     }
-  }
 };
