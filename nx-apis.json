@@ -1,9 +1,9 @@
 { 
-  "album": "https://nx-albumapi.onrender.com",
+  "album": "https://album-api-9wws.onrender.com",
   "font": "https://nx-fontapi.onrender.com",
   "cdp": "https://nx-cdpapis.onrender.com",
   "quiz": "https://nx-qz-apis-y7zu.onrender.com",
-  "meme": "https://nx-memeapi.onrender.com",
+  "meme": "https://nx-meme-api-q0dq.onrender.com",
   "autodl": "https://nx-autodl.onrender.com",
   "lyrics": "https://nx-lyricsapi.onrender.com",
   "flux": "https://nx-fluxapi.onrender.com",
