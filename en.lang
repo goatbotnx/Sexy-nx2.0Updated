@@ -93,6 +93,7 @@ handlerEvents.userBanned=ʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀ�
 handlerEvents.threadBanned=ᴛʜɪs ɢʳᴏᴜᴘ ʜᴀs ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ᴜsɪɴɢ ᴛʜᴇ ʙᴏᴛ\n» ʀᴇᴀsᴏɴ: %1\n» ᴛɪᴍᴇ: %2\n» ᴛʜʀᴇᴀᴅ ɪᴅ: %3
 handlerEvents.onlyAdminBox=ᴛʜɪs ɢʳᴏᴜᴘ ɪs ᴄᴜʀʀᴇɴᴛʟʏ ᴇɴᴀʙʟᴇᴅ ᴏɴʟʏ ɢʳᴏᴜᴘ ᴀᴅᴍɪɴɪsᴛʀᴀᴛᴏʀs ᴄᴀɴ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ
 handlerEvents.onlyAdminBot=❌ | ᴄᴜʀʀᴇɴᴛʟʏ ᴏɴʟʏ ʙᴏᴛ ᴀᴅᴍɪɴ ᴄᴀɴ ᴜsᴇ ʙᴏᴛ
+handlerEvents.onlyPrefix=📜 ᴛʜᴀᴛ's ᴊᴜsᴛ ᴍʏ ᴘʀᴇꜰɪx, ᴛᴏ sᴇᴇ ᴍʏ ᴄᴏᴍᴍᴀɴᴅs ᴛʏᴘᴇ %1ʜᴇʟᴘ ᴛᴏ sᴇᴇ ᴀʟʟ ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴀᴍɴᴅs!
 handlerEvents.commandNotFound=ᴄᴏᴍᴍᴀɴᴅ "%1" ᴅᴏᴇs ɴᴏᴛ ᴇxɪsᴛ, ᴛʏᴘᴇ %2ʜᴇʟᴘ ᴛᴏ sᴇᴇ ᴀʟʟ ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
 handlerEvents.commandNotFound2=📜 ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ ʏᴏᴜ ᴀʀᴇ ᴜsɪɴɢ ᴅᴏᴇs ɴᴏᴛ ᴇxɪsᴛ, ᴛʏᴘᴇ %1ʜᴇʟᴘ ᴛᴏ sᴇᴇ ᴀʟʟ ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
 handlerEvents.commandSyntaxError=📜 ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ ʏᴏᴜ ᴀʀᴇ ᴜsɪɴɢ ɪs ᴡʀᴏɴɢ sʏɴᴛᴀx, ᴘʟᴇᴀsᴇ ᴛʏᴘᴇ %1ʜᴇʟᴘ %2 ᴛᴏ sᴇᴇ ᴛʜᴇ dᴇᴛᴀɪʟs ᴏғ ʜᴏᴡ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ
