@@ -89,31 +89,31 @@ handlerCheckData.cantCreateThread=Groups with id '%1' cannot be written to the d
 handlerCheckData.cantCreateUser=Users with id '%1' cannot be written to the database!
 
 # bot/handler/handlerEvents.js
-handlerEvents.onlyPrefix=💠 𝗧𝗵𝗮𝘁'𝘀 𝗷𝘂𝘀𝘁 𝗺𝘆 𝗽𝗿𝗲𝗳𝗶𝘅! 𝗨𝘀𝗲 %1𝗵𝗲𝗹𝗽 𝘁𝗼 𝘃𝗶𝗲𝘄 𝗮𝗹𝗹 𝗮𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗼𝗽𝘁𝗶𝗼𝗻𝘀.
-handlerEvents.userBanned=🚨 𝗔𝗰𝗰𝗲𝘀𝘀 𝗥𝗲𝘀𝘁𝗿𝗶𝗰𝘁𝗲𝗱: 𝗬𝗼𝘂'𝘃𝗲 𝗯𝗲𝗲𝗻 𝗯𝗮𝗻𝗻𝗲𝗱.\n» 𝗥𝗲𝗮𝘀𝗼𝗻: %1\n» 𝗗𝘂𝗿𝗮𝘁𝗶𝗼𝗻: %2\n» 𝗨𝘀𝗲𝗿 𝗜𝗗: %3
-handlerEvents.threadBanned=🚫 𝗖𝗵𝗮𝘁 𝗟𝗼𝗰𝗸𝗲𝗱: 𝗧𝗵𝗶𝘀 𝗴𝗿𝗼𝘂𝗽 𝗶𝘀 𝗯𝗮𝗻𝗻𝗲𝗱.\n» 𝗥𝗲𝗮𝘀𝗼𝗻: %1\n» 𝗘𝘅𝗽𝗶𝗿𝗲𝘀: %2\n» 𝗧𝗵𝗿𝗲𝗮𝗱 𝗜𝗗: %3
-handlerEvents.onlyAdminBox=🔒 𝗔𝗱𝗺𝗶𝗻 𝗠𝗼𝗱𝗲: 𝗢𝗻𝗹𝘆 𝗴𝗿𝗼𝘂𝗽 𝗼𝗳𝗳𝗶𝗰𝗲𝗿𝘀 𝗰𝗮𝗻 𝗶𝘀𝘀𝘂𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 𝗵𝗲𝗿𝗲.
-handlerEvents.onlyAdminBot=⚠️ 𝗦𝘆𝘀𝘁𝗲𝗺 𝗟𝗼𝗰𝗸: 𝗢𝗻𝗹𝘆 𝘁𝗵𝗲 𝗯𝗼𝘁 𝗼𝘄𝗻𝗲𝗿 𝗰𝗮𝗻 𝗼𝗽𝗲𝗿𝗮𝘁𝗲 𝘁𝗵𝗶𝘀.
-handlerEvents.commandNotFound=❌ 𝗨𝗻𝗸𝗻𝗼𝘄𝗻: "%1" 𝗶𝘀 𝗻𝗼𝘁 𝗮 𝘃𝗮𝗹𝗶𝗱 𝗮𝗰𝘁𝗶𝗼𝗻. 𝗧𝗿𝘆 %2𝗵𝗲𝗹𝗽 𝗳𝗼𝗿 𝗴𝘂𝗶𝗱𝗮𝗻𝗰𝗲.
-handlerEvents.commandNotFound2=🔍 𝗡𝗼𝘁 𝗙𝗼𝘂𝗻𝗱: 𝗜 𝗱𝗼𝗻'𝘁 𝗿𝗲𝗰𝗼𝗴𝗻𝗶𝘇𝗲 𝘁𝗵𝗮𝘁. 𝗖𝗵𝗲𝗰𝗸 %1𝗵𝗲𝗹𝗽 𝗳𝗼𝗿 𝘁𝗵𝗲 𝗹𝗶𝘀𝘁.
-handlerEvents.commandNotFoundWithSuggestion=🤔 𝗗𝗶𝗱 𝘆𝗼𝘂 𝗺𝗲𝗮𝗻 "%2"? 𝗜 𝗰𝗼𝘂𝗹𝗱𝗻'𝘁 𝗳𝗶𝗻𝗱 "%1". 𝗨𝘀𝗲 %3𝗵𝗲𝗹𝗽 𝗳𝗼𝗿 𝗺𝗼𝗿𝗲.
-handlerEvents.commandSyntaxError=🛠️ 𝗪𝗿𝗼𝗻𝗴 𝗨𝘀𝗮𝗴𝗲: 𝗣𝗹𝗲𝗮𝘀𝗲 𝗰𝗵𝗲𝗰𝗸 %1𝗵𝗲𝗹𝗽 %2 𝗳𝗼𝗿 𝘁𝗵𝗲 𝗰𝗼𝗿𝗿𝗲𝗰𝘁 𝘀𝘆𝗻𝘁𝗮𝘅.
-handlerEvents.onlyAdmin=🎖️ 𝗔𝗱𝗺𝗶𝗻 𝗢𝗻𝗹𝘆: 𝗧𝗵𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 "%1" 𝗿𝗲𝗾𝘂𝗶𝗿𝗲𝘀 𝗵𝗶𝗴𝗵𝗲𝗿 𝗽𝗲𝗿𝗺𝗶𝘀𝘀𝗶𝗼𝗻𝘀.
-handlerEvents.onlyAdminToUseOnReply=🎖️ 𝗣𝗲𝗿𝗺𝗶𝘀𝘀𝗶𝗼𝗻 𝗗𝗲𝗻𝗶𝗲𝗱: 𝗢𝗻𝗹𝘆 𝗮𝗱𝗺𝗶𝗻𝘀 𝗰𝗮𝗻 𝗿𝗲𝗽𝗹𝘆 𝘁𝗼 𝘁𝗵𝗲 "%1" 𝘁𝗿𝗶𝗴𝗴𝗲𝗿.
-handlerEvents.onlyAdminToUseOnReaction=🎖️ 𝗣𝗲𝗿𝗺𝗶𝘀𝘀𝗶𝗼𝗻 𝗗𝗲𝗻𝗶𝗲𝗱: 𝗢𝗻𝗹𝘆 𝗮𝗱𝗺𝗶𝗻𝘀 𝗰𝗮𝗻 𝗿𝗲𝗮𝗰𝘁 𝘁𝗼 𝘂𝘀𝗲 "%1".
-handlerEvents.onlyAdminBot2=👑 𝗠𝗮𝘀𝘁𝗲𝗿 𝗖𝗼𝗻𝘁𝗿𝗼𝗹: "%1" 𝗶𝘀 𝗿𝗲𝘀𝗲𝗿𝘃𝗲𝗱 𝗳𝗼𝗿 𝘁𝗵𝗲 𝗺𝗮𝗶𝗻 𝗮𝗱𝗺𝗶𝗻 𝗼𝗻𝗹𝘆.
-handlerEvents.onlyAdminBot2ToUseOnReply=👑 𝗠𝗮𝘀𝘁𝗲𝗿 𝗖𝗼𝗻𝘁𝗿𝗼𝗹: 𝗥𝗲𝗽𝗹𝘆-𝗮𝗰𝘁𝗶𝗼𝗻𝘀 𝗳𝗼𝗿 "%1" 𝗮𝗿𝗲 𝗿𝗲𝘀𝘁𝗿𝗶𝗰𝘁𝗲𝗱.
-handlerEvents.onlyAdminBot2ToUseOnReaction=👑 𝗠𝗮𝘀𝘁𝗲𝗿 𝗖𝗼𝗻𝘁𝗿𝗼𝗹: 𝗥𝗲𝗮𝗰𝘁𝗶𝗼𝗻-𝗮𝗰𝘁𝗶𝗼𝗻𝘀 𝗳𝗼𝗿 "%1" 𝗮𝗿𝗲 𝗿𝗲𝘀𝘁𝗿𝗶𝗰𝘁𝗲𝗱.
-handlerEvents.waitingForCommand=⏳ 𝗖𝗼𝗼𝗹𝗱𝗼𝘄𝗻: 𝗬𝗼𝘂'𝗿𝗲 𝘁𝗼𝗼 𝗳𝗮𝘀𝘁! 𝗪𝗮𝗶𝘁 %1𝘀 𝗯𝗲𝗳𝗼𝗿𝗲 𝘁𝗿𝘆𝗶𝗻𝗴 𝗮𝗴𝗮𝗶𝗻.
-handlerEvents.errorOccurred=⚡ [ %1 ]\n𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱 𝗶𝗻 "%2":\n\n%3
-handlerEvents.errorOccurred2=⚡ [ %1 ]\n𝗼𝗻𝗖𝗵𝗮𝘁 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗼𝗻 𝗳𝗮𝗶𝗹𝗲𝗱 𝗶𝗻 "%2":\n\n%3
-handlerEvents.errorOccurred3=⚡ [ %1 ]\n𝗼𝗻𝗥𝗲𝗽𝗹𝘆 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗼𝗻 𝗳𝗮𝗶𝗹𝗲𝗱 𝗶𝗻 "%2":\n\n%3
-handlerEvents.errorOccurred4=⚡ [ %1 ]\n𝗼𝗻𝗥𝗲𝗮𝗰𝘁𝗶𝗼𝗻 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗼𝗻 𝗳𝗮𝗶𝗹𝗲𝗱 𝗶𝗻 "%2":\n\n%3
-handlerEvents.errorOccurred5=⚡ [ %1 ]\n𝗼𝗻𝗘𝘃𝗲𝗻𝘁 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗼𝗻 𝗳𝗮𝗶𝗹𝗲𝗱 𝗶𝗻 "%2":\n\n%3
-handlerEvents.errorOccurred6=⚡ [ %1 ]\n𝗘𝘃𝗲𝗻𝘁 𝗲𝗿𝗿𝗼𝗿 𝗱𝘂𝗿𝗶𝗻𝗴 "%2":\n\n%3
-handlerEvents.errorOccurred7=⚡ [ %1 ]\n𝗔𝗻𝘆𝗘𝘃𝗲𝗻𝘁 𝗲𝗿𝗿𝗼𝗿 𝗱𝘂𝗿𝗶𝗻𝗴 "%2":\n\n%3
-handlerEvents.cannotFindCommandName=🧩 𝗠𝗶𝘀𝘀𝗶𝗻𝗴 𝗗𝗮𝘁𝗮: 𝗖𝗼𝘂𝗹𝗱𝗻'𝘁 𝗳𝗶𝗻𝗱 𝘁𝗵𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗻𝗮𝗺𝗲 𝘁𝗼 𝗿𝗲𝗽𝗹𝘆.
-handlerEvents.cannotFindCommand=🧩 𝗡𝗼𝘁 𝗟𝗼𝗰𝗮𝘁𝗲𝗱: 𝗜 𝗰𝗮𝗻'𝘁 𝗳𝗶𝗻𝗱 "%1" 𝘁𝗼 𝗰𝗼𝗺𝗽𝗹𝗲𝘁𝗲 𝘁𝗵𝗶𝘀 𝗿𝗲𝗽𝗹𝘆.
+handlerEvents.onlyPrefix=— ℹ️ This is my prefix. Type %1help to explore all commands.
+handlerEvents.userBanned=— ⚠️ Access Revoked: You are currently banned.\n» Reason: %1\n» Duration: %2\n» ID: %3
+handlerEvents.threadBanned=— 🚫 Chat Restricted: This group is banned.\n» Reason: %1\n» Expires: %2\n» TID: %3
+handlerEvents.onlyAdminBox=— 🔒 Security: Only group administrators can use the bot here.
+handlerEvents.onlyAdminBot=— 🛡️ System: Access is restricted to bot administrators only.
+handlerEvents.commandNotFound=— 🔍 Unknown Command: "%1" does not exist. Use %2help for a list of commands.
+handlerEvents.commandNotFound2=— 🔍 Not Found: I don't recognize that command. Check %1help for details.
+handlerEvents.commandNotFoundWithSuggestion=— 🤔 Did you mean "%2"? I couldn't find "%1". Type %3help for more.
+handlerEvents.commandSyntaxError=— 🛠️ Syntax Error: Please refer to %1help %2 for correct usage instructions.
+handlerEvents.onlyAdmin=— 🎖️ Permission Required: The command "%1" is for admins only.
+handlerEvents.onlyAdminToUseOnReply=— 🎖️ Restricted: Only admins can use replies with "%1".
+handlerEvents.onlyAdminToUseOnReaction=— 🎖️ Restricted: Only admins can use reactions for "%1".
+handlerEvents.onlyAdminBot2=— 👑 Dev Only: The command "%1" is reserved for my developer.
+handlerEvents.onlyAdminBot2ToUseOnReply=— 👑 Dev Only: Reply-actions for "%1" are locked.
+handlerEvents.onlyAdminBot2ToUseOnReaction=— 👑 Dev Only: Reaction-actions for "%1" are locked.
+handlerEvents.waitingForCommand=— ⏳ Cooldown: Please wait %1s before using this command again.
+handlerEvents.errorOccurred=— ⚡ [ %1 ] An error occurred in "%2":\n\n%3
+handlerEvents.errorOccurred2=— ⚡ [ %1 ] onChat execution failed in "%2":\n\n%3
+handlerEvents.errorOccurred3=— ⚡ [ %1 ] onReply execution failed in "%2":\n\n%3
+handlerEvents.errorOccurred4=— ⚡ [ %1 ] onReaction execution failed in "%2":\n\n%3
+handlerEvents.errorOccurred5=— ⚡ [ %1 ] onEvent execution failed in "%2":\n\n%3
+handlerEvents.errorOccurred6=— ⚡ [ %1 ] Event error during "%2":\n\n%3
+handlerEvents.errorOccurred7=— ⚡ [ %1 ] AnyEvent error during "%2":\n\n%3
+handlerEvents.cannotFindCommandName=— 🧩 Missing Data: Could not find the command name for this reply.
+handlerEvents.cannotFindCommand=— 🧩 Not Located: I can't find "%1" to complete this reply.
 
 
 # bot/autoUptime.js
