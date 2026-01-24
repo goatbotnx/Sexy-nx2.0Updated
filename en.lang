@@ -89,7 +89,7 @@ handlerCheckData.cantCreateThread=Groups with id '%1' cannot be written to the d
 handlerCheckData.cantCreateUser=Users with id '%1' cannot be written to the database!
 
 # bot/handler/handlerEvents.js
-handlerEvents.onlyPrefix=— ℹ️ This is my prefix. Type %1help to explore all commands.
+handlerEvents.onlyPrefix=— ℹ️  This just is my prefix. Type %1help to see available all commands.
 handlerEvents.userBanned=— ⚠️ Access Revoked: You are currently banned.\n» Reason: %1\n» Duration: %2\n» ID: %3
 handlerEvents.threadBanned=— 🚫 Chat Restricted: This group is banned.\n» Reason: %1\n» Expires: %2\n» TID: %3
 handlerEvents.onlyAdminBox=— 🔒 Security: Only group administrators can use the bot here.
