@@ -87,31 +87,33 @@ socketIO.error=An error occurred when connecting to the socket.io server
 # bot/handler/handlerCheckData.js
 handlerCheckData.cantCreateThread=Groups with id '%1' cannot be written to the database!
 handlerCheckData.cantCreateUser=Users with id '%1' cannot be written to the database!
+
 # bot/handler/handlerEvents.js
-handlerEvents.onlyPrefix=📜 ᴛʜᴀᴛ's ᴊᴜsᴛ ᴍʏ ᴘʀᴇꜰɪx, ᴛᴏ sᴇᴇ ᴍʏ ᴄᴏᴍᴍᴀɴᴅs ᴛʏᴘᴇ %1ʜᴇʟᴘ ᴛᴏ sᴇᴇ ᴀʟʟ ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴀᴍɴᴅs!
-handlerEvents.userBanned=You have been banned from using the bot\n» Reason: %1\n» Time: %2\n» User ID: %3
-handlerEvents.threadBanned=This group has been banned from using the bot\n» Reason: %1\n» Time: %2\n» Thread ID: %3
-handlerEvents.onlyAdminBox=This group is currently enabled only group administrators can use the bot
-handlerEvents.onlyAdminBot=❌ | Currently only bot's admin can use bot
-handlerEvents.commandNotFound=Command "%1" does not exist, type %2help to see all available commands
-handlerEvents.commandNotFound2=The command you are using does not exist, type %1help to see all available commands
-handlerEvents.commandSyntaxError=The command you are using is wrong syntax, please type %1help %2 to see the details of how to use this command
-handlerEvents.onlyAdmin=❌ | Only group administrators can use the command "%1"
-handlerEvents.onlyAdminToUseOnReply=❌ | Only group administrators can use the reply function of the command "%1"
-handlerEvents.onlyAdminToUseOnReaction=❌ | Only group administrators can use the reaction function of the command "%1"
-handlerEvents.onlyAdminBot2=❌ | Only bot's admin can use the command "%1"
-handlerEvents.onlyAdminBot2ToUseOnReply=❌ | Only bot's admin can use the reply function of the command "%1"
-handlerEvents.onlyAdminBot2ToUseOnReaction=❌ | Only bot's admin can use the reaction function of the command "%1"
-handlerEvents.waitingForCommand=⏱ You are in the waiting time to use this command, please come back after %1s
-handlerEvents.errorOccurred=❌ [ %1 ]\nAn error occurred at command "%2"\n\n%3
-handlerEvents.errorOccurred2=❌ [ %1 ]\nAn error occurred at command onChat in command "%2"\n\n%3
-handlerEvents.errorOccurred3=❌ [ %1 ]\nAn error occurred when executing onReply at command "%2"\n\n%3
-handlerEvents.errorOccurred4=❌ [ %1 ]\nAn error occurred when executing onReaction at command "%2"\n\n%3
-handlerEvents.errorOccurred5=❌ [ %1 ]\nAn error occurred when executing onEvent at command "%2"\n\n%3
-handlerEvents.errorOccurred6=❌ [ %1 ]\nAn error occurred when executing onEvent at command "%2"\n\n%3
-handlerEvents.errorOccurred7=❌ [ %1 ]\nAn error occurred when executing onAnyEvent at command "%2"\n\n%3
-handlerEvents.cannotFindCommandName=❌ Cannot find command name to execute this reply!
-handlerEvents.cannotFindCommand=❌ Cannot find command "%1" to execute this reply!
+handlerEvents.onlyPrefix=📜 ᴛʜᴀᴛ's ᴊᴜsᴛ ᴍʏ ᴘʀᴇꜰɪx! ᴛᴏ ᴇxᴘʟᴏʀᴇ ᴍʏ ꜰᴜɴᴄᴛɪᴏɴs, ᴘʟᴇᴀsᴇ ᴛʏᴘᴇ %1ʜᴇʟᴘ ꜰᴏʀ ᴛʜᴇ ꜰᴜʟʟ ʟɪsᴛ.
+handlerEvents.userBanned=ᴀᴄᴄᴇss ᴅᴇɴɪᴇᴅ: ʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ sᴜsᴘᴇɴᴅᴇᴅ ꜰʀᴏᴍ ᴛʜɪs ʙᴏᴛ.\n» ᴄᴀᴜsᴇ: %1\n» ᴜɴᴛɪʟ: %2\n» ɪᴅ: %3
+handlerEvents.threadBanned=ᴛʜɪs ᴄʜᴀᴛ ɪs ᴄᴜʀʀᴇɴᴛʟʏ ʀᴇsᴛʀɪᴄᴛᴇᴅ ꜰʀᴏᴍ ᴜsɪɴɢ ᴍʏ sᴇʀᴠɪᴄᴇs.\n» ʀᴇᴀsᴏɴ: %1\n» ᴇxᴘɪʀᴇs: %2\n» ᴛɪᴅ: %3
+handlerEvents.onlyAdminBox=ᴀᴅᴍɪɴ-ᴏɴʟʏ ᴍᴏᴅᴇ: ᴄᴜʀʀᴇɴᴛʟʏ, ᴏɴʟʏ ɢʀᴏᴜᴘ ʟᴇᴀᴅᴇʀs ᴄᴀɴ ɪɴᴛᴇʀᴀᴄᴛ ᴡɪᴛʜ ᴍᴇ ʜᴇʀᴇ.
+handlerEvents.onlyAdminBot=ᴘʀɪᴠᴀᴛᴇ ᴀᴄᴄᴇss: ᴏɴʟʏ ᴍʏ ᴅᴇᴠᴇʟᴏᴘᴇʀ/ᴀᴅᴍɪɴ ᴄᴀɴ ᴜsᴇ ᴍᴇ ᴀᴛ ᴛʜɪs ᴛɪᴍᴇ.
+handlerEvents.commandNotFound=ᴜɴᴋɴᴏᴡɴ ᴄᴏᴍᴍᴀɴᴅ: "%1" ɪsɴ'ᴛ ɪɴ ᴍʏ sʏsᴛᴇᴍ. ᴜsᴇ %2ʜᴇʟᴘ ᴛᴏ sᴇᴇ ᴡʜᴀᴛ ɪ ᴄᴀɴ ᴅᴏ.
+handlerEvents.commandNotFound2=ɪ ᴅᴏɴ'ᴛ ʀᴇᴄᴏɢɴɪᴢᴇ ᴛʜᴀᴛ ᴀᴄᴛɪᴏɴ. ᴄʜᴇᴄᴋ %1ʜᴇʟᴘ ꜰᴏʀ ᴛʜᴇ ᴄᴏʀʀᴇᴄᴛ ʟɪsᴛ.
+handlerEvents.commandNotFoundWithSuggestion=ɪ ᴄᴏᴜʟᴅɴ'ᴛ ꜰɪɴᴅ "%1". ᴅɪᴅ ʏᴏᴜ ᴍᴇᴀɴ "%2"? ᴛʏᴘᴇ %3ʜᴇʟᴘ ᴛᴏ ᴄᴏɴꜰɪʀᴍ.
+handlerEvents.commandSyntaxError=ɪɴᴠᴀʟɪᴅ ꜰᴏʀᴍᴀᴛ: ᴘʟᴇᴀsᴇ ʀᴇꜰᴇʀ ᴛᴏ %1ʜᴇʟᴘ %2 ᴛᴏ sᴇᴇ ʜᴏᴡ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴘʀᴏᴘᴇʀʟʏ.
+handlerEvents.onlyAdmin=ᴘᴇʀᴍɪssɪᴏɴ ᴇʀʀᴏʀ: "%1" ɪs ʀᴇsᴇʀᴠᴇᴅ ꜰᴏʀ ɢʀᴏᴜᴘ ᴀᴅᴍɪɴɪsᴛʀᴀᴛᴏʀs ᴏɴʟʏ.
+handlerEvents.onlyAdminToUseOnReply=ᴀᴄᴄᴇss ʟɪᴍɪᴛᴇᴅ: ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴜsᴇ ʀᴇᴘʟɪᴇs ᴡɪᴛʜ ᴛʜᴇ "%1" ᴄᴏᴍᴍᴀɴᴅ.
+handlerEvents.onlyAdminToUseOnReaction=ᴀᴄᴄᴇss ʟɪᴍɪᴛᴇᴅ: ᴏɴʟʏ ᴀᴅᴍɪɴs ᴄᴀɴ ᴛʀɪɢɢᴇʀ "%1" ᴠɪᴀ ʀᴇᴀᴄᴛɪᴏɴs.
+handlerEvents.onlyAdminBot2=ᴅᴇᴠ-ᴏɴʟʏ: ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ "%1" ɪs ᴇxᴄʟᴜsɪᴠᴇ ᴛᴏ ᴛʜᴇ ʙᴏᴛ ᴏᴡɴᴇʀ.
+handlerEvents.onlyAdminBot2ToUseOnReply=ᴅᴇᴠ-ᴏɴʟʏ: ʀᴇᴘʟʏ-ᴀᴄᴛɪᴏɴs ꜰᴏʀ "%1" ᴀʀᴇ ʟᴏᴄᴋᴇᴅ ᴛᴏ ʙᴏᴛ ᴀᴅᴍɪɴs.
+handlerEvents.onlyAdminBot2ToUseOnReaction=ᴅᴇᴠ-ᴏɴʟʏ: ʀᴇᴀᴄᴛɪᴏɴ-ᴀᴄᴛɪᴏɴs ꜰᴏʀ "%1" ᴀʀᴇ ʟᴏᴄᴋᴇᴅ ᴛᴏ ʙᴏᴛ ᴀᴅᴍɪɴs.
+handlerEvents.waitingForCommand=ᴄᴏᴏʟᴅᴏᴡɴ: ʏᴏᴜ'ʀᴇ ᴍᴏᴠɪɴɢ ᴛᴏᴏ ꜰᴀsᴛ! ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ %1s ʙᴇꜰᴏʀᴇ ɴᴇxᴛ ᴜsᴇ.
+handlerEvents.errorOccurred=⚠️ [ %1 ]\nsᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ ᴡɪᴛʜ "%2":\n\n%3
+handlerEvents.errorOccurred2=⚠️ [ %1 ]\nᴇxᴇᴄᴜᴛɪᴏɴ ᴇʀʀᴏʀ ɪɴ ᴏɴᴄʜᴀᴛ (%2):\n\n%3
+handlerEvents.errorOccurred3=⚠️ [ %1 ]\nʀᴇᴘʟʏ ʜᴀɴᴅʟᴇʀ ꜰᴀɪʟᴇᴅ ꜰᴏʀ "%2":\n\n%3
+handlerEvents.errorOccurred4=⚠️ [ %1 ]\nʀᴇᴀᴄᴛɪᴏɴ ʜᴀɴᴅʟᴇʀ ꜰᴀɪʟᴇᴅ ꜰᴏʀ "%2":\n\n%3
+handlerEvents.errorOccurred5=⚠️ [ %1 ]\nᴇᴠᴇɴᴛ ʜᴀɴᴅʟᴇʀ ɪssᴜᴇ ᴡɪᴛʜ "%2":\n\n%3
+handlerEvents.errorOccurred6=⚠️ [ %1 ]\nᴇᴠᴇɴᴛ ᴇxᴇᴄᴜᴛɪᴏɴ ᴇʀʀᴏʀ (%2):\n\n%3
+handlerEvents.errorOccurred7=⚠️ [ %1 ]\nɢʟᴏʙᴀʟ ᴇᴠᴇɴᴛ ꜰᴀɪʟᴜʀᴇ ᴀᴛ "%2":\n\n%3
+handlerEvents.cannotFindCommandName=ᴇʀʀᴏʀ: ᴛʜᴇ sᴏᴜʀᴄᴇ ᴄᴏᴍᴍᴀɴᴅ ꜰᴏʀ ᴛʜɪs ʀᴇᴘʟʏ ɪs ᴍɪssɪɴɢ!
+handlerEvents.cannotFindCommand=ᴇʀʀᴏʀ: ɪ ᴄᴀɴ'ᴛ ʟᴏᴄᴀᴛᴇ "%1" ᴛᴏ ᴘʀᴏᴄᴇss ᴛʜɪs ʀᴇᴘʟʏ.
 
 
 # bot/autoUptime.js
