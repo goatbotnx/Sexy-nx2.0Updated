@@ -1,4 +1,4 @@
-# <p align="center">🌟 goatbotnx APIs Library</p>
+# <p align="center">🌟 NEGATIVE XALMAN APIs Library</p>
 
 <p align="center">
   <img src="https://capsule-render.vercel.app/render?type=waving&color=auto&height=250&section=header&text=NX%20APIS&fontSize=90&animation=fadeIn&fontAlignY=38" width="100%" />
