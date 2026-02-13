@@ -18,5 +18,6 @@
   "ss": "https://xalman-screenshot-apis.onrender.com",
   "trans": "https://xalman-translate-apis.onrender.com",
   "mixmean": "https://xalman-emojimean-and-mix.onrender.com",
-  "tm": "https://xalman-tempmail-apis.onrender.com"
+  "tm": "https://xalman-tempmail-apis.onrender.com",
+  "chat": "https://xalman-aichat-apis.onrender.com"
 }
