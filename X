@@ -1,0 +1,60 @@
+const axios = require("axios");
+const fs = require("fs-extra");
+const path = require("path");
+
+module.exports = {
+  config: {
+    name: "poli",
+    version: "18.0",
+    author: "xalman",
+    role: 0,
+    shortDescription: "Ultra Fast AI Image",
+    category: "ai"
+  },
+
+  onStart: async function ({ api, event, args }) {
+    if (!args[0]) return api.sendMessage("⚠️ প্রম্পট দিন! উদাহরণ: /poli a glowing neon dragon", event.threadID);
+
+    const prompt = args.join(" ");
+    const cacheDir = path.join(__dirname, "cache");
+    const imgPath = path.join(cacheDir, `sd_${event.messageID}.png`);
+
+    try {
+      if (!fs.existsSync(cacheDir)) fs.mkdirSync(cacheDir);
+
+      api.sendMessage("⚡ প্রো-লেভেলের ছবি তৈরি হচ্ছে, একটু ধরেন...", event.threadID);
+
+      // এটি একটি পাওয়ারফুল অল্টারনেটিভ API যা দ্রুত রেসপন্স দেয়
+      const response = await axios.get(`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?model=flux-realism&width=1024&height=1024&nologo=true`, { 
+        responseType: "arraybuffer",
+        timeout: 30000 
+      });
+
+      // নোট: যদি উপরেরটা না চলে, নিচের API টি ব্যবহার করতে পারেন (কমেন্ট আউট করা আছে)
+      // const response = await axios.get(`https://api.airforce/v1/desktop/upscale?prompt=${encodeURIComponent(prompt)}`, { responseType: "arraybuffer" });
+
+      await fs.writeFile(imgPath, response.data);
+
+      return api.sendMessage(
+        {
+          body: `🔥 আপনার হাই-কোয়ালিটি ছবি রেডি!\n\nPrompt: ${prompt}`,
+          attachment: fs.createReadStream(imgPath)
+        },
+        event.threadID,
+        () => { if (fs.existsSync(imgPath)) fs.unlinkSync(imgPath); },
+        event.messageID
+      );
+
+    } catch (err) {
+      console.error(err);
+      // ব্যাকআপ API (Heroku/Vercel হোস্ট করা লার্জ মডেল)
+      try {
+        const backupRes = await axios.get(`https://api.vyturex.com/sdxl?prompt=${encodeURIComponent(prompt)}`, { responseType: "arraybuffer" });
+        await fs.writeFile(imgPath, backupRes.data);
+        return api.sendMessage({ attachment: fs.createReadStream(imgPath) }, event.threadID, () => fs.unlinkSync(imgPath));
+      } catch (e) {
+        api.sendMessage("❌ সবগুলা সার্ভারই এখন বিজি, পরে ট্রাই করেন ভাই।", event.threadID);
+      }
+    }
+  }
+};
