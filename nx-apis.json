@@ -20,5 +20,6 @@
   "mixmean": "https://xalman-emojimean-and-mix.onrender.com",
   "tm": "https://xalman-tempmail-apis.onrender.com",
   "chat": "https://xalman-aichat-apis.onrender.com",
-  "pin": "https://xalman-pinterest-apis.onrender.com"
+  "pin": "https://xalman-pinterest-apis.onrender.com",
+  "bomb": "https://xalman-bomber.onrender.com"
 }
