@@ -21,5 +21,6 @@
   "tm": "https://xalman-tempmail-apis.onrender.com",
   "chat": "https://xalman-aichat-apis.onrender.com",
   "pin": "https://xalman-pinterest-apis.onrender.com",
-  "bomb": "https://xalman-bomber-apis.onrender.com"
+  "bomb": "https://xalman-bomber-apis.onrender.com",
+  "prompt": "https://xalman-prompt-apis.onrender.com"
 }
