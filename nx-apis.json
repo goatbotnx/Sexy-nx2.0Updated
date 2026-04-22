@@ -1,26 +1,8 @@
-{ 
-  "anisearch": "https://xalman-anisearch-apis-s5yv.onrender.com",
-  "album": "https://nx-album-apix.onrender.com",
-  "font": "https://xalman-font-apis-dbv8.onrender.com",
-  "cdp": "https://nx-cdp-apis-cqss.onrender.com",
-  "quiz": "https://xalman-quiz-apis-6s9k.onrender.com",
-  "math": "https://xalman-mathgame-apis.onrender.com",
-  "meme": "https://nx-meme-apis.onrender.com",
-  "autodl": "https://xalman-autodl-apis.onrender.com",
-  "tikdl": "https://xalman-tikdl.onrender.com",
-  "lyrics": "https://xalman-lyrics-apis.onrender.com",
-  "flux": "https://xalman-flux-apis.onrender.com",
-  "rbg": "https://xalman-removebg-apis.onrender.com",
-  "4k": "https://xalman-4k-apis.onrender.com",
-  "imgbb": "https://xalman-imgbb-apis-8qnx.onrender.com",
-  "freeimg": "https://xalman-freeimageupload-apis.onrender.com",
-  "catbox": "https://xalman-catbox-apis.onrender.com",
-  "ss": "https://xalman-screenshot-apis.onrender.com",
-  "trans": "https://xalman-translate-apis.onrender.com",
-  "mixmean": "https://xalman-emojimean-and-mix.onrender.com",
-  "tm": "https://xalman-tempmail-apis.onrender.com",
-  "chat": "https://xalman-aichat-apis.onrender.com",
-  "pin": "https://xalman-pinterest-apis.onrender.com",
-  "bomb": "https://xalman-bomber-jsaz.onrender.com",
-  "prompt": "https://xalman-prompt-apis.onrender.com"
+{
+  "xalman": "https://xalman-apis.vercel.app",
+  "xalman2": "https://xalman-bomber-apixx.onrender.com",
+  "xalman3": "https://xalmam-uptime-monitoring.vercel.app",
+  "xalman4": "https://xalman-caption-apix.vercel.app",
+  "xalman5": "https://xalman-ffinfo-apix.vercel.app",
+  "xalman6": "https://xalman-image-filter.vercel.app/"
 }
