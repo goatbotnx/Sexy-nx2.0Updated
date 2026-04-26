@@ -1,10 +1,12 @@
 {
-  "xalman": "https://xalman-apis.vercel.app",
-  "xalman2": "https://xalman-bomber-apixx.onrender.com",
-  "xalman3": "https://xalmam-uptime-monitoring.vercel.app",
-  "xalman4": "https://xalman-caption-apix.vercel.app",
-  "xalman5": "https://xalman-ffinfo-apix.vercel.app",
-  "xalman6": "https://xalman-image-filter.vercel.app",
-  "xalman7": "https://xalman-truthordare-api.vercel.app",
-  "xalman8": "https://xalman-ytvid-dl-production.up.railway.app"
+  "xalman":    "https://xalman-apis.vercel.app",
+  "xalman2":   "https://xalman-bomber-apixx.onrender.com",
+  "xalman3":.  "https://xalmam-uptime-monitoring.vercel.app",
+  "xalman4":   "https://xalman-caption-apix.vercel.app",
+  "xalman5":.  "https://xalman-ffinfo-apix.vercel.app",
+  "xalman6":   "https://xalman-image-filter.vercel.app",
+  "xalman7":   "https://xalman-truthordare-api.vercel.app",
+  "xalman8":   "https://xalman-ytvid-dl-production.up.railway.app",
+  "xalman9":   "https://xalman-nb-api.onrender.com",
+  "xalman10":  "https://xalman-edit-api.onrender.com"
 }
